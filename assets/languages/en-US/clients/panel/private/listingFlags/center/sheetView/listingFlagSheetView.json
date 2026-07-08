@@ -1,0 +1,13 @@
+{
+  "path": "src/modules/eCommerceMarketplace/clients/panel/private/listingFlags/center/sheetView/listingFlagSheetView.tsx",
+  "listingFlag": "Listing Flag",
+  "listing": "Listing",
+  "reason": "Reason",
+  "comment": "Comment",
+  "reporter": "Reporter",
+  "status": "Status",
+  "resolution": "Resolution",
+  "listingAction": "Listing action",
+  "createdAt": "Reported",
+  "status_values": { "pending": "Pending", "reviewed": "Reviewed", "dismissed": "Dismissed" }
+}

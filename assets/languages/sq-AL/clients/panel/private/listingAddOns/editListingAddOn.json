@@ -1,0 +1,23 @@
+{
+  "path": "src/modules/eCommerce/clients/panel/private/listingAddOns/editListingAddOn.tsx",
+  "editTitle": "Ndrysho shtesën e listimit",
+  "editDescription": "Përditëso emrin, çmimin ose kohën e dorëzimit të kësaj shtese.",
+  "errorTitle": "Nuk u ngarkua shtesa",
+  "errorDescription": "Kontrollo lidhjen ose kthehu te lista dhe provo sërisht.",
+  "formHeader": {
+    "title": "Ndrysho shtesën e listimit",
+    "description": "Modifiko detajet e shtesës."
+  },
+  "formButtons": { "cancel": "Anulo", "submit": "Ruaj ndryshimet" },
+  "form": {
+    "nameLabel": "Emri i shtesës",
+    "priceAmountLabel": "Çmimi",
+    "currencyLabel": "Monedha",
+    "deliveryDaysLabel": "Ditë dorëzimi"
+  },
+  "axios": {
+    "start": { "title": "Po ruhet shtesa", "time": 3000 },
+    "success": { "title": "Shtesa u përditësua", "time": 3000 },
+    "error": { "title": "Nuk u përditësua shtesa", "time": 3000 }
+  }
+}

@@ -1,0 +1,26 @@
+{
+  "path": "src/modules/eCommerce/clients/panel/private/providerAvailability/editProviderAvailability.tsx",
+  "editTitle": "Edit availability slot",
+  "editDescription": "Update the timing of this weekly availability window.",
+  "errorTitle": "Could not load availability",
+  "errorDescription": "Check the link or return to the list and try again.",
+  "formHeader": {
+    "title": "Edit availability slot",
+    "description": "Update the day and time for this slot."
+  },
+  "formButtons": { "cancel": "Cancel", "submit": "Save changes" },
+  "form": {
+    "dayOfWeekLabel": "Day of week",
+    "startTimeLabel": "Start time",
+    "startTimePlaceholder": "HH:mm",
+    "endTimeLabel": "End time",
+    "endTimePlaceholder": "HH:mm",
+    "timezoneLabel": "Timezone",
+    "timezonePlaceholder": "UTC"
+  },
+  "axios": {
+    "start": { "title": "Saving availability", "time": 3000 },
+    "success": { "title": "Availability updated", "time": 3000 },
+    "error": { "title": "Could not update availability", "time": 3000 }
+  }
+}

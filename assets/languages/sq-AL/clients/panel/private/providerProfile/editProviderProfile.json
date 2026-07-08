@@ -1,0 +1,24 @@
+{
+  "path": "src/modules/eCommerce/clients/panel/private/providerProfile/editProviderProfile.tsx",
+  "editTitle": "Modifiko profilin e ofruesit",
+  "editDescription": "Përditëso aftësitë, bio-n dhe portofolin për këtë ofrues.",
+  "errorTitle": "Nuk u ngarkua profili i ofruesit",
+  "errorDescription": "Kontrollo lidhjen ose kthehu te lista dhe provo përsëri.",
+  "formHeader": {
+    "title": "Modifiko profilin e ofruesit",
+    "description": "Përditëso aftësitë, bio-n dhe portofolin."
+  },
+  "formButtons": { "cancel": "Anulo", "submit": "Ruaj ndryshimet" },
+  "form": {
+    "skillsLabel": "Aftësi",
+    "skillsPlaceholder": "p.sh. hidraulikë, elektrik...",
+    "bioLabel": "Bio",
+    "bioPlaceholder": "Trego klientëve për veten tënde...",
+    "portfolioLabel": "Imazhe portofoli"
+  },
+  "axios": {
+    "start": { "title": "Duke ruajtur profilin", "time": 3000 },
+    "success": { "title": "Profili u përditësua", "time": 3000 },
+    "error": { "title": "Nuk u përditësua profili", "time": 3000 }
+  }
+}

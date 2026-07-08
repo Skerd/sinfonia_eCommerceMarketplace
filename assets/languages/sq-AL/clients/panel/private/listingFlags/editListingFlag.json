@@ -1,0 +1,25 @@
+{
+  "path": "src/modules/eCommerceMarketplace/clients/panel/private/listingFlags/editListingFlag.tsx",
+  "editTitle": "Shqyrto raportimin",
+  "editDescription": "Përditëso statusin dhe zgjidhjen e këtij raportimi.",
+  "errorTitle": "Nuk u ngarkua raportimi",
+  "errorDescription": "Kontrollo lidhjen ose kthehu te lista dhe provo përsëri.",
+  "formHeader": {
+    "title": "Shqyrto raportimin",
+    "description": "Cakto status, zgjidhje dhe veprim ndaj listimit."
+  },
+  "formButtons": { "cancel": "Anulo", "submit": "Ruaj ndryshimet" },
+  "form": {
+    "statusLabel": "Statusi",
+    "resolutionLabel": "Zgjidhja",
+    "resolutionPlaceholder": "Përshkruaj rezultatin...",
+    "listingActionLabel": "Veprimi ndaj listimit",
+    "status_values": { "pending": "Në pritje", "reviewed": "Shqyrtuar", "dismissed": "Hedhur poshtë" },
+    "listingAction_values": { "none": "Pa veprim", "deactivate": "Çaktivizo listimin", "remove": "Hiq listimin" }
+  },
+  "axios": {
+    "start": { "title": "Duke ruajtur shqyrtimin", "time": 3000 },
+    "success": { "title": "Raportimi u përditësua", "time": 3000 },
+    "error": { "title": "Nuk u përditësua raportimi", "time": 3000 }
+  }
+}

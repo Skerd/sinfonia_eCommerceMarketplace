@@ -1,0 +1,24 @@
+{
+  "path": "src/modules/eCommerce/clients/panel/private/providerProfile/editProviderProfile.tsx",
+  "editTitle": "Edit provider profile",
+  "editDescription": "Update skills, bio, and portfolio for this provider.",
+  "errorTitle": "Could not load provider profile",
+  "errorDescription": "Check the link or return to the list and try again.",
+  "formHeader": {
+    "title": "Edit provider profile",
+    "description": "Update skills, bio, and portfolio."
+  },
+  "formButtons": { "cancel": "Cancel", "submit": "Save changes" },
+  "form": {
+    "skillsLabel": "Skills",
+    "skillsPlaceholder": "e.g. plumbing, electrical...",
+    "bioLabel": "Bio",
+    "bioPlaceholder": "Tell clients about yourself...",
+    "portfolioLabel": "Portfolio images"
+  },
+  "axios": {
+    "start": { "title": "Saving profile", "time": 3000 },
+    "success": { "title": "Profile updated", "time": 3000 },
+    "error": { "title": "Could not update profile", "time": 3000 }
+  }
+}

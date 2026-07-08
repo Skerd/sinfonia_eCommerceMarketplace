@@ -1,0 +1,23 @@
+{
+  "path": "src/modules/eCommerce/clients/panel/private/providerAvailability/createProviderAvailability.tsx",
+  "formHeader": {
+    "title": "Add availability slot",
+    "description": "Define a weekly recurring availability window for a provider."
+  },
+  "formButtons": { "cancel": "Cancel", "submit": "Add slot" },
+  "form": {
+    "dayOfWeekLabel": "Day of week",
+    "dayOfWeekPlaceholder": "Select day",
+    "startTimeLabel": "Start time",
+    "startTimePlaceholder": "HH:mm",
+    "endTimeLabel": "End time",
+    "endTimePlaceholder": "HH:mm",
+    "timezoneLabel": "Timezone",
+    "timezonePlaceholder": "UTC"
+  },
+  "axios": {
+    "start": { "title": "Adding availability", "time": 3000 },
+    "success": { "title": "Availability added", "time": 3000 },
+    "error": { "title": "Could not add availability", "time": 3000 }
+  }
+}

@@ -1,0 +1,25 @@
+{
+  "path": "src/modules/eCommerceMarketplace/clients/panel/private/listingFlags/editListingFlag.tsx",
+  "editTitle": "Review listing flag",
+  "editDescription": "Update the status and resolution of this report.",
+  "errorTitle": "Could not load report",
+  "errorDescription": "Check the link or return to the list and try again.",
+  "formHeader": {
+    "title": "Review listing flag",
+    "description": "Set a status, resolution, and any listing action to take."
+  },
+  "formButtons": { "cancel": "Cancel", "submit": "Save changes" },
+  "form": {
+    "statusLabel": "Status",
+    "resolutionLabel": "Resolution",
+    "resolutionPlaceholder": "Describe the outcome...",
+    "listingActionLabel": "Listing action",
+    "status_values": { "pending": "Pending", "reviewed": "Reviewed", "dismissed": "Dismissed" },
+    "listingAction_values": { "none": "No action", "deactivate": "Deactivate listing", "remove": "Remove listing" }
+  },
+  "axios": {
+    "start": { "title": "Saving review", "time": 3000 },
+    "success": { "title": "Flag updated", "time": 3000 },
+    "error": { "title": "Could not update flag", "time": 3000 }
+  }
+}

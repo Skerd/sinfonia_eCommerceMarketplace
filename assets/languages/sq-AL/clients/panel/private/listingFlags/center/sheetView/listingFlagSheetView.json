@@ -1,0 +1,13 @@
+{
+  "path": "src/modules/eCommerceMarketplace/clients/panel/private/listingFlags/center/sheetView/listingFlagSheetView.tsx",
+  "listingFlag": "Raportimi i Listimit",
+  "listing": "Listimi",
+  "reason": "Arsyeja",
+  "comment": "Komenti",
+  "reporter": "Raportues",
+  "status": "Statusi",
+  "resolution": "Zgjidhja",
+  "listingAction": "Veprimi ndaj listimit",
+  "createdAt": "Raportuar",
+  "status_values": { "pending": "Në pritje", "reviewed": "Shqyrtuar", "dismissed": "Hedhur poshtë" }
+}

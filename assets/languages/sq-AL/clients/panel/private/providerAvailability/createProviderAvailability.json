@@ -1,0 +1,23 @@
+{
+  "path": "src/modules/eCommerce/clients/panel/private/providerAvailability/createProviderAvailability.tsx",
+  "formHeader": {
+    "title": "Shto interval disponueshmërie",
+    "description": "Përcakto një dritare disponueshmërie javore të përsëritur për një ofrues."
+  },
+  "formButtons": { "cancel": "Anulo", "submit": "Shto intervalin" },
+  "form": {
+    "dayOfWeekLabel": "Dita e javës",
+    "dayOfWeekPlaceholder": "Zgjidh ditën",
+    "startTimeLabel": "Ora e fillimit",
+    "startTimePlaceholder": "HH:mm",
+    "endTimeLabel": "Ora e mbarimit",
+    "endTimePlaceholder": "HH:mm",
+    "timezoneLabel": "Zona orare",
+    "timezonePlaceholder": "UTC"
+  },
+  "axios": {
+    "start": { "title": "Duke shtuar disponueshmërinë", "time": 3000 },
+    "success": { "title": "Disponueshmëria u shtua", "time": 3000 },
+    "error": { "title": "Nuk u shtua disponueshmëria", "time": 3000 }
+  }
+}
