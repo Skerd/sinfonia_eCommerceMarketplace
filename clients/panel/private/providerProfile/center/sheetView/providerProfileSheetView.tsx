@@ -7,6 +7,11 @@ import SheetViewRenderer from "@coreModule/components/viewEngine/SheetViewRender
 import {useViewConfig} from "@coreModule/helpers/hooks/useViewConfig.ts";
 import type {ProviderProfile} from "armonia/src/modules/eCommerceMarketplace/api/eCommerceMarketplace/private/providerProfile/providerProfile.dto.ts";
 import type {DeletedData} from "armonia/src/modules/core/types/shared.types.ts";
+import CreateAccountLinkDropdown from "@eCommerceMarketplaceModule/clients/panel/private/providerProfile/center/actions/createAccountLinkDropdown.tsx";
+import RefreshAccountStatusDropdown from "@eCommerceMarketplaceModule/clients/panel/private/providerProfile/center/actions/refreshAccountStatusDropdown.tsx";
+import ConnectAccountAction, {
+    type ConnectActionKey,
+} from "@eCommerceMarketplaceModule/components/custom/providerProfile/connectAccountAction.tsx";
 
 type ProviderProfileSheetViewOwnProps = {
     open: boolean;
@@ -40,6 +45,7 @@ function ProviderProfileSheetView({
     fetchId,
 }: ProviderProfileSheetViewOwnProps & WithLanguageType) {
     const [sheetData, setSheetData] = useState<Record<string, unknown>>(profileProp || {_id: fetchId});
+    const [action, setAction] = useState("");
     const access = useAccess("providerProfiles");
     const viewConfig = useViewConfig("providerprofiles", "sheet");
 
@@ -50,33 +56,73 @@ function ProviderProfileSheetView({
 
     const entityId = profileProp?._id ?? fetchId;
     const asProfile = sheetData as ProviderProfile;
+    const displayName =
+        asProfile.user?.fullName ||
+        [asProfile.user?.name, asProfile.user?.surname].filter(Boolean).join(" ") ||
+        undefined;
 
     if (!viewConfig || !entityId) return null;
 
     return (
-        <SheetViewRenderer
-            config={viewConfig}
-            url="/api/eCommerceMarketplace/providerProfile/single"
-            fetchId={fetchId ?? entityId}
-            onDataFetched={(data) => setSheetData(data)}
-            data={sheetData}
-            open={open}
-            onOpenChange={onOpenChange}
-            resolveLanguageKey={resolveLanguageKey}
-            access={access}
-            hideActions={hideActions}
-            onDelete={onDelete}
-            onRestore={onRestore}
-            editPath={providerProfileEditPath(asProfile)}
-            onSheetRowPatched={(row) => {
-                setSheetData(row);
-                onSheetRowPatched?.(row as Partial<ProviderProfile>);
-            }}
-        />
+        <>
+            <SheetViewRenderer
+                config={viewConfig}
+                url="/api/eCommerceMarketplace/providerProfile/single"
+                fetchId={fetchId ?? entityId}
+                onDataFetched={(data) => setSheetData(data)}
+                data={sheetData}
+                open={open}
+                onOpenChange={onOpenChange}
+                resolveLanguageKey={resolveLanguageKey}
+                access={access}
+                hideActions={hideActions}
+                onDelete={onDelete}
+                onRestore={onRestore}
+                editPath={providerProfileEditPath(asProfile)}
+                actionMenuAllowCustomChildren
+                onActionMenuAction={(a) => {
+                    if (a === "createAccountLink" || a === "refreshAccountStatus") {
+                        setAction(a);
+                    }
+                }}
+                actionMenuChildren={
+                    <>
+                        <CreateAccountLinkDropdown profile={asProfile} onAction={setAction} />
+                        <RefreshAccountStatusDropdown profile={asProfile} onAction={setAction} />
+                    </>
+                }
+                onSheetRowPatched={(row) => {
+                    setSheetData(row);
+                    onSheetRowPatched?.(row as Partial<ProviderProfile>);
+                }}
+            />
+            {(action === "createAccountLink" || action === "refreshAccountStatus") && (
+                <ConnectAccountAction
+                    actionKey={action as ConnectActionKey}
+                    displayName={displayName}
+                    openAlert
+                    url={`/api/eCommerceMarketplace/providerProfile/${action}`}
+                    onSuccess={(result) => {
+                        const patch: Partial<ProviderProfile> = {
+                            ...(result.stripeAccountId ? {stripeAccountId: result.stripeAccountId} : {}),
+                            ...(result.chargesEnabled !== undefined ? {stripeChargesEnabled: result.chargesEnabled} : {}),
+                            ...(result.payoutsEnabled !== undefined ? {stripePayoutsEnabled: result.payoutsEnabled} : {}),
+                            ...(result.detailsSubmitted !== undefined ? {stripeDetailsSubmitted: result.detailsSubmitted} : {}),
+                            stripeAccountSyncedAt: new Date().toISOString(),
+                        };
+                        const next = {...asProfile, ...patch};
+                        setSheetData(next);
+                        onSheetRowPatched?.(patch);
+                        setAction("");
+                    }}
+                    onCancel={() => setAction("")}
+                />
+            )}
+        </>
     );
 }
 
 export default compose(
-    withLanguage("src/modules/eCommerce/clients/panel/private/providerProfile/center/sheetView/providerProfileSheetView.tsx"),
+    withLanguage("src/modules/eCommerceMarketplace/clients/panel/private/providerProfile/center/sheetView/providerProfileSheetView.tsx"),
     withDebug(true, true),
 )(ProviderProfileSheetView);

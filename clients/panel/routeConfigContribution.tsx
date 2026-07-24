@@ -29,6 +29,7 @@ import EditListingAddOn from "@eCommerceMarketplaceModule/clients/panel/private/
 import AllListingPackages from "@eCommerceMarketplaceModule/clients/panel/private/listingPackages";
 import CreateListingPackage from "@eCommerceMarketplaceModule/clients/panel/private/listingPackages/createListingPackage.tsx";
 import EditListingPackage from "@eCommerceMarketplaceModule/clients/panel/private/listingPackages/editListingPackage.tsx";
+import MarketplaceSystemMap from "@eCommerceMarketplaceModule/clients/panel/private/systemMap";
 import type {RouteConfigArgs, RouteConfigContribution} from "@coreModule/clients/panel/moduleContributions/routeConfigContribution.types.ts";
 
 function safeDecode(value: string | null): string | undefined {
@@ -61,6 +62,9 @@ const eCommerceMarketplaceRouteConfigContribution: RouteConfigContribution = {
         const profileId = searchParams.get("profileId") || undefined;
         const profileName = safeDecode(searchParams.get("profileName")) || undefined;
 
+        if (resource === "marketplacesystemmap") {
+            return <MarketplaceSystemMap />;
+        }
         if (resource === "listings") {
             if (action === "create") return <CreateListing />;
             if (action === "edit" && listingId) {

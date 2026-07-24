@@ -11,6 +11,11 @@ import { IconStar, IconCode } from "@tabler/icons-react";
 import type { ProviderProfile } from "armonia/src/modules/eCommerceMarketplace/api/eCommerceMarketplace/private/providerProfile/providerProfile.dto.ts";
 import type { DeletedData } from "armonia/src/modules/core/types/shared.types.ts";
 import ProviderProfileSheetView from "@eCommerceMarketplaceModule/clients/panel/private/providerProfile/center/sheetView/providerProfileSheetView.tsx";
+import CreateAccountLinkDropdown from "@eCommerceMarketplaceModule/clients/panel/private/providerProfile/center/actions/createAccountLinkDropdown.tsx";
+import RefreshAccountStatusDropdown from "@eCommerceMarketplaceModule/clients/panel/private/providerProfile/center/actions/refreshAccountStatusDropdown.tsx";
+import ConnectAccountAction, {
+    type ConnectActionKey,
+} from "@eCommerceMarketplaceModule/components/custom/providerProfile/connectAccountAction.tsx";
 
 type ProviderProfileCardProps = WithLanguageType & {
     profile: ProviderProfile;
@@ -19,6 +24,10 @@ type ProviderProfileCardProps = WithLanguageType & {
     hideActions?: boolean;
     sheetOnly?: boolean;
 };
+
+function profileDisplayName(profile: ProviderProfile) {
+    return profile.user?.fullName || [profile.user?.name, profile.user?.surname].filter(Boolean).join(" ") || undefined;
+}
 
 function ProviderProfileCard({
     profile: profileProp,
@@ -34,7 +43,7 @@ function ProviderProfileCard({
 
     if (!read || !Object.keys(read).length) return <HiddenElement />;
 
-    const userName = profile.user?.name || "—";
+    const userName = profileDisplayName(profile) || "—";
     const initials = [profile.user?.name?.[0], profile.user?.surname?.[0]].filter(Boolean).join("").toUpperCase();
 
     const editPath = (() => {
@@ -45,6 +54,12 @@ function ProviderProfileCard({
         if (name) params.set("profileName", name);
         return `/eCommerce/providerprofile/edit?${params.toString()}`;
     })();
+
+    const connectStatusLabel = profile.stripePayoutsEnabled
+        ? resolveLanguageKey("connect.payoutsEnabled")
+        : profile.stripeAccountId
+          ? resolveLanguageKey("connect.setupIncomplete")
+          : resolveLanguageKey("connect.notConnected");
 
     return (
         <>
@@ -76,7 +91,11 @@ function ProviderProfileCard({
                                         deletedData={profile as any}
                                         onAction={(a: string) => setAction(a)}
                                         editPath={editPath}
-                                    />
+                                        allowMenuForCustomChildren
+                                    >
+                                        <CreateAccountLinkDropdown profile={profile} onAction={(a: string) => setAction(a)} />
+                                        <RefreshAccountStatusDropdown profile={profile} onAction={(a: string) => setAction(a)} />
+                                    </ActionMenu>
                                 </div>
                             )}
                         </div>
@@ -108,6 +127,19 @@ function ProviderProfileCard({
                                 </span>
                             )}
                         </div>
+
+                        <span
+                            className={cn(
+                                "inline-flex w-fit items-center text-[10px] font-semibold uppercase tracking-wide",
+                                profile.stripePayoutsEnabled
+                                    ? "text-emerald-600"
+                                    : profile.stripeAccountId
+                                      ? "text-amber-600"
+                                      : "text-muted-foreground",
+                            )}
+                        >
+                            {connectStatusLabel}
+                        </span>
                     </div>
                 </Card>
             )}
@@ -121,11 +153,31 @@ function ProviderProfileCard({
                     onSheetRowPatched={(patch) => setProfile({ ...profile, ...patch })}
                 />
             )}
+            {(action === "createAccountLink" || action === "refreshAccountStatus") && (
+                <ConnectAccountAction
+                    actionKey={action as ConnectActionKey}
+                    displayName={userName === "—" ? undefined : userName}
+                    openAlert
+                    url={`/api/eCommerceMarketplace/providerProfile/${action}`}
+                    onSuccess={(result) => {
+                        setProfile({
+                            ...profile,
+                            ...(result.stripeAccountId ? {stripeAccountId: result.stripeAccountId} : {}),
+                            ...(result.chargesEnabled !== undefined ? {stripeChargesEnabled: result.chargesEnabled} : {}),
+                            ...(result.payoutsEnabled !== undefined ? {stripePayoutsEnabled: result.payoutsEnabled} : {}),
+                            ...(result.detailsSubmitted !== undefined ? {stripeDetailsSubmitted: result.detailsSubmitted} : {}),
+                            stripeAccountSyncedAt: new Date().toISOString(),
+                        });
+                        setAction("");
+                    }}
+                    onCancel={() => setAction("")}
+                />
+            )}
         </>
     );
 }
 
 export default compose(
-    withLanguage("src/modules/eCommerce/clients/panel/private/providerProfile/center/cardView/providerProfileCard.tsx"),
+    withLanguage("src/modules/eCommerceMarketplace/clients/panel/private/providerProfile/center/cardView/providerProfileCard.tsx"),
     withDebug(true, true),
 )(ProviderProfileCard);

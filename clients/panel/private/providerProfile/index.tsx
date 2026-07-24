@@ -5,13 +5,37 @@ import EntityListPage from "@coreModule/components/entityPage/EntityListPage.tsx
 import type { ProviderProfile } from "armonia/src/modules/eCommerceMarketplace/api/eCommerceMarketplace/private/providerProfile/providerProfile.dto.ts";
 import ProviderProfileCard from "./center/cardView/providerProfileCard.tsx";
 import type { DeletedData } from "armonia/src/modules/core/types/shared.types.ts";
+import CreateAccountLinkDropdown from "./center/actions/createAccountLinkDropdown.tsx";
+import RefreshAccountStatusDropdown from "./center/actions/refreshAccountStatusDropdown.tsx";
+import ConnectAccountAction, {
+    type ConnectActionKey,
+} from "@eCommerceMarketplaceModule/components/custom/providerProfile/connectAccountAction.tsx";
 
 function buildProfileEditPath(profile: ProviderProfile) {
     const params = new URLSearchParams();
     params.set("profileId", profile._id ?? "");
-    const name = (profile as any).user?.fullName || (profile as any).user?.name;
+    const name = profile.user?.fullName || profile.user?.name;
     if (name) params.set("profileName", name);
     return `/eCommerce/providerprofile/edit?${params.toString()}`;
+}
+
+function profileDisplayName(profile: ProviderProfile) {
+    return profile.user?.fullName || [profile.user?.name, profile.user?.surname].filter(Boolean).join(" ") || undefined;
+}
+
+function applyConnectPatch(result: {
+    stripeAccountId?: string;
+    chargesEnabled?: boolean;
+    payoutsEnabled?: boolean;
+    detailsSubmitted?: boolean;
+}): Partial<ProviderProfile> {
+    return {
+        ...(result.stripeAccountId ? {stripeAccountId: result.stripeAccountId} : {}),
+        ...(result.chargesEnabled !== undefined ? {stripeChargesEnabled: result.chargesEnabled} : {}),
+        ...(result.payoutsEnabled !== undefined ? {stripePayoutsEnabled: result.payoutsEnabled} : {}),
+        ...(result.detailsSubmitted !== undefined ? {stripeDetailsSubmitted: result.detailsSubmitted} : {}),
+        stripeAccountSyncedAt: new Date().toISOString(),
+    };
 }
 
 function AllProviderProfiles({ resolveLanguageKey }: WithLanguageType) {
@@ -25,7 +49,29 @@ function AllProviderProfiles({ resolveLanguageKey }: WithLanguageType) {
             resolveLanguageKey={resolveLanguageKey}
             sheetLanguagePath="src/modules/eCommerceMarketplace/clients/panel/private/providerProfile/center/sheetView/providerProfileSheetView.tsx"
             cardViewClassName="grid grid-cols-1 gap-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4"
-            rowActionMenu={{ hideDelete: true }}
+            rowActionMenu={{ hideDelete: true, allowMenuForCustomChildren: true }}
+            renderActionMenuChildren={(profile, bindRowAction) => (
+                <>
+                    <CreateAccountLinkDropdown profile={profile} onAction={bindRowAction} />
+                    <RefreshAccountStatusDropdown profile={profile} onAction={bindRowAction} />
+                </>
+            )}
+            renderFloatingModals={({action, entity, resetAction, listRef}) => {
+                if (action !== "createAccountLink" && action !== "refreshAccountStatus") return null;
+                return (
+                    <ConnectAccountAction
+                        actionKey={action as ConnectActionKey}
+                        displayName={profileDisplayName(entity)}
+                        openAlert
+                        url={`/api/eCommerceMarketplace/providerProfile/${action}`}
+                        onSuccess={(result) => {
+                            listRef.current?.updateRow?.(entity._id!, applyConnectPatch(result));
+                            resetAction();
+                        }}
+                        onCancel={resetAction}
+                    />
+                );
+            }}
             renderCard={(profile, onDelete, onRestore) => (
                 <ProviderProfileCard
                     profile={profile}

@@ -30,6 +30,7 @@ eCommerceMarketplace/
 | Page folder | Description |
 |-------------|-------------|
 | `listings` | Marketplace listings |
+| `systemMap` | Marketplace architecture map (`/eCommerce/marketplacesystemmap`) |
 | `listingPackages` | Listing packages |
 | `listingAddOns` | Add-ons |
 | `listingFlags` | Moderation flags |

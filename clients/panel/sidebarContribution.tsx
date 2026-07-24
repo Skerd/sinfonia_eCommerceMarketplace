@@ -1,4 +1,4 @@
-import {ClipboardList, ShoppingBag, Star, AlertTriangle, Gavel, Tag, Flag, Calendar, User, Package} from "lucide-react";
+import {ClipboardList, ShoppingBag, Star, AlertTriangle, Gavel, Tag, Flag, Calendar, User, Package, Network} from "lucide-react";
 import {IconListDetails} from "@tabler/icons-react";
 import type {SidebarContribution} from "@coreModule/clients/panel/moduleContributions/sidebarContribution.types.ts";
 import type {NavGroup, NavItem} from "@coreModule/helpers/panel/sidebarNav.types.ts";
@@ -9,6 +9,7 @@ const eCommerceMarketplaceSidebarContribution: SidebarContribution = {
     order: 36,
     getNavGroups(resolveLanguageKey: ResolveLanguageKey): NavGroup[] {
         const items: NavItem[] = [
+            {title: resolveLanguageKey("menus.eCommerce.marketplaceSystemMap.title"), url: "/eCommerce/marketplacesystemmap", icon: Network, permissions: [], usersPermissions: [], atLeastOnePermission: true},
             {title: resolveLanguageKey("menus.eCommerce.listings.title"), url: "/eCommerce/listings", icon: IconListDetails, permissions: [], usersPermissions: [], atLeastOnePermission: true},
             {title: resolveLanguageKey("menus.eCommerce.listingFlags.title"), url: "/eCommerce/listingflags", icon: Flag, permissions: [], usersPermissions: [], atLeastOnePermission: true},
             {title: resolveLanguageKey("menus.eCommerce.promotions.title"), url: "/eCommerce/promotions", icon: Tag, permissions: [], usersPermissions: [], atLeastOnePermission: true},
