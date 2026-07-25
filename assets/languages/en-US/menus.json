@@ -1,0 +1,53 @@
+{
+  "eCommerce": {
+    "title": "eCommerce",
+    "listings": {
+      "title": "Listings"
+    },
+    "taskrequests": {
+      "title": "Task Requests"
+    },
+    "orders": {
+      "title": "Orders"
+    },
+    "bids": {
+      "title": "Bids"
+    },
+    "bookings": {
+      "title": "Bookings"
+    },
+    "disputes": {
+      "title": "Disputes"
+    },
+    "reviews": {
+      "title": "Reviews"
+    },
+    "promotions": {
+      "title": "Promotions"
+    },
+    "listingFlags": {
+      "title": "Listing Flags"
+    },
+    "providerProfile": {
+      "title": "Provider Profiles"
+    },
+    "providerAvailability": {
+      "title": "Availability"
+    },
+    "listingAddOns": {
+      "title": "Listing Add-Ons"
+    },
+    "listingPackages": {
+      "title": "Listing Packages"
+    },
+    "escrowDashboard": {
+      "title": "Escrow Dashboard"
+    },
+    "marketplaceSystemMap": {
+      "title": "System Map"
+    },
+    "listingCategories": {
+      "title": "Listing Categories"
+    }
+  }
+}
