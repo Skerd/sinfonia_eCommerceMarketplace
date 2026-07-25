@@ -1,0 +1,7 @@
+{
+  "path": "src/modules/eCommerceMarketplace/clients/panel/private/listingCategories/center/cardView/categoryCard.tsx",
+  "name": "Name",
+  "slug": "Slug",
+  "parentCategory": "Parent category",
+  "order": "Order"
+}

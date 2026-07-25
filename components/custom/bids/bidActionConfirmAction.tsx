@@ -55,7 +55,7 @@ function BidActionConfirmAction({
     onCancel = () => {},
     loading,
 }: BidActionConfirmActionProps) {
-    const {write} = useAccess("bids");
+    const {write} = useAccess("marketplacebids");
     const [open, setOpen] = useState<boolean>(!!openAlert);
 
     useImperativeHandle(innerRef, () => ({

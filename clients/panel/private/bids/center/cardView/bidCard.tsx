@@ -72,7 +72,7 @@ function BidCard({
         }
     };
 
-    const {read, restore} = useAccess("bids");
+    const {read, restore} = useAccess("marketplacebids");
 
     useEffect(() => {
         setBid(bidProp);
@@ -123,7 +123,7 @@ function BidCard({
                             {!hideActions && (
                                 <div className="shrink-0 ml-auto" onClick={(e) => e.stopPropagation()}>
                                     <ActionMenu
-                                        accessModel="bids"
+                                        accessModel="marketplacebids"
                                         deletedData={bid}
                                         onAction={(a: string) => setAction(a)}
                                         editPath=""
@@ -207,7 +207,7 @@ function BidCard({
                     )}
                     {action === "delete" && (
                         <DeleteAction
-                            accessModel="bids"
+                            accessModel="marketplacebids"
                             deleteId={bid._id}
                             openAlert={action === "delete"}
                             name={bid.name}
@@ -219,7 +219,7 @@ function BidCard({
                     )}
                     {action === "restore" && (
                         <RestoreAction
-                            accessModel="bids"
+                            accessModel="marketplacebids"
                             deleteId={bid._id}
                             openAlert={action === "restore"}
                             name={bid.name}

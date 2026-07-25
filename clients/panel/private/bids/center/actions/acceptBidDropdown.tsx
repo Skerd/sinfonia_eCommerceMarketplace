@@ -15,7 +15,7 @@ type AcceptBidDropdownProps = WithLanguageType & {
 function AcceptBidDropdown({bid, onAction, resolveLanguageKey}: AcceptBidDropdownProps) {
     const actionKey = "accept";
     const shortcut = "1";
-    const {write} = useAccess("bids");
+    const {write} = useAccess("marketplacebids");
 
     const canAccept = bid.status === "pending" && !!write;
 

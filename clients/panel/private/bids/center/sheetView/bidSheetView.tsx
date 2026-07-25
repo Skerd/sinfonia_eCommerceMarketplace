@@ -37,8 +37,8 @@ function BidSheetView({
 }: BidSheetViewOwnProps & WithLanguageType) {
     const [sheetData, setSheetData] = useState<Record<string, unknown>>(bidProp || {_id: fetchId});
     const [action, setAction] = useState("");
-    const access = useAccess("bids");
-    const viewConfig = useViewConfig("bids", "sheet");
+    const access = useAccess("marketplacebids");
+    const viewConfig = useViewConfig("marketplacebids", "sheet");
 
     useEffect(() => {
         if (!bidProp) return;

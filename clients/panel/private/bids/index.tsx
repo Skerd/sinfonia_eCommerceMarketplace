@@ -19,9 +19,9 @@ function AllBids({resolveLanguageKey}: WithLanguageType) {
     return (
         <EntityListPage<Bid>
             apiUrl="/api/eCommerceMarketplace/bid"
-            collectionName="bids"
-            accessModel="bids"
-            tableConfigKey="bids"
+            collectionName="marketplacebids"
+            accessModel="marketplacebids"
+            tableConfigKey="marketplacebids"
             createPath="/eCommerce/bids/create"
             createIcon={<IconPlus />}
             createLanguageKey="createBid"

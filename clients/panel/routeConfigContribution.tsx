@@ -30,6 +30,9 @@ import AllListingPackages from "@eCommerceMarketplaceModule/clients/panel/privat
 import CreateListingPackage from "@eCommerceMarketplaceModule/clients/panel/private/listingPackages/createListingPackage.tsx";
 import EditListingPackage from "@eCommerceMarketplaceModule/clients/panel/private/listingPackages/editListingPackage.tsx";
 import MarketplaceSystemMap from "@eCommerceMarketplaceModule/clients/panel/private/systemMap";
+import AllListingCategories from "@eCommerceMarketplaceModule/clients/panel/private/listingCategories";
+import CreateListingCategory from "@eCommerceMarketplaceModule/clients/panel/private/listingCategories/createCategory.tsx";
+import EditListingCategory from "@eCommerceMarketplaceModule/clients/panel/private/listingCategories/editCategory.tsx";
 import type {RouteConfigArgs, RouteConfigContribution} from "@coreModule/clients/panel/moduleContributions/routeConfigContribution.types.ts";
 
 function safeDecode(value: string | null): string | undefined {
@@ -64,6 +67,13 @@ const eCommerceMarketplaceRouteConfigContribution: RouteConfigContribution = {
 
         if (resource === "marketplacesystemmap") {
             return <MarketplaceSystemMap />;
+        }
+        if (resource === "listingcategories") {
+            const categoryId = searchParams.get("categoryId") || undefined;
+            const categoryName = safeDecode(searchParams.get("categoryName")) || undefined;
+            if (action === "create") return <CreateListingCategory />;
+            if (action === "edit" && categoryId) return <EditListingCategory entityId={categoryId} entityName={categoryName} />;
+            return <AllListingCategories />;
         }
         if (resource === "listings") {
             if (action === "create") return <CreateListing />;
