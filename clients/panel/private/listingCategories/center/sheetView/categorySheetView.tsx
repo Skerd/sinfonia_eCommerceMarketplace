@@ -8,7 +8,7 @@ import type {DeleteResponse} from "armonia/src/modules/core/types/shared.types.t
 import {useViewConfig} from "@coreModule/helpers/hooks/useViewConfig.ts";
 import SheetViewRenderer from "@coreModule/components/viewEngine/SheetViewRenderer.tsx";
 
-const LIST_BASE = "/eCommerce/listingcategories";
+const LIST_BASE = "/tenancy/systemSettings/listingcategories";
 
 export type ListingCategorySheetViewOwnProps = {
     open: boolean;

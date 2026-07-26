@@ -49,5 +49,15 @@
     "listingCategories": {
       "title": "Listing Categories"
     }
+  },
+  "tenancy": {
+    "systemSettings": {
+      "eCommerceMarketplace": {
+        "title": "eCommerce Marketplace"
+      },
+      "listingCategories": {
+        "title": "Listing Categories"
+      }
+    }
   }
 }

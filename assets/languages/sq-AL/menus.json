@@ -49,5 +49,15 @@
     "listingCategories": {
       "title": "Kategoritë e listimeve"
     }
+  },
+  "tenancy": {
+    "systemSettings": {
+      "eCommerceMarketplace": {
+        "title": "Tregu i shërbimeve"
+      },
+      "listingCategories": {
+        "title": "Kategoritë e listimeve"
+      }
+    }
   }
 }

@@ -13,11 +13,15 @@ const ListingPackageSheetViewLazy = lazy(() => import("@eCommerceMarketplaceModu
 const BookingSheetViewLazy = lazy(() => import("@eCommerceMarketplaceModule/clients/panel/private/bookings/center/sheetView/bookingSheetView.tsx"));
 const ProviderProfileSheetViewLazy = lazy(() => import("@eCommerceMarketplaceModule/clients/panel/private/providerProfile/center/sheetView/providerProfileSheetView.tsx"));
 const ProviderAvailabilitySheetViewLazy = lazy(() => import("@eCommerceMarketplaceModule/clients/panel/private/providerAvailability/center/sheetView/providerAvailabilitySheetView.tsx"));
+const ListingCategorySheetViewLazy = lazy(
+    () => import("@eCommerceMarketplaceModule/clients/panel/private/listingCategories/center/sheetView/categorySheetView.tsx"),
+);
 
 const eCommerceMarketplaceWidgetContribution: WidgetContribution = {
     id: "eCommerceMarketplace",
     order: 40,
     widgets: {
+        "#ListingCategorySheetView": ListingCategorySheetViewLazy,
         "#ListingSheetView": ListingSheetViewLazy,
         "#TaskRequestSheetView": TaskRequestSheetViewLazy,
         "#OrderSheetView": OrderSheetViewLazy,

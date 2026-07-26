@@ -17,7 +17,7 @@ import ActionMenu from "@coreModule/components/custom/actions/menu/actionMenu.ts
 import DeleteAction from "@coreModule/components/custom/actions/deleteAction.tsx";
 import RestoreAction from "@coreModule/components/custom/actions/restoreAction.tsx";
 
-const LIST_BASE = "/eCommerce/listingcategories";
+const LIST_BASE = "/tenancy/systemSettings/listingcategories";
 
 function categoryEditPath(category: ListingCategory) {
     const params = new URLSearchParams();
@@ -99,7 +99,7 @@ function AllListingCategories({resolveLanguageKey}: AllListingCategoriesProps) {
                         url="/api/eCommerceMarketplace/listingCategory"
                         listRef={listRef}
                         tableConfigKey="listingcategories"
-                        access={"listingCategories"}
+                        access={"listingcategories"}
                         tableConfigOptions={{
                             filterConfig: {
                                 placeholder: resolveLanguageKey("searchPlaceholder"),
@@ -123,7 +123,7 @@ function AllListingCategories({resolveLanguageKey}: AllListingCategoriesProps) {
                             ),
                             action: (category) => (
                                 <ActionMenu
-                                    accessModel={"listingCategories"}
+                                    accessModel={"listingcategories"}
                                     deletedData={category}
                                     onAction={(a: string) => {
                                         setAction(a);
@@ -153,7 +153,7 @@ function AllListingCategories({resolveLanguageKey}: AllListingCategoriesProps) {
                     )}
                     {action === "delete" && (
                         <DeleteAction
-                            accessModel={"listingCategories"}
+                            accessModel={"listingcategories"}
                             deleteId={sheetCategory._id}
                             openAlert={action === "delete"}
                             name={read?.name && sheetCategory.name}
@@ -168,7 +168,7 @@ function AllListingCategories({resolveLanguageKey}: AllListingCategoriesProps) {
                     )}
                     {action === "restore" && (
                         <RestoreAction
-                            accessModel={"listingCategories"}
+                            accessModel={"listingcategories"}
                             deleteId={sheetCategory._id}
                             openAlert={action === "restore"}
                             name={read?.name && sheetCategory.name}

@@ -48,6 +48,21 @@ const eCommerceMarketplaceRouteConfigContribution: RouteConfigContribution = {
     id: "eCommerceMarketplace",
     order: 45,
     contributeRoutes({menu, subview, segments, searchParams}: RouteConfigArgs) {
+        if (menu === "tenancy" && subview === "systemSettings") {
+            const resource = segments[2];
+            const action = segments[3];
+            if (resource === "listingcategories") {
+                const categoryId = searchParams.get("categoryId") || undefined;
+                const categoryName = safeDecode(searchParams.get("categoryName")) || undefined;
+                if (action === "create") return <CreateListingCategory />;
+                if (action === "edit" && categoryId) {
+                    return <EditListingCategory categoryId={categoryId} categoryName={categoryName} />;
+                }
+                return <AllListingCategories />;
+            }
+            return undefined;
+        }
+
         if (menu !== "eCommerce") {
             return undefined;
         }
@@ -72,7 +87,9 @@ const eCommerceMarketplaceRouteConfigContribution: RouteConfigContribution = {
             const categoryId = searchParams.get("categoryId") || undefined;
             const categoryName = safeDecode(searchParams.get("categoryName")) || undefined;
             if (action === "create") return <CreateListingCategory />;
-            if (action === "edit" && categoryId) return <EditListingCategory entityId={categoryId} entityName={categoryName} />;
+            if (action === "edit" && categoryId) {
+                return <EditListingCategory categoryId={categoryId} categoryName={categoryName} />;
+            }
             return <AllListingCategories />;
         }
         if (resource === "listings") {

@@ -18,7 +18,7 @@ import type {DeletedData} from "armonia/src/modules/core/types/shared.types.ts";
 import RestoreAction from "@coreModule/components/custom/actions/restoreAction.tsx";
 import ActionMenu from "@coreModule/components/custom/actions/menu/actionMenu.tsx";
 
-const LIST_BASE = "/eCommerce/listingcategories";
+const LIST_BASE = "/tenancy/systemSettings/listingcategories";
 
 function categoryEditPath(category: ListingCategory) {
     const params = new URLSearchParams();
@@ -116,7 +116,7 @@ function ListingCategoryCard({
                                 {!hideActions && (
                                     <div className="shrink-0" onClick={(e) => e.stopPropagation()}>
                                         <ActionMenu
-                                            accessModel={"listingCategories"}
+                                            accessModel={"listingcategories"}
                                             deletedData={category}
                                             onAction={(a: string) => setAction(a)}
                                             editPath={categoryEditPath(category)}
@@ -164,7 +164,7 @@ function ListingCategoryCard({
                     )}
                     {action === "delete" && (
                         <DeleteAction
-                            accessModel={"listingCategories"}
+                            accessModel={"listingcategories"}
                             deleteId={category._id}
                             openAlert={action === "delete"}
                             name={read?.name && category.name}
@@ -176,7 +176,7 @@ function ListingCategoryCard({
                     )}
                     {action === "restore" && (
                         <RestoreAction
-                            accessModel={"listingCategories"}
+                            accessModel={"listingcategories"}
                             deleteId={category._id}
                             openAlert={action === "restore"}
                             name={read?.name && category.name}

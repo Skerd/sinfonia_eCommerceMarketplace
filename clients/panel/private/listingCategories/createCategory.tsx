@@ -13,7 +13,7 @@ import FormViewRenderer from "@coreModule/components/viewEngine/FormViewRenderer
 import {createListingCategoryFormSchema} from "armonia/src/modules/eCommerceMarketplace/api/eCommerceMarketplace/private/listingCategory/createListingCategory.form.validator.ts";
 import type {z} from "zod";
 
-const LIST_PATH = "/eCommerce/listingcategories";
+const LIST_PATH = "/tenancy/systemSettings/listingcategories";
 
 type CreateListingCategoryProps = WithLanguageType & WithAxiosType<ListingCategory, CreateListingCategoryFormType> & {};
 
