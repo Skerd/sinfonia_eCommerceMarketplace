@@ -1,4 +1,4 @@
-import type {SystemMapDataset} from "@eCommerceModule/clients/panel/private/systemMap/systemMap.types.ts";
+import type {SystemMapDataset} from "@coreModule/components/custom/systemMap/systemMap.types.ts";
 
 /**
  * Hand-curated System Map for the eCommerceMarketplace module.
@@ -16,7 +16,7 @@ export const MARKETPLACE_SYSTEM_MAP: SystemMapDataset = {
             description: "Shared taxonomy (eCommerce) used by listings and task requests.",
             keyFields: ["name", "slug", "parent", "path"],
             apiPath: "/api/eCommerceMarketplace/listingCategory",
-            panelRoute: "/eCommerce/listingcategories",
+            panelRoute: "/tenancy/systemSettings/listingcategories",
             position: {x: 280, y: 40},
         },
         {
