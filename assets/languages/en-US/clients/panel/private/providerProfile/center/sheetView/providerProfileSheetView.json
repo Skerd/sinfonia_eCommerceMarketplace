@@ -9,8 +9,23 @@
   "bio": "Bio",
   "skills": "Skills",
   "portfolio": "Portfolio",
+  "availability": "Availability",
+  "dayOfWeek": "Day",
+  "startTime": "Start",
+  "endTime": "End",
+  "compactView": "Compact",
+  "cardsView": "Cards",
   "rating": "Rating",
   "ratingCount": "Total ratings",
   "completionRate": "Completion rate",
-  "createdAt": "Created"
+  "createdAt": "Created",
+  "weekday": {
+    "0": "Sunday",
+    "1": "Monday",
+    "2": "Tuesday",
+    "3": "Wednesday",
+    "4": "Thursday",
+    "5": "Friday",
+    "6": "Saturday"
+  }
 }

@@ -24,7 +24,7 @@ function listingPackageEditPath(pkg: ListingPackage) {
     const params = new URLSearchParams();
     params.set("listingPackageId", pkg._id);
     if (pkg.name) params.set("listingPackageName", pkg.name);
-    return `/eCommerce/listingpackages/edit?${params.toString()}`;
+    return `/eCommerceMarketplace/listingpackages/edit?${params.toString()}`;
 }
 
 function ListingPackageSheetView({
@@ -76,6 +76,6 @@ function ListingPackageSheetView({
 }
 
 export default compose(
-    withLanguage("src/modules/eCommerce/clients/panel/private/listingPackages/center/sheetView/listingPackageSheetView.tsx"),
+    withLanguage("src/modules/eCommerceMarketplace/clients/panel/private/listingPackages/center/sheetView/listingPackageSheetView.tsx"),
     withDebug(true, true),
 )(ListingPackageSheetView);

@@ -12,9 +12,8 @@ export default createGenericEditPage<ListingFlag, UpdateListingFlagFormType>({
     schema: updateListingFlagFormSchema,
     buildInitialValues: (data, writeFields) => ({
         _id: data._id,
-        status: writeFields.status ? data.status : "pending",
-        resolution: writeFields.resolution ? (data.resolution ?? "") : undefined,
-        listingAction: writeFields.listingAction ? ((data as any).listingAction ?? "none") : undefined,
+        reason: writeFields.reason ? data.reason : undefined,
+        comment: writeFields.comment ? (data.comment ?? "") : undefined,
     }),
     submitIcon: <Save />,
 });

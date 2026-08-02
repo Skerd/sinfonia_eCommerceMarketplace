@@ -199,6 +199,6 @@ function ChangePromotionLifecycleActionShell({
     return <ChangePromotionLifecycleActionWithAxios {...rest} verb={verb} resolveLanguageKey={boundResolveLanguageKey} />;
 }
 
-export default compose(withLanguage("src/modules/eCommerce/components/custom/promotions/changePromotionLifecycleAction.tsx"))(
+export default compose(withLanguage("src/modules/eCommerceMarketplace/components/custom/promotions/changePromotionLifecycleAction.tsx"))(
     ChangePromotionLifecycleActionShell,
 );

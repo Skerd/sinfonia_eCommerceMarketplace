@@ -24,7 +24,7 @@ function listingAddOnEditPath(addOn: ListingAddOn) {
     const params = new URLSearchParams();
     params.set("listingAddOnId", addOn._id);
     if (addOn.name) params.set("listingAddOnName", addOn.name);
-    return `/eCommerce/listingaddons/edit?${params.toString()}`;
+    return `/eCommerceMarketplace/listingaddons/edit?${params.toString()}`;
 }
 
 function ListingAddOnSheetView({
@@ -76,6 +76,6 @@ function ListingAddOnSheetView({
 }
 
 export default compose(
-    withLanguage("src/modules/eCommerce/clients/panel/private/listingAddOns/center/sheetView/listingAddOnSheetView.tsx"),
+    withLanguage("src/modules/eCommerceMarketplace/clients/panel/private/listingAddOns/center/sheetView/listingAddOnSheetView.tsx"),
     withDebug(true, true),
 )(ListingAddOnSheetView);

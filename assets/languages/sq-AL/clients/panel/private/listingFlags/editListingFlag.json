@@ -1,25 +1,41 @@
 {
   "path": "src/modules/eCommerceMarketplace/clients/panel/private/listingFlags/editListingFlag.tsx",
-  "editTitle": "Shqyrto raportimin",
-  "editDescription": "Përditëso statusin dhe zgjidhjen e këtij raportimi.",
+  "editTitle": "Ndrysho raportimin",
+  "editDescription": "Përditëso arsyen dhe detajet e këtij raportimi.",
   "errorTitle": "Nuk u ngarkua raportimi",
   "errorDescription": "Kontrollo lidhjen ose kthehu te lista dhe provo përsëri.",
   "formHeader": {
-    "title": "Shqyrto raportimin",
-    "description": "Cakto status, zgjidhje dhe veprim ndaj listimit."
+    "title": "Ndrysho raportimin",
+    "description": "Përditëso arsyen dhe detajet shtesë. Listimi nuk mund të ndryshohet."
   },
-  "formButtons": { "cancel": "Anulo", "submit": "Ruaj ndryshimet" },
+  "formButtons": {
+    "cancel": "Anulo",
+    "submit": "Ruaj ndryshimet"
+  },
   "form": {
-    "statusLabel": "Statusi",
-    "resolutionLabel": "Zgjidhja",
-    "resolutionPlaceholder": "Përshkruaj rezultatin...",
-    "listingActionLabel": "Veprimi ndaj listimit",
-    "status_values": { "pending": "Në pritje", "reviewed": "Shqyrtuar", "dismissed": "Hedhur poshtë" },
-    "listingAction_values": { "none": "Pa veprim", "deactivate": "Çaktivizo listimin", "remove": "Hiq listimin" }
+    "reasonLabel": "Arsyeja",
+    "reasonPlaceholder": "Zgjidh arsyen",
+    "commentLabel": "Detaje shtesë",
+    "commentPlaceholder": "Detaje opsionale...",
+    "reason_values": {
+      "inappropriate": "Përmbajtje e papërshtatshme",
+      "spam": "Spam",
+      "misleading": "Mashtruese",
+      "other": "Tjetër"
+    }
   },
   "axios": {
-    "start": { "title": "Duke ruajtur shqyrtimin", "time": 3000 },
-    "success": { "title": "Raportimi u përditësua", "time": 3000 },
-    "error": { "title": "Nuk u përditësua raportimi", "time": 3000 }
+    "start": {
+      "title": "Duke ruajtur raportimin",
+      "time": 3000
+    },
+    "success": {
+      "title": "Raportimi u përditësua",
+      "time": 3000
+    },
+    "error": {
+      "title": "Nuk u përditësua raportimi",
+      "time": 3000
+    }
   }
 }

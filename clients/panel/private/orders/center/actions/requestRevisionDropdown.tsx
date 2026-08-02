@@ -43,6 +43,6 @@ function RequestRevisionDropdown({order, onAction, resolveLanguageKey}: RequestR
 }
 
 export default compose(
-    withLanguage("src/modules/eCommerce/clients/panel/private/orders/center/actions/requestRevisionDropdown.tsx"),
+    withLanguage("src/modules/eCommerceMarketplace/clients/panel/private/orders/center/actions/requestRevisionDropdown.tsx"),
     withDebug(true, true),
 )(RequestRevisionDropdown);

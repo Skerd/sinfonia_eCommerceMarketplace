@@ -26,12 +26,12 @@ function AllReviews({resolveLanguageKey}: WithLanguageType) {
             collectionName="reviews"
             accessModel="reviews"
             tableConfigKey="reviews"
-            createPath="/eCommerce/reviews/create"
+            createPath="/eCommerceMarketplace/reviews/create"
             createIcon={<IconPlus />}
             createLanguageKey="createReview"
             buildEditPath={noopReviewEditPath}
             resolveLanguageKey={resolveLanguageKey}
-            sheetLanguagePath="src/modules/eCommerce/clients/panel/private/reviews/center/sheetView/reviewSheetView.tsx"
+            sheetLanguagePath="src/modules/eCommerceMarketplace/clients/panel/private/reviews/center/sheetView/reviewSheetView.tsx"
             cardViewClassName="grid grid-cols-1 gap-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4"
             rowActionMenu={{hideEdit: true}}
             buildDeleteConfirmLabel={(entity) => reviewRowLabel(entity)}
@@ -61,6 +61,6 @@ function AllReviews({resolveLanguageKey}: WithLanguageType) {
 }
 
 export default compose(
-    withLanguage("src/modules/eCommerce/clients/panel/private/reviews/index.tsx"),
+    withLanguage("src/modules/eCommerceMarketplace/clients/panel/private/reviews/index.tsx"),
     withDebug(true, true),
 )(AllReviews);

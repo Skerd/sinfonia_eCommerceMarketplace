@@ -243,6 +243,6 @@ function DisputeCard({
 }
 
 export default compose(
-    withLanguage("src/modules/eCommerce/clients/panel/private/disputes/center/cardView/disputeCard.tsx"),
+    withLanguage("src/modules/eCommerceMarketplace/clients/panel/private/disputes/center/cardView/disputeCard.tsx"),
     withDebug(true, true),
 )(DisputeCard);

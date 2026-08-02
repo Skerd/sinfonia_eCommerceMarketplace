@@ -212,6 +212,6 @@ function ChangeDisputeLifecycleActionShell({
 }
 
 export default compose(
-    withLanguage("src/modules/eCommerce/components/custom/disputes/changeDisputeLifecycleAction.tsx"),
+    withLanguage("src/modules/eCommerceMarketplace/components/custom/disputes/changeDisputeLifecycleAction.tsx"),
     withDebug(true, true),
 )(ChangeDisputeLifecycleActionShell);

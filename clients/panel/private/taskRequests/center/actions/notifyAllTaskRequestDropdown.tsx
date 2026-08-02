@@ -32,6 +32,6 @@ function NotifyAllTaskRequestDropdown({onAction, resolveLanguageKey}: NotifyAllT
 }
 
 export default compose(
-    withLanguage("src/modules/eCommerce/clients/panel/private/taskRequests/center/actions/notifyAllTaskRequestDropdown.tsx"),
+    withLanguage("src/modules/eCommerceMarketplace/clients/panel/private/taskRequests/center/actions/notifyAllTaskRequestDropdown.tsx"),
     withDebug(true, true),
 )(NotifyAllTaskRequestDropdown);

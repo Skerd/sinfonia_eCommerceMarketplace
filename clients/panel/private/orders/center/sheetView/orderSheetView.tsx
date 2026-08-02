@@ -39,7 +39,7 @@ export type OrderSheetViewOwnProps = {
 function orderEditPath(row: Order) {
     const params = new URLSearchParams();
     params.set("orderId", row._id);
-    return `/eCommerce/orders/edit?${params.toString()}`;
+    return `/eCommerceMarketplace/orders/edit?${params.toString()}`;
 }
 
 function OrderSheetView({
@@ -187,6 +187,6 @@ function OrderSheetView({
 }
 
 export default compose(
-    withLanguage("src/modules/eCommerce/clients/panel/private/orders/center/sheetView/orderSheetView.tsx"),
+    withLanguage("src/modules/eCommerceMarketplace/clients/panel/private/orders/center/sheetView/orderSheetView.tsx"),
     withDebug(true, true),
 )(OrderSheetView);

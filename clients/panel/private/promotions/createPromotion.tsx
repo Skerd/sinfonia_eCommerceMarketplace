@@ -4,12 +4,12 @@ import {createPromotionFormSchema} from "armonia/src/modules/eCommerceMarketplac
 import type {CreatePromotionFormType} from "armonia/src/modules/eCommerceMarketplace/api/eCommerceMarketplace/private/promotion/promotion.schema-def.ts";
 
 export default createGenericCreatePage<CreatePromotionFormType>({
-    languagePath: "src/modules/eCommerce/clients/panel/private/promotions/createPromotion.tsx",
+    languagePath: "src/modules/eCommerceMarketplace/clients/panel/private/promotions/createPromotion.tsx",
     collectionName: "promotions",
     accessModel: "promotions",
     apiUrl: "/api/eCommerceMarketplace/promotion",
     schema: createPromotionFormSchema,
     defaultValues: {listing: "", type: "featured", startAt: "", endAt: ""},
     submitIcon: <IconPlus />,
-    successPath: "/eCommerce/promotions",
+    successPath: "/eCommerceMarketplace/promotions",
 });

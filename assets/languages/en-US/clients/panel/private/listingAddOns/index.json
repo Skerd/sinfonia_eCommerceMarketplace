@@ -3,14 +3,18 @@
   "title": "Listing Add-Ons",
   "description": "Manage optional add-ons that providers attach to their listings.",
   "createListingAddOn": "Create add-on",
+  "searchPlaceholder": "Search or add filters...",
   "fields": {
     "name": "Name",
     "listing": "Listing",
-    "priceAmount": "Price",
+    "price": {
+      "amount": "Price",
+      "currency": "Currency"
+    },
     "deliveryDays": "Delivery days",
+    "company": "Company",
+    "createdBy": "Created by",
     "createdAt": "Created",
-    "deletedAt": "Deleted",
-    "deletedBy": "Deleted by"
-  },
-  "searchPlaceholder": "Search or add filters..."
+    "updatedAt": "Updated"
+  }
 }

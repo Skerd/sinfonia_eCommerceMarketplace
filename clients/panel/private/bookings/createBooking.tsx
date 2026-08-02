@@ -9,6 +9,6 @@ export default createGenericCreatePage<CreateBookingFormType>({
     accessModel: "bookings",
     apiUrl: "/api/eCommerceMarketplace/booking",
     schema: createBookingFormSchema,
-    defaultValues: { orderId: "", startAt: "", endAt: "", timezone: "UTC" },
+    defaultValues: { order: "", startAt: "", endAt: "", timezone: "UTC" },
     submitIcon: <IconPlus />,
 });

@@ -3,15 +3,22 @@
   "title": "Paketat e Listimeve",
   "description": "Menaxhoni paketat e shërbimeve që ofruesit ofrojnë për listimet e tyre.",
   "createListingPackage": "Krijo paketë",
+  "searchPlaceholder": "Kërko ose shto filtra...",
   "fields": {
     "name": "Emri",
     "listing": "Listimi",
-    "priceAmount": "Çmimi",
+    "description": "Përshkrimi",
+    "price": {
+      "amount": "Çmimi",
+      "currency": "Valuta"
+    },
     "deliveryDays": "Ditë dorëzimi",
     "order": "Rendi i shfaqjes",
+    "company": "Kompania",
+    "createdBy": "Krijuar nga",
     "createdAt": "Krijuar",
+    "updatedAt": "Përditësuar",
     "deletedAt": "Fshirë",
     "deletedBy": "Fshirë nga"
-  },
-  "searchPlaceholder": "Kërko ose shto filtra..."
+  }
 }

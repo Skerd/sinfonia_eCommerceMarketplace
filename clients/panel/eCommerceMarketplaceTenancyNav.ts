@@ -15,7 +15,7 @@ export function buildECommerceMarketplaceTenancySettingsSubCollapsible(
         atLeastOnePermission: true,
         items: [
             {
-                title: resolveLanguageKey("menus.tenancy.systemSettings.listingCategories.title"),
+                title: resolveLanguageKey("menus.tenancy.systemSettings.listingcategories.title"),
                 url: "/tenancy/systemSettings/listingcategories",
                 icon: IconCategory2,
                 permissions: [],

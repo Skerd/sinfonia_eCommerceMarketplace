@@ -169,6 +169,6 @@ function OrderExtendActionShell({resolveLanguageKey, ...rest}: OrderExtendAction
 }
 
 export default compose(
-    withLanguage("src/modules/eCommerce/components/custom/orders/orderExtendAction.tsx"),
+    withLanguage("src/modules/eCommerceMarketplace/components/custom/orders/orderExtendAction.tsx"),
     withDebug(true, true),
 )(OrderExtendActionShell);

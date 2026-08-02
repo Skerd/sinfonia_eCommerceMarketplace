@@ -6,8 +6,8 @@
   },
   "formButtons": { "cancel": "Cancel", "submit": "Create booking" },
   "form": {
-    "orderIdLabel": "Order",
-    "orderIdPlaceholder": "Select order",
+    "orderLabel": "Order",
+    "orderPlaceholder": "Select order",
     "startAtLabel": "Start time",
     "startAtPlaceholder": "yyyy-MM-ddTHH:mm",
     "endAtLabel": "End time",

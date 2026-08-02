@@ -22,7 +22,7 @@ function AllBids({resolveLanguageKey}: WithLanguageType) {
             collectionName="marketplacebids"
             accessModel="marketplacebids"
             tableConfigKey="marketplacebids"
-            createPath="/eCommerce/bids/create"
+            createPath="/eCommerceMarketplace/bids/create"
             createIcon={<IconPlus />}
             createLanguageKey="createBid"
             buildEditPath={() => ""}
@@ -76,6 +76,6 @@ function AllBids({resolveLanguageKey}: WithLanguageType) {
 }
 
 export default compose(
-    withLanguage("src/modules/eCommerce/clients/panel/private/bids/index.tsx"),
+    withLanguage("src/modules/eCommerceMarketplace/clients/panel/private/bids/index.tsx"),
     withDebug(true, true),
 )(AllBids);

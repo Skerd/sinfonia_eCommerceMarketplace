@@ -42,6 +42,6 @@ function RaiseDisputeDropdown({order, onAction, resolveLanguageKey}: Props) {
 }
 
 export default compose(
-    withLanguage("src/modules/eCommerce/clients/panel/private/orders/center/actions/raiseDisputeDropdown.tsx"),
+    withLanguage("src/modules/eCommerceMarketplace/clients/panel/private/orders/center/actions/raiseDisputeDropdown.tsx"),
     withDebug(true, true),
 )(RaiseDisputeDropdown);

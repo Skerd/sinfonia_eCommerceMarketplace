@@ -4,7 +4,10 @@
     "title": "Create listing add-on",
     "description": "Add an optional service or upgrade that customers can purchase alongside a listing."
   },
-  "formButtons": { "cancel": "Cancel", "submit": "Create add-on" },
+  "formButtons": {
+    "cancel": "Cancel",
+    "submit": "Create add-on"
+  },
   "form": {
     "listingIdLabel": "Listing",
     "listingIdPlaceholder": "Select listing",
@@ -13,12 +16,22 @@
     "priceAmountLabel": "Price",
     "priceAmountPlaceholder": "0.00",
     "currencyLabel": "Currency",
+    "currencyPlaceholder": "Select currency",
     "deliveryDaysLabel": "Delivery days",
     "deliveryDaysPlaceholder": "e.g. 2"
   },
   "axios": {
-    "start": { "title": "Creating add-on", "time": 3000 },
-    "success": { "title": "Add-on created", "time": 3000 },
-    "error": { "title": "Could not create add-on", "time": 3000 }
+    "start": {
+      "title": "Creating add-on",
+      "time": 3000
+    },
+    "success": {
+      "title": "Add-on created",
+      "time": 3000
+    },
+    "error": {
+      "title": "Could not create add-on",
+      "time": 3000
+    }
   }
 }

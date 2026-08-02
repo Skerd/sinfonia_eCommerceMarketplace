@@ -41,6 +41,6 @@ function CloseTaskRequestDropdown({entity, onAction, resolveLanguageKey}: CloseT
 }
 
 export default compose(
-    withLanguage("src/modules/eCommerce/clients/panel/private/taskRequests/center/actions/closeTaskRequestDropdown.tsx"),
+    withLanguage("src/modules/eCommerceMarketplace/clients/panel/private/taskRequests/center/actions/closeTaskRequestDropdown.tsx"),
     withDebug(true, true),
 )(CloseTaskRequestDropdown);

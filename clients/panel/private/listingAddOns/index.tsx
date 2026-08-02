@@ -10,7 +10,7 @@ import ListingAddOnCard from "./center/cardView/listingAddOnCard.tsx";
 function buildListingAddOnEditPath(addOn: ListingAddOn) {
     const params = new URLSearchParams();
     params.set("listingAddOnId", addOn._id);
-    return `/eCommerce/listingaddons/edit?${params.toString()}`;
+    return `/eCommerceMarketplace/listingaddons/edit?${params.toString()}`;
 }
 
 function AllListingAddOns({ resolveLanguageKey }: WithLanguageType) {
@@ -20,7 +20,7 @@ function AllListingAddOns({ resolveLanguageKey }: WithLanguageType) {
             collectionName="listingAddOns"
             accessModel="listingAddOns"
             tableConfigKey="listingaddons"
-            createPath="/eCommerce/listingaddons/create"
+            createPath="/eCommerceMarketplace/listingaddons/create"
             createIcon={<IconPlus />}
             createLanguageKey="createListingAddOn"
             buildEditPath={buildListingAddOnEditPath}

@@ -150,6 +150,6 @@ function BidActionConfirmActionShell({resolveLanguageKey, actionKey, ...rest}: B
 }
 
 export default compose(
-    withLanguage("src/modules/eCommerce/components/custom/bids/bidActionConfirmAction.tsx"),
+    withLanguage("src/modules/eCommerceMarketplace/components/custom/bids/bidActionConfirmAction.tsx"),
     withDebug(true, true),
 )(BidActionConfirmActionShell);

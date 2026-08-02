@@ -10,7 +10,7 @@ function nonEmptyFaqs(rows: {question?: string; answer?: string}[] | undefined,)
 }
 
 export default createGenericCreatePage<CreateListingFormType>({
-    languagePath: "src/modules/eCommerce/clients/panel/private/listings/createListing.tsx",
+    languagePath: "src/modules/eCommerceMarketplace/clients/panel/private/listings/createListing.tsx",
     collectionName: "listings",
     accessModel: "listings",
     apiUrl: "/api/eCommerceMarketplace/listing",
@@ -24,7 +24,7 @@ export default createGenericCreatePage<CreateListingFormType>({
         address: {},
     } as unknown as CreateListingFormType,
     buildFormExtras: () => ({enableLocalFileMultipart: true}),
-    successPath: "/eCommerce/listings",
+    successPath: "/eCommerceMarketplace/listings",
     mapSubmitPayload: (data) => {
         const postBody: Record<string, unknown> = {
             title: data.title,

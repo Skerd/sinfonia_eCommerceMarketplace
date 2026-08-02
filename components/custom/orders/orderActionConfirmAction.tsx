@@ -172,6 +172,6 @@ function OrderActionConfirmActionShell({resolveLanguageKey, actionKey, ...rest}:
 }
 
 export default compose(
-    withLanguage("src/modules/eCommerce/components/custom/orders/orderActionConfirmAction.tsx"),
+    withLanguage("src/modules/eCommerceMarketplace/components/custom/orders/orderActionConfirmAction.tsx"),
     withDebug(true, true),
 )(OrderActionConfirmActionShell);

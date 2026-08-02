@@ -14,7 +14,7 @@ export const MARKETPLACE_SYSTEM_MAP: SystemMapDataset = {
             cluster: "shared",
             module: "shared",
             description: "Shared taxonomy (eCommerce) used by listings and task requests.",
-            keyFields: ["name", "slug", "parent", "path"],
+            keyFields: ["name", "slug", "parentListingCategory", "path"],
             apiPath: "/api/eCommerceMarketplace/listingCategory",
             panelRoute: "/tenancy/systemSettings/listingcategories",
             position: {x: 280, y: 40},
@@ -25,23 +25,12 @@ export const MARKETPLACE_SYSTEM_MAP: SystemMapDataset = {
             cluster: "marketplace",
             module: "eCommerceMarketplace",
             description:
-                "Seller/provider identity with skills, portfolio, and Stripe Connect account flags.",
-            keyFields: ["user", "company", "skills", "bio", "stripeAccountId", "chargesEnabled"],
+                "Seller/provider identity with skills, portfolio, weekly availability windows, and Stripe Connect account flags.",
+            keyFields: ["user", "company", "skills", "bio", "availability", "stripeAccountId", "chargesEnabled"],
             apiPath: "/api/eCommerceMarketplace/providerProfile",
-            panelRoute: "/eCommerce/providerprofile",
+            panelRoute: "/eCommerceMarketplace/providerprofile",
             actions: ["createAccountLink", "refreshAccountStatus"],
             position: {x: 40, y: 40},
-        },
-        {
-            id: "ProviderAvailability",
-            label: "ProviderAvailability",
-            cluster: "marketplace",
-            module: "eCommerceMarketplace",
-            description: "Schedule windows when a provider can take bookings.",
-            keyFields: ["provider", "windows", "timezone"],
-            apiPath: "/api/eCommerceMarketplace/providerAvailability",
-            panelRoute: "/eCommerce/provideravailability",
-            position: {x: 40, y: 180},
         },
         {
             id: "Listing",
@@ -51,7 +40,7 @@ export const MARKETPLACE_SYSTEM_MAP: SystemMapDataset = {
             description: "Service or offering published by a provider under a category.",
             keyFields: ["title", "category", "provider", "price", "pricingType", "deliveryDays", "status"],
             apiPath: "/api/eCommerceMarketplace/listing",
-            panelRoute: "/eCommerce/listings",
+            panelRoute: "/eCommerceMarketplace/listings",
             position: {x: 280, y: 180},
         },
         {
@@ -62,7 +51,7 @@ export const MARKETPLACE_SYSTEM_MAP: SystemMapDataset = {
             description: "Tiered package (Basic / Standard / Premium) for a listing.",
             keyFields: ["listing", "name", "price", "deliveryDays"],
             apiPath: "/api/eCommerceMarketplace/listingPackage",
-            panelRoute: "/eCommerce/listingpackages",
+            panelRoute: "/eCommerceMarketplace/listingpackages",
             position: {x: 520, y: 100},
         },
         {
@@ -73,7 +62,7 @@ export const MARKETPLACE_SYSTEM_MAP: SystemMapDataset = {
             description: "Optional paid extras attachable to a listing purchase.",
             keyFields: ["listing", "title", "price", "deliveryDays"],
             apiPath: "/api/eCommerceMarketplace/listingAddOn",
-            panelRoute: "/eCommerce/listingaddons",
+            panelRoute: "/eCommerceMarketplace/listingaddons",
             position: {x: 520, y: 240},
         },
         {
@@ -84,7 +73,7 @@ export const MARKETPLACE_SYSTEM_MAP: SystemMapDataset = {
             description: "Moderation report against a listing.",
             keyFields: ["listing", "reason", "status"],
             apiPath: "/api/eCommerceMarketplace/listingFlag",
-            panelRoute: "/eCommerce/listingflags",
+            panelRoute: "/eCommerceMarketplace/listingflags",
             position: {x: 520, y: 380},
         },
         {
@@ -95,7 +84,7 @@ export const MARKETPLACE_SYSTEM_MAP: SystemMapDataset = {
             description: "Featured / sponsored listing promotion lifecycle.",
             keyFields: ["listings", "type", "status", "startsAt", "endsAt"],
             apiPath: "/api/eCommerceMarketplace/promotion",
-            panelRoute: "/eCommerce/promotions",
+            panelRoute: "/eCommerceMarketplace/promotions",
             position: {x: 520, y: 520},
         },
         {
@@ -106,7 +95,7 @@ export const MARKETPLACE_SYSTEM_MAP: SystemMapDataset = {
             description: "Buyer posts a job with budget; providers bid; winner becomes an order.",
             keyFields: ["requester", "title", "budgetMin", "budgetMax", "category", "status"],
             apiPath: "/api/eCommerceMarketplace/taskRequest",
-            panelRoute: "/eCommerce/taskrequests",
+            panelRoute: "/eCommerceMarketplace/taskrequests",
             actions: ["close", "reopen", "notifyAll"],
             position: {x: 40, y: 360},
         },
@@ -118,7 +107,7 @@ export const MARKETPLACE_SYSTEM_MAP: SystemMapDataset = {
             description: "Provider proposal on a task request.",
             keyFields: ["taskRequest", "bidder", "amount", "proposal", "deliveryDays", "status"],
             apiPath: "/api/eCommerceMarketplace/bid",
-            panelRoute: "/eCommerce/bids",
+            panelRoute: "/eCommerceMarketplace/bids",
             position: {x: 40, y: 500},
         },
         {
@@ -130,7 +119,7 @@ export const MARKETPLACE_SYSTEM_MAP: SystemMapDataset = {
                 "Hub for marketplace work — from listing purchase or accepted bid; drives escrow, delivery, disputes.",
             keyFields: ["listing?", "taskRequest?", "bid?", "customer", "provider", "amount", "status"],
             apiPath: "/api/eCommerceMarketplace/order",
-            panelRoute: "/eCommerce/orders",
+            panelRoute: "/eCommerceMarketplace/orders",
             actions: [
                 "createFromListing",
                 "accept",
@@ -152,7 +141,7 @@ export const MARKETPLACE_SYSTEM_MAP: SystemMapDataset = {
             description: "Time-boxed appointment linked to a marketplace order.",
             keyFields: ["order", "provider", "startAt", "endAt", "timezone"],
             apiPath: "/api/eCommerceMarketplace/booking",
-            panelRoute: "/eCommerce/bookings",
+            panelRoute: "/eCommerceMarketplace/bookings",
             position: {x: 40, y: 660},
         },
         {
@@ -163,7 +152,7 @@ export const MARKETPLACE_SYSTEM_MAP: SystemMapDataset = {
             description: "Conflict on a marketplace order; can trigger escrow refund.",
             keyFields: ["order", "initiator", "reason", "status", "resolution"],
             apiPath: "/api/eCommerceMarketplace/dispute",
-            panelRoute: "/eCommerce/disputes",
+            panelRoute: "/eCommerceMarketplace/disputes",
             position: {x: 40, y: 800},
         },
         {
@@ -174,7 +163,7 @@ export const MARKETPLACE_SYSTEM_MAP: SystemMapDataset = {
             description: "Rating for a completed marketplace order / listing.",
             keyFields: ["order", "listing", "rating", "body"],
             apiPath: "/api/eCommerceMarketplace/review",
-            panelRoute: "/eCommerce/reviews",
+            panelRoute: "/eCommerceMarketplace/reviews",
             position: {x: 280, y: 800},
         },
         {
@@ -183,7 +172,7 @@ export const MARKETPLACE_SYSTEM_MAP: SystemMapDataset = {
             cluster: "escrow",
             module: "eCommerce",
             description:
-                "Bridge into eCommerce: hold → release+10% fee | refund. Schema and APIs live in eCommerce.",
+                "Bridge into finance: hold → release+10% fee | refund. EscrowTransaction APIs live in finance.",
             keyFields: ["order", "type", "amount", "gatewayIds", "status"],
             apiPath: "/api/finance/escrowTransaction",
             panelRoute: "/finance/escrowdashboard",
@@ -228,7 +217,6 @@ export const MARKETPLACE_SYSTEM_MAP: SystemMapDataset = {
         {id: "e-addon-list", source: "ListingAddOn", target: "Listing", label: "extra on"},
         {id: "e-flag-list", source: "ListingFlag", target: "Listing", label: "flags"},
         {id: "e-promo-list", source: "Promotion", target: "Listing", label: "features"},
-        {id: "e-avail-prov", source: "ProviderAvailability", target: "ProviderProfile", label: "schedule"},
         {id: "e-task-cat", source: "TaskRequest", target: "Category", label: "category"},
         {id: "e-bid-task", source: "Bid", target: "TaskRequest", label: "on"},
         {id: "e-mo-list", source: "MarketplaceOrder", target: "Listing", label: "from listing"},
@@ -410,7 +398,7 @@ export const MARKETPLACE_SYSTEM_MAP: SystemMapDataset = {
             offers: [
                 {
                     title: "Provider onboarding",
-                    description: "ProviderProfile + availability + Stripe Connect account links.",
+                    description: "ProviderProfile with embedded weekly availability + Stripe Connect account links.",
                 },
                 {
                     title: "Listings",
@@ -445,7 +433,7 @@ export const MARKETPLACE_SYSTEM_MAP: SystemMapDataset = {
             id: "shared",
             title: "Escrow bridge (eCommerce)",
             summary:
-                "Marketplace Order depends on eCommerce EscrowTransaction, OrderDelivery, OrderMilestone, and OrderRevision. Category taxonomy is also shared.",
+                "Marketplace Order depends on finance EscrowTransaction plus OrderDelivery, OrderMilestone, and OrderRevision. ListingCategory taxonomy is marketplace-owned.",
             offers: [
                 {
                     title: "Shared Category",

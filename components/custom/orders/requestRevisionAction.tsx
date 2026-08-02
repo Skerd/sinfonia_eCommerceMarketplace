@@ -164,6 +164,6 @@ function RequestRevisionActionShell({resolveLanguageKey, ...rest}: RequestRevisi
 }
 
 export default compose(
-    withLanguage("src/modules/eCommerce/components/custom/orders/requestRevisionAction.tsx"),
+    withLanguage("src/modules/eCommerceMarketplace/components/custom/orders/requestRevisionAction.tsx"),
     withDebug(true, true),
 )(RequestRevisionActionShell);

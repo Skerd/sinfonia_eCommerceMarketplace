@@ -251,6 +251,6 @@ function BidCard({
 }
 
 export default compose(
-    withLanguage("src/modules/eCommerce/clients/panel/private/bids/center/cardView/bidCard.tsx"),
+    withLanguage("src/modules/eCommerceMarketplace/clients/panel/private/bids/center/cardView/bidCard.tsx"),
     withDebug(true, true),
 )(BidCard);

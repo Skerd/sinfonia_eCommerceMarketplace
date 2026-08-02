@@ -159,6 +159,6 @@ function SubmitOrderDeliveryActionShell({resolveLanguageKey, ...rest}: SubmitOrd
 }
 
 export default compose(
-    withLanguage("src/modules/eCommerce/components/custom/orders/submitOrderDeliveryAction.tsx"),
+    withLanguage("src/modules/eCommerceMarketplace/components/custom/orders/submitOrderDeliveryAction.tsx"),
     withDebug(true, true),
 )(SubmitOrderDeliveryActionShell);

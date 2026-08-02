@@ -66,6 +66,6 @@ function BookingSheetView({
 }
 
 export default compose(
-    withLanguage("src/modules/eCommerce/clients/panel/private/bookings/center/sheetView/bookingSheetView.tsx"),
+    withLanguage("src/modules/eCommerceMarketplace/clients/panel/private/bookings/center/sheetView/bookingSheetView.tsx"),
     withDebug(true, true),
 )(BookingSheetView);

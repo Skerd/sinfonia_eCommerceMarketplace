@@ -14,7 +14,7 @@ function AllBookings({ resolveLanguageKey }: WithLanguageType) {
             collectionName="bookings"
             accessModel="bookings"
             tableConfigKey="bookings"
-            createPath="/eCommerce/bookings/create"
+            createPath="/eCommerceMarketplace/bookings/create"
             createIcon={<IconPlus />}
             createLanguageKey="createBooking"
             buildEditPath={() => ""}

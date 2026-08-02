@@ -30,6 +30,6 @@ function StartReviewDisputeDropdown({dispute, onAction, resolveLanguageKey}: Pro
 }
 
 export default compose(
-    withLanguage("src/modules/eCommerce/clients/panel/private/disputes/center/actions/startReviewDisputeDropdown.tsx"),
+    withLanguage("src/modules/eCommerceMarketplace/clients/panel/private/disputes/center/actions/startReviewDisputeDropdown.tsx"),
     withDebug(true, true),
 )(StartReviewDisputeDropdown);

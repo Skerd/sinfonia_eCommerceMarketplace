@@ -33,6 +33,6 @@ function CreateOrderFromListingDropdown({listing, onAction, resolveLanguageKey}:
 }
 
 export default compose(
-    withLanguage("src/modules/eCommerce/clients/panel/private/listings/center/actions/createOrderFromListingDropdown.tsx"),
+    withLanguage("src/modules/eCommerceMarketplace/clients/panel/private/listings/center/actions/createOrderFromListingDropdown.tsx"),
     withDebug(true, true),
 )(CreateOrderFromListingDropdown);

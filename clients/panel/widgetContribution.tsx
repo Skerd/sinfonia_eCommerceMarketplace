@@ -12,7 +12,6 @@ const ListingPackageCardLazy = lazy(() => import("@eCommerceMarketplaceModule/cl
 const ListingPackageSheetViewLazy = lazy(() => import("@eCommerceMarketplaceModule/clients/panel/private/listingPackages/center/sheetView/listingPackageSheetView.tsx"));
 const BookingSheetViewLazy = lazy(() => import("@eCommerceMarketplaceModule/clients/panel/private/bookings/center/sheetView/bookingSheetView.tsx"));
 const ProviderProfileSheetViewLazy = lazy(() => import("@eCommerceMarketplaceModule/clients/panel/private/providerProfile/center/sheetView/providerProfileSheetView.tsx"));
-const ProviderAvailabilitySheetViewLazy = lazy(() => import("@eCommerceMarketplaceModule/clients/panel/private/providerAvailability/center/sheetView/providerAvailabilitySheetView.tsx"));
 const ListingCategorySheetViewLazy = lazy(
     () => import("@eCommerceMarketplaceModule/clients/panel/private/listingCategories/center/sheetView/categorySheetView.tsx"),
 );
@@ -33,7 +32,6 @@ const eCommerceMarketplaceWidgetContribution: WidgetContribution = {
         "#ListingPackageSheetView": ListingPackageSheetViewLazy,
         "#BookingSheetView": BookingSheetViewLazy,
         "#ProviderProfileSheetView": ProviderProfileSheetViewLazy,
-        "#ProviderAvailabilitySheetView": ProviderAvailabilitySheetViewLazy,
     },
     referencesDefaultItemProps: {
         "#PromotionCard": "promotion",

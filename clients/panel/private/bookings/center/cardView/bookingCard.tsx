@@ -58,7 +58,9 @@ function BookingCard({
     if (hideAfterDeletion || !restore) return <></>;
     if (!read || !Object.keys(read).length) return <HiddenElement />;
 
-    const providerName = booking.provider?.fullName || booking.provider?.name;
+    const providerName = booking.provider
+        ? [booking.provider.name, booking.provider.surname].filter(Boolean).join(" ")
+        : undefined;
 
     return (
         <>
@@ -143,6 +145,6 @@ function BookingCard({
 }
 
 export default compose(
-    withLanguage("src/modules/eCommerce/clients/panel/private/bookings/center/cardView/bookingCard.tsx"),
+    withLanguage("src/modules/eCommerceMarketplace/clients/panel/private/bookings/center/cardView/bookingCard.tsx"),
     withDebug(true, true),
 )(BookingCard);

@@ -10,11 +10,19 @@ export default createGenericEditPage<ProviderProfile, EditProviderProfileFormTyp
     accessModel: "providerProfiles",
     apiUrl: "/api/eCommerceMarketplace/providerProfile",
     schema: editProviderProfileFormSchema,
-    buildInitialValues: (data, writeFields) => ({
+    buildInitialValues: (data, writeFields): Partial<EditProviderProfileFormType> => ({
         _id: data._id,
         skills: writeFields.skills ? (data.skills ?? []) : undefined,
         bio: writeFields.bio ? (data.bio ?? "") : undefined,
         portfolio: writeFields.portfolio ? (data.portfolio?.map((m) => m._id) ?? []) : undefined,
+        // Keep dayOfWeek as string so #SimpleSelect option values ("0"…"6") match on edit.
+        availability: writeFields.availability
+            ? (data.availability ?? []).map((slot) => ({
+                  dayOfWeek: String(slot.dayOfWeek) as unknown as number,
+                  startTime: slot.startTime,
+                  endTime: slot.endTime,
+              }))
+            : undefined,
     }),
     submitIcon: <Save />,
 });

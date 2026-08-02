@@ -1,12 +1,13 @@
 {
   "path": "src/modules/eCommerceMarketplace/clients/panel/private/listingCategories/center/sheetView/categorySheetView.tsx",
   "failedTitle": "Nuk u ngarkua kategoria",
-  "failedDescription": "Gabim gjatë ngarkimit. Klikoni për të provuar përsëri.",
-  "failedTooltipDescription": "Klikoni për të rifituar të dhënat.",
+  "failedDescription": "Diçka shkoi keq gjatë ngarkimit të kësaj kategorie. Klikoni për të riprovuar.",
+  "failedTooltipDescription": "Klikoni për të riprovuar marrjen e të dhënave.",
   "categorySubtitle": "Kategori",
-  "overview": "Përmbledhje",
+  "listingCategorySubtitle": "Kategori listimi",
   "name": "Emri",
+  "overview": "Përmbledhje",
   "slug": "Slug",
   "order": "Rendi",
-  "parentCategory": "Kategoria prind"
+  "parentListingCategory": "Kategoria prind"
 }

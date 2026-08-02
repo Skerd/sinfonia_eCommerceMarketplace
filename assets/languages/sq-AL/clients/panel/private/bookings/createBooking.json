@@ -6,8 +6,8 @@
   },
   "formButtons": { "cancel": "Anulo", "submit": "Krijo rezervimin" },
   "form": {
-    "orderIdLabel": "Porosia",
-    "orderIdPlaceholder": "Zgjidh porosinë",
+    "orderLabel": "Porosia",
+    "orderPlaceholder": "Zgjidh porosinë",
     "startAtLabel": "Ora e fillimit",
     "startAtPlaceholder": "yyyy-MM-ddTHH:mm",
     "endAtLabel": "Ora e mbarimit",

@@ -25,7 +25,7 @@ function listingEditPath(listing: Listing) {
     const params = new URLSearchParams();
     params.set("listingId", listing._id);
     if (listing.title) params.set("listingTitle", listing.title);
-    return `/eCommerce/listings/edit?${params.toString()}`;
+    return `/eCommerceMarketplace/listings/edit?${params.toString()}`;
 }
 
 function formatPrice(listing: Listing): string | undefined {
@@ -361,6 +361,6 @@ function ListingCard({
 }
 
 export default compose(
-    withLanguage("src/modules/eCommerce/clients/panel/private/listings/center/cardView/listingCard.tsx"),
+    withLanguage("src/modules/eCommerceMarketplace/clients/panel/private/listings/center/cardView/listingCard.tsx"),
     withDebug(true, true),
 )(ListingCard);

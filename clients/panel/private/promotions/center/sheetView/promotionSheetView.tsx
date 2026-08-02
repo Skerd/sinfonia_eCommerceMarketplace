@@ -135,6 +135,6 @@ function PromotionSheetView({
 }
 
 export default compose(
-    withLanguage("src/modules/eCommerce/clients/panel/private/promotions/center/sheetView/promotionSheetView.tsx"),
+    withLanguage("src/modules/eCommerceMarketplace/clients/panel/private/promotions/center/sheetView/promotionSheetView.tsx"),
     withDebug(true, true),
 )(PromotionSheetView);

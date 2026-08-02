@@ -26,7 +26,7 @@ function listingEditPath(row: Listing) {
     const params = new URLSearchParams();
     params.set("listingId", row._id);
     if (row.title) params.set("listingTitle", row.title);
-    return `/eCommerce/listings/edit?${params.toString()}`;
+    return `/eCommerceMarketplace/listings/edit?${params.toString()}`;
 }
 
 function ListingSheetView({
@@ -113,6 +113,6 @@ function ListingSheetView({
 }
 
 export default compose(
-    withLanguage("src/modules/eCommerce/clients/panel/private/listings/center/sheetView/listingSheetView.tsx"),
+    withLanguage("src/modules/eCommerceMarketplace/clients/panel/private/listings/center/sheetView/listingSheetView.tsx"),
     withDebug(true, true),
 )(ListingSheetView);

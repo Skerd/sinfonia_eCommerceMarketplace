@@ -8,6 +8,7 @@
   "description": "Description",
   "name": "Name",
   "listing": "Listing",
+  "provider": "Provider",
   "priceAmount": "Price",
   "currency": "Currency",
   "deliveryDays": "Delivery (days)",

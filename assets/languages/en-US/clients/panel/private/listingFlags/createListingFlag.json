@@ -4,7 +4,10 @@
     "title": "Report listing",
     "description": "Flag a listing for review by the moderation team."
   },
-  "formButtons": { "cancel": "Cancel", "submit": "Submit report" },
+  "formButtons": {
+    "cancel": "Cancel",
+    "submit": "Submit report"
+  },
   "form": {
     "listingIdLabel": "Listing",
     "listingIdPlaceholder": "Select listing",
@@ -13,15 +16,24 @@
     "commentLabel": "Additional details",
     "commentPlaceholder": "Optional details...",
     "reason_values": {
-      "spam": "Spam",
       "inappropriate": "Inappropriate content",
-      "fraud": "Fraud",
+      "spam": "Spam",
+      "misleading": "Misleading",
       "other": "Other"
     }
   },
   "axios": {
-    "start": { "title": "Submitting report", "time": 3000 },
-    "success": { "title": "Report submitted", "time": 3000 },
-    "error": { "title": "Could not submit report", "time": 3000 }
+    "start": {
+      "title": "Submitting report",
+      "time": 3000
+    },
+    "success": {
+      "title": "Report submitted",
+      "time": 3000
+    },
+    "error": {
+      "title": "Could not submit report",
+      "time": 3000
+    }
   }
 }

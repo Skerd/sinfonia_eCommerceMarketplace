@@ -3,15 +3,22 @@
   "title": "Listing Packages",
   "description": "Manage service packages that providers offer for their listings.",
   "createListingPackage": "Create package",
+  "searchPlaceholder": "Search or add filters...",
   "fields": {
     "name": "Name",
     "listing": "Listing",
-    "priceAmount": "Price",
+    "description": "Description",
+    "price": {
+      "amount": "Price",
+      "currency": "Currency"
+    },
     "deliveryDays": "Delivery days",
     "order": "Display order",
+    "company": "Company",
+    "createdBy": "Created by",
     "createdAt": "Created",
+    "updatedAt": "Updated",
     "deletedAt": "Deleted",
     "deletedBy": "Deleted by"
-  },
-  "searchPlaceholder": "Search or add filters..."
+  }
 }

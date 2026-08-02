@@ -4,7 +4,7 @@ import withAxios, {WithAxiosType} from "@coreModule/helpers/hocs/withAxios.tsx";
 import withLanguage, {WithLanguageType} from "@coreModule/helpers/hocs/withLanguage.tsx";
 import withDebug from "@coreModule/helpers/hocs/withDebug.tsx";
 import {useNavigate} from "react-router-dom";
-import type {CreateListingCategoryFormType} from "armonia/src/modules/eCommerceMarketplace/api/eCommerceMarketplace/private/listingCategory/createListingCategory.form.type.ts";
+import type {CreateListingCategoryFormType} from "armonia/src/modules/eCommerceMarketplace/api/eCommerceMarketplace/private/listingCategory/listingCategory.schema-def.ts";
 import type {ListingCategory} from "armonia/src/modules/eCommerceMarketplace/api/eCommerceMarketplace/private/listingCategory/listingCategory.dto.ts";
 import HiddenElement from "@coreModule/components/custom/hiddenElement.tsx";
 import {useAccess} from "@coreModule/helpers/hocs/withAccess.tsx";
@@ -40,8 +40,7 @@ function CreateListingCategory({
     function onSubmit(data: CreateListingCategoryFormData) {
         const postBody: CreateListingCategoryFormType = {
             name: data.name,
-            slug: data.slug?.trim() || undefined,
-            parentId: data.parentId || undefined,
+            parentListingCategory: data.parentListingCategory || undefined,
             order: data.order ?? 0,
         };
         onFormDataChange(postBody);

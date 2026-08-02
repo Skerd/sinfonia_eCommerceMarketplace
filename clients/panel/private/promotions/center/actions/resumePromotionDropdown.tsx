@@ -18,6 +18,6 @@ function ResumePromotionDropdown({onAction, resolveLanguageKey}: ResumePromotion
 }
 
 export default compose(
-    withLanguage("src/modules/eCommerce/clients/panel/private/promotions/center/actions/resumePromotionDropdown.tsx"),
+    withLanguage("src/modules/eCommerceMarketplace/clients/panel/private/promotions/center/actions/resumePromotionDropdown.tsx"),
     withDebug(true, true),
 )(ResumePromotionDropdown);

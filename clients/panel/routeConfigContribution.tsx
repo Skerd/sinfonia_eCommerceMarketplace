@@ -20,9 +20,6 @@ import CreateListingFlag from "@eCommerceMarketplaceModule/clients/panel/private
 import EditListingFlag from "@eCommerceMarketplaceModule/clients/panel/private/listingFlags/editListingFlag.tsx";
 import AllProviderProfiles from "@eCommerceMarketplaceModule/clients/panel/private/providerProfile";
 import EditProviderProfile from "@eCommerceMarketplaceModule/clients/panel/private/providerProfile/editProviderProfile.tsx";
-import AllProviderAvailability from "@eCommerceMarketplaceModule/clients/panel/private/providerAvailability";
-import CreateProviderAvailability from "@eCommerceMarketplaceModule/clients/panel/private/providerAvailability/createProviderAvailability.tsx";
-import EditProviderAvailability from "@eCommerceMarketplaceModule/clients/panel/private/providerAvailability/editProviderAvailability.tsx";
 import AllListingAddOns from "@eCommerceMarketplaceModule/clients/panel/private/listingAddOns";
 import CreateListingAddOn from "@eCommerceMarketplaceModule/clients/panel/private/listingAddOns/createListingAddOn.tsx";
 import EditListingAddOn from "@eCommerceMarketplaceModule/clients/panel/private/listingAddOns/editListingAddOn.tsx";
@@ -63,7 +60,7 @@ const eCommerceMarketplaceRouteConfigContribution: RouteConfigContribution = {
             return undefined;
         }
 
-        if (menu !== "eCommerce") {
+        if (menu !== "eCommerceMarketplace") {
             return undefined;
         }
 
@@ -76,7 +73,6 @@ const eCommerceMarketplaceRouteConfigContribution: RouteConfigContribution = {
         const taskRequestId = searchParams.get("taskRequestId") || undefined;
         const taskRequestTitle = safeDecode(searchParams.get("taskRequestTitle")) || undefined;
         const listingFlagId = searchParams.get("listingFlagId") || undefined;
-        const availabilityId = searchParams.get("availabilityId") || undefined;
         const profileId = searchParams.get("profileId") || undefined;
         const profileName = safeDecode(searchParams.get("profileName")) || undefined;
 
@@ -137,11 +133,6 @@ const eCommerceMarketplaceRouteConfigContribution: RouteConfigContribution = {
         if (resource === "providerprofile") {
             if (action === "edit" && profileId) return <EditProviderProfile entityId={profileId} entityName={profileName} />;
             return <AllProviderProfiles />;
-        }
-        if (resource === "provideravailability") {
-            if (action === "create") return <CreateProviderAvailability />;
-            if (action === "edit" && availabilityId) return <EditProviderAvailability entityId={availabilityId} />;
-            return <AllProviderAvailability />;
         }
         if (resource === "listingaddons") {
             if (action === "create") return <CreateListingAddOn />;

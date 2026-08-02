@@ -43,6 +43,6 @@ function StartOrderDropdown({order, onAction, resolveLanguageKey}: StartOrderDro
 }
 
 export default compose(
-    withLanguage("src/modules/eCommerce/clients/panel/private/orders/center/actions/startOrderDropdown.tsx"),
+    withLanguage("src/modules/eCommerceMarketplace/clients/panel/private/orders/center/actions/startOrderDropdown.tsx"),
     withDebug(true, true),
 )(StartOrderDropdown);

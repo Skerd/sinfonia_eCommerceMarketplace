@@ -1,0 +1,33 @@
+import {compose} from "redux";
+import withLanguage, {WithLanguageType} from "@coreModule/helpers/hocs/withLanguage.tsx";
+import withDebug from "@coreModule/helpers/hocs/withDebug.tsx";
+import {DropdownMenuItem} from "@coreModule/components/ui/dropdown-menu.tsx";
+import {CircleX} from "lucide-react";
+import {useAccess} from "@coreModule/helpers/hocs/withAccess.tsx";
+import type {ListingFlag} from "armonia/src/modules/eCommerceMarketplace/api/eCommerceMarketplace/private/listingFlag/listingFlag.dto.ts";
+
+type Props = WithLanguageType & {
+    listingFlag: ListingFlag;
+    onAction: (action: string) => void;
+};
+
+function DismissListingFlagDropdown({listingFlag, onAction, resolveLanguageKey}: Props) {
+    const {write} = useAccess("listingflags");
+    const canShow = !!write && !listingFlag.deletedAt && listingFlag.status === "pending";
+
+    if (!canShow) {
+        return null;
+    }
+
+    return (
+        <DropdownMenuItem onClick={() => onAction("dismiss")}>
+            <CircleX size={16} className="text-red-600" />
+            <span>{resolveLanguageKey("title")}</span>
+        </DropdownMenuItem>
+    );
+}
+
+export default compose(
+    withLanguage("src/modules/eCommerceMarketplace/clients/panel/private/listingFlags/center/actions/dismissListingFlagDropdown.tsx"),
+    withDebug(true, true),
+)(DismissListingFlagDropdown);

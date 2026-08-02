@@ -120,6 +120,6 @@ function TaskRequestSheetView({
 }
 
 export default compose(
-    withLanguage("src/modules/eCommerce/clients/panel/private/taskRequests/center/sheetView/taskRequestSheetView.tsx"),
+    withLanguage("src/modules/eCommerceMarketplace/clients/panel/private/taskRequests/center/sheetView/taskRequestSheetView.tsx"),
     withDebug(true, true),
 )(TaskRequestSheetView);

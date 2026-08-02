@@ -14,13 +14,13 @@ import ConnectAccountAction, {
 function buildProfileEditPath(profile: ProviderProfile) {
     const params = new URLSearchParams();
     params.set("profileId", profile._id ?? "");
-    const name = profile.user?.fullName || profile.user?.name;
+    const name = [profile.user?.name, profile.user?.surname].filter(Boolean).join(" ");
     if (name) params.set("profileName", name);
-    return `/eCommerce/providerprofile/edit?${params.toString()}`;
+    return `/eCommerceMarketplace/providerprofile/edit?${params.toString()}`;
 }
 
 function profileDisplayName(profile: ProviderProfile) {
-    return profile.user?.fullName || [profile.user?.name, profile.user?.surname].filter(Boolean).join(" ") || undefined;
+    return [profile.user?.name, profile.user?.surname].filter(Boolean).join(" ") || undefined;
 }
 
 function applyConnectPatch(result: {

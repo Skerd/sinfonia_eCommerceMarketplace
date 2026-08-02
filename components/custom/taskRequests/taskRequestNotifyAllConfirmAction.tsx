@@ -144,6 +144,6 @@ function TaskRequestNotifyAllConfirmActionShell({
 }
 
 export default compose(
-    withLanguage("src/modules/eCommerce/components/custom/taskRequests/taskRequestNotifyAllConfirmAction.tsx"),
+    withLanguage("src/modules/eCommerceMarketplace/components/custom/taskRequests/taskRequestNotifyAllConfirmAction.tsx"),
     withDebug(true, true),
 )(TaskRequestNotifyAllConfirmActionShell);

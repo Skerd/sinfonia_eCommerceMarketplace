@@ -133,10 +133,10 @@ function ListingCategoryCard({
                                         value={category.slug}
                                     />
                                     <InfoRow
-                                        label={resolveLanguageKey("parentCategory")}
+                                        label={resolveLanguageKey("parentListingCategory")}
                                         icon={IconCategory2}
-                                        show={!!read?.parent}
-                                        value={category.parent?.name}
+                                        show={!!read?.parentListingCategory}
+                                        value={category.parentListingCategory?.name}
                                     />
                                     <InfoRow
                                         label={resolveLanguageKey("order")}

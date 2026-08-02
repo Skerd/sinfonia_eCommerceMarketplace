@@ -4,7 +4,7 @@ import {createBidFormSchema} from "armonia/src/modules/eCommerceMarketplace/api/
 import type {CreateBidFormType} from "armonia/src/modules/eCommerceMarketplace/api/eCommerceMarketplace/private/bid/bid.schema-def.ts";
 
 export default createGenericCreatePage<CreateBidFormType>({
-    languagePath: "src/modules/eCommerce/clients/panel/private/bids/createBid.tsx",
+    languagePath: "src/modules/eCommerceMarketplace/clients/panel/private/bids/createBid.tsx",
     collectionName: "marketplacebids",
     accessModel: "marketplacebids",
     apiUrl: "/api/eCommerceMarketplace/bid",

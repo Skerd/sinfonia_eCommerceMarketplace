@@ -194,16 +194,6 @@ function PromotionCard({
                     )}
                     onClick={() => setAction("view")}
                 >
-                    {/* ── Accent band ───────────────────────────────────── */}
-                    <div
-                        className={cn(
-                            "h-1 w-full",
-                            isFeatured
-                                ? "bg-linear-to-r from-amber-400 to-amber-300"
-                                : "bg-linear-to-r from-blue-500 to-blue-400",
-                        )}
-                    />
-
                     {/* ── Deleted banner ────────────────────────────────── */}
                     {(read.deletedBy || read.deletedAt) && (
                         <DeletedInfo deletedAt={promotion.deletedAt} deletedBy={promotion.deletedBy} />
@@ -376,7 +366,7 @@ function PromotionCard({
 }
 
 export default compose(
-    withLanguage("src/modules/eCommerce/clients/panel/private/promotions/center/cardView/promotionCard.tsx"),
+    withLanguage("src/modules/eCommerceMarketplace/clients/panel/private/promotions/center/cardView/promotionCard.tsx"),
     withAxios<Promotion, SingleForm>(
         {
             url: "/api/eCommerceMarketplace/promotion/single",

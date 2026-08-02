@@ -1,13 +1,30 @@
 {
   "path": "src/modules/eCommerceMarketplace/clients/panel/private/listingFlags/center/sheetView/listingFlagSheetView.tsx",
+  "failedTitle": "Dështoi ngarkimi i raportimit",
+  "failedDescription": "Diçka shkoi keq gjatë ngarkimit të raportimit. Klikoni për të provuar përsëri.",
+  "failedTooltipDescription": "Klikoni për të provuar përsëri marrjen e të dhënave.",
+  "listingFlagSubtitle": "Raportim listimi",
   "listingFlag": "Raportimi i Listimit",
+  "overview": "Përmbledhje",
+  "details": "Detaje",
   "listing": "Listimi",
   "reason": "Arsyeja",
   "comment": "Komenti",
-  "reporter": "Raportues",
+  "user": "Raportuesi",
+  "reporter": "Raportuesi",
   "status": "Statusi",
   "resolution": "Zgjidhja",
   "listingAction": "Veprimi ndaj listimit",
   "createdAt": "Raportuar",
-  "status_values": { "pending": "Në pritje", "reviewed": "Shqyrtuar", "dismissed": "Hedhur poshtë" }
+  "status_values": {
+    "pending": "Në pritje",
+    "reviewed": "Shqyrtuar",
+    "dismissed": "Hedhur poshtë"
+  },
+  "reason_values": {
+    "inappropriate": "Përmbajtje e papërshtatshme",
+    "spam": "Spam",
+    "misleading": "Mashtruese",
+    "other": "Tjetër"
+  }
 }

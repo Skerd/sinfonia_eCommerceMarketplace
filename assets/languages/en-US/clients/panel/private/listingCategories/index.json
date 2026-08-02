@@ -7,7 +7,7 @@
     "name": "Name",
     "slug": "Slug",
     "order": "Order",
-    "parent": "Parent category",
+    "parentListingCategory": "Parent category",
     "createdBy": "Created by",
     "deletedAt": "Deleted",
     "deletedBy": "Deleted by"

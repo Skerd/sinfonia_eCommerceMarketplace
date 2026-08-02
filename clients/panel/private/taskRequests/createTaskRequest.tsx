@@ -3,14 +3,14 @@ import {createTaskRequestFormSchema} from "armonia/src/modules/eCommerceMarketpl
 import type {CreateTaskRequestFormType} from "armonia/src/modules/eCommerceMarketplace/api/eCommerceMarketplace/private/taskRequest/taskRequest.schema-def.ts";
 
 export default createGenericCreatePage<CreateTaskRequestFormType>({
-    languagePath: "src/modules/eCommerce/clients/panel/private/taskRequests/createTaskRequest.tsx",
+    languagePath: "src/modules/eCommerceMarketplace/clients/panel/private/taskRequests/createTaskRequest.tsx",
     collectionName: "taskrequests",
     accessModel: "taskRequests",
     apiUrl: "/api/eCommerceMarketplace/taskRequest",
     schema: createTaskRequestFormSchema,
     defaultValues: {} as unknown as CreateTaskRequestFormType,
     buildFormExtras: () => ({enableLocalFileMultipart: true}),
-    successPath: "/eCommerce/taskrequests",
+    successPath: "/eCommerceMarketplace/taskrequests",
     mapSubmitPayload: (data) => {
         const postBody: Record<string, unknown> = {
             title: data.title,

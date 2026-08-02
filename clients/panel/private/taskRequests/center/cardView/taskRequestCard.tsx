@@ -365,7 +365,7 @@ function TaskRequestCard({
 }
 
 export default compose(
-    withLanguage("src/modules/eCommerce/clients/panel/private/taskRequests/center/cardView/taskRequestCard.tsx"),
+    withLanguage("src/modules/eCommerceMarketplace/clients/panel/private/taskRequests/center/cardView/taskRequestCard.tsx"),
     withAxios<TaskRequest, SingleForm>(
         {url: "/api/eCommerceMarketplace/taskRequest/single", method: "POST", data: {}},
         true,

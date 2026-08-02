@@ -316,6 +316,6 @@ function OrderCard({
 }
 
 export default compose(
-    withLanguage("src/modules/eCommerce/clients/panel/private/orders/center/cardView/orderCard.tsx"),
+    withLanguage("src/modules/eCommerceMarketplace/clients/panel/private/orders/center/cardView/orderCard.tsx"),
     withDebug(true, true),
 )(OrderCard);

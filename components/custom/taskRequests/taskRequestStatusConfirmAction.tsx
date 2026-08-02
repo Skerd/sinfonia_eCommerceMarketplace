@@ -144,6 +144,6 @@ function TaskRequestStatusConfirmActionShell({
 }
 
 export default compose(
-    withLanguage("src/modules/eCommerce/components/custom/taskRequests/taskRequestStatusConfirmAction.tsx"),
+    withLanguage("src/modules/eCommerceMarketplace/components/custom/taskRequests/taskRequestStatusConfirmAction.tsx"),
     withDebug(true, true),
 )(TaskRequestStatusConfirmActionShell);

@@ -23,7 +23,7 @@ function AllPromotions({resolveLanguageKey}: WithLanguageType) {
             collectionName="promotions"
             accessModel="promotions"
             tableConfigKey="promotions"
-            createPath="/eCommerce/promotions/create"
+            createPath="/eCommerceMarketplace/promotions/create"
             createIcon={<IconPlus />}
             createLanguageKey="createPromotion"
             buildEditPath={noopPromotionEditPath}
@@ -96,6 +96,6 @@ function AllPromotions({resolveLanguageKey}: WithLanguageType) {
 }
 
 export default compose(
-    withLanguage("src/modules/eCommerce/clients/panel/private/promotions/index.tsx"),
+    withLanguage("src/modules/eCommerceMarketplace/clients/panel/private/promotions/index.tsx"),
     withDebug(true, true),
 )(AllPromotions);

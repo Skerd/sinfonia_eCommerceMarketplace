@@ -7,7 +7,7 @@
     "name": "Emri",
     "slug": "Slug",
     "order": "Rendi",
-    "parent": "Kategori kryesore",
+    "parentListingCategory": "Kategori kryesore",
     "createdBy": "Krijuar nga",
     "deletedAt": "Fshirë",
     "deletedBy": "Fshirë nga"

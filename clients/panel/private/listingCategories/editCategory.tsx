@@ -5,7 +5,7 @@ import withAxios, {WithAxiosType} from "@coreModule/helpers/hocs/withAxios.tsx";
 import withLanguage, {WithLanguageType} from "@coreModule/helpers/hocs/withLanguage.tsx";
 import withDebug from "@coreModule/helpers/hocs/withDebug.tsx";
 import {useNavigate} from "react-router-dom";
-import type {EditListingCategoryFormType} from "armonia/src/modules/eCommerceMarketplace/api/eCommerceMarketplace/private/listingCategory/editListingCategory.form.type.ts";
+import type {EditListingCategoryFormType} from "armonia/src/modules/eCommerceMarketplace/api/eCommerceMarketplace/private/listingCategory/listingCategory.schema-def.ts";
 import type {ListingCategory} from "armonia/src/modules/eCommerceMarketplace/api/eCommerceMarketplace/private/listingCategory/listingCategory.dto.ts";
 import type {SingleForm} from "armonia/src/modules/core/types/shared.types.ts";
 import {useAccess} from "@coreModule/helpers/hocs/withAccess.tsx";
@@ -74,16 +74,16 @@ function EditListingCategory({
     }, [categoryId, forceReload]);
 
     function onSubmit(data: EditFormData) {
-        const postBody: EditListingCategoryFormType = {
+        // Mutable bag — InferEditForm from `as const` SchemaDef is readonly-mapped.
+        const postBody: Record<string, unknown> = {
             _id: categoryId || "",
         };
 
-        if (writeFields.name) postBody.name = data.name as string;
-        if (writeFields.slug) postBody.slug = data.slug;
-        if (writeFields.parent) {
-            const pid = data.parent;
-            if (pid === "") postBody.parent = null;
-            else if (pid !== undefined) postBody.parent = pid;
+        if (writeFields.name) postBody.name = data.name;
+        if (writeFields.parentListingCategory) {
+            const pid = data.parentListingCategory;
+            if (pid === "") postBody.parentListingCategory = null;
+            else if (pid !== undefined) postBody.parentListingCategory = pid;
         }
         if (writeFields.order) postBody.order = data.order;
 
@@ -95,8 +95,6 @@ function EditListingCategory({
     }
     if (!viewConfig) return null;
 
-    console.log("writeFields", writeFields);
-
     return (
         <EditFormViewRenderer<EditFormData>
             config={viewConfig}
@@ -106,8 +104,7 @@ function EditListingCategory({
                 categoryData && {
                     _id: categoryData._id,
                     name: writeFields.name ? categoryData.name : undefined,
-                    slug: writeFields.slug ? categoryData.slug : undefined,
-                    parent: writeFields.parent ? categoryData.parent?._id : undefined,
+                    parentListingCategory: writeFields.parentListingCategory ? categoryData.parentListingCategory?._id : undefined,
                     order: writeFields.order ? categoryData.order : undefined,
                 }
             }

@@ -16,7 +16,7 @@ export function taskRequestEditPath(entity: Pick<TaskRequest, "_id" | "title">) 
     const params = new URLSearchParams();
     params.set("taskRequestId", entity._id);
     if (entity.title) params.set("taskRequestTitle", entity.title);
-    return `/eCommerce/taskrequests/edit?${params.toString()}`;
+    return `/eCommerceMarketplace/taskrequests/edit?${params.toString()}`;
 }
 
 function AllTaskRequests({resolveLanguageKey}: WithLanguageType) {
@@ -26,12 +26,12 @@ function AllTaskRequests({resolveLanguageKey}: WithLanguageType) {
             collectionName="taskrequests"
             accessModel="taskRequests"
             tableConfigKey="taskrequests"
-            createPath="/eCommerce/taskrequests/create"
+            createPath="/eCommerceMarketplace/taskrequests/create"
             createIcon={<IconPlus />}
             createLanguageKey="createTaskRequest"
             buildEditPath={taskRequestEditPath}
             resolveLanguageKey={resolveLanguageKey}
-            sheetLanguagePath="src/modules/eCommerce/clients/panel/private/taskRequests/center/sheetView/taskRequestSheetView.tsx"
+            sheetLanguagePath="src/modules/eCommerceMarketplace/clients/panel/private/taskRequests/center/sheetView/taskRequestSheetView.tsx"
             cardViewClassName="grid grid-cols-1 gap-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4"
             rowActionMenu={{allowMenuForCustomChildren: true}}
             renderCard={(entity, onDelete, onRestore, listRef) => (
@@ -87,6 +87,6 @@ function AllTaskRequests({resolveLanguageKey}: WithLanguageType) {
 }
 
 export default compose(
-    withLanguage("src/modules/eCommerce/clients/panel/private/taskRequests/index.tsx"),
+    withLanguage("src/modules/eCommerceMarketplace/clients/panel/private/taskRequests/index.tsx"),
     withDebug(true, true),
 )(AllTaskRequests);

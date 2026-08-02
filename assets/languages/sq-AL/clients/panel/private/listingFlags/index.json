@@ -3,6 +3,7 @@
   "title": "Raportimet e Listimeve",
   "description": "Shqyrtoni raportimet e dërguara nga përdoruesit për listim të papërshtatshëm.",
   "createListingFlag": "Krijo raportim",
+  "searchPlaceholder": "Kërko ose shto filtra...",
   "fields": {
     "listing": "Listimi",
     "reason": "Arsyeja",
@@ -10,7 +11,10 @@
     "user": "Raportuesi",
     "comment": "Komenti",
     "resolution": "Zgjidhja",
+    "company": "Kompania",
+    "createdBy": "Krijuar nga",
     "createdAt": "Krijuar",
+    "updatedAt": "Përditësuar",
     "deletedAt": "Fshirë",
     "deletedBy": "Fshirë nga",
     "!enums": {
@@ -26,6 +30,5 @@
         "other": "Tjetër"
       }
     }
-  },
-  "searchPlaceholder": "Kërko ose shto filtra..."
+  }
 }

@@ -1,4 +1,4 @@
-import {ClipboardList, ShoppingBag, Star, AlertTriangle, Gavel, Tag, Flag, Calendar, User, Package, Network, FolderTree} from "lucide-react";
+import {ClipboardList, ShoppingBag, Star, AlertTriangle, Gavel, Tag, Flag, Calendar, User, Package, Network} from "lucide-react";
 import {IconListDetails} from "@tabler/icons-react";
 import type {SidebarContribution} from "@coreModule/clients/panel/moduleContributions/sidebarContribution.types.ts";
 import type {NavGroup, NavItem} from "@coreModule/helpers/panel/sidebarNav.types.ts";
@@ -9,25 +9,25 @@ const eCommerceMarketplaceSidebarContribution: SidebarContribution = {
     order: 36,
     getNavGroups(resolveLanguageKey: ResolveLanguageKey): NavGroup[] {
         const items: NavItem[] = [
-            {title: resolveLanguageKey("menus.eCommerce.marketplaceSystemMap.title"), url: "/eCommerce/marketplacesystemmap", icon: Network, permissions: [], usersPermissions: [], atLeastOnePermission: true},
-            {title: resolveLanguageKey("menus.eCommerce.listings.title"), url: "/eCommerce/listings", icon: IconListDetails, permissions: [], usersPermissions: [], atLeastOnePermission: true},
-            {title: resolveLanguageKey("menus.eCommerce.listingCategories.title") || "Listing Categories", url: "/eCommerce/listingcategories", icon: FolderTree, permissions: [], usersPermissions: [], atLeastOnePermission: true},
-            {title: resolveLanguageKey("menus.eCommerce.listingFlags.title"), url: "/eCommerce/listingflags", icon: Flag, permissions: [], usersPermissions: [], atLeastOnePermission: true},
-            {title: resolveLanguageKey("menus.eCommerce.promotions.title"), url: "/eCommerce/promotions", icon: Tag, permissions: [], usersPermissions: [], atLeastOnePermission: true},
-            {title: resolveLanguageKey("menus.eCommerce.taskrequests.title"), url: "/eCommerce/taskrequests", icon: ClipboardList, permissions: [], usersPermissions: [], atLeastOnePermission: true},
-            {title: resolveLanguageKey("menus.eCommerce.bids.title"), url: "/eCommerce/bids", icon: Gavel, permissions: [], usersPermissions: [], atLeastOnePermission: true},
-            {title: resolveLanguageKey("menus.eCommerce.orders.title"), url: "/eCommerce/orders", icon: ShoppingBag, permissions: [], usersPermissions: [], atLeastOnePermission: true},
-            {title: resolveLanguageKey("menus.eCommerce.disputes.title"), url: "/eCommerce/disputes", icon: AlertTriangle, permissions: [], usersPermissions: [], atLeastOnePermission: true},
-            {title: resolveLanguageKey("menus.eCommerce.reviews.title"), url: "/eCommerce/reviews", icon: Star, permissions: [], usersPermissions: [], atLeastOnePermission: true},
-            {title: resolveLanguageKey("menus.eCommerce.bookings.title"), url: "/eCommerce/bookings", icon: Calendar, permissions: [], usersPermissions: [], atLeastOnePermission: true},
-            {title: resolveLanguageKey("menus.eCommerce.providerProfile.title"), url: "/eCommerce/providerprofile", icon: User, permissions: [], usersPermissions: [], atLeastOnePermission: true},
-            {title: resolveLanguageKey("menus.eCommerce.providerAvailability.title"), url: "/eCommerce/provideravailability", icon: Calendar, permissions: [], usersPermissions: [], atLeastOnePermission: true},
-            {title: resolveLanguageKey("menus.eCommerce.listingAddOns.title"), url: "/eCommerce/listingaddons", icon: Package, permissions: [], usersPermissions: [], atLeastOnePermission: true},
-            {title: resolveLanguageKey("menus.eCommerce.listingPackages.title"), url: "/eCommerce/listingpackages", icon: Package, permissions: [], usersPermissions: [], atLeastOnePermission: true},
+            {title: resolveLanguageKey("menus.eCommerceMarketplace.marketplacesystemmap.title"), url: "/eCommerceMarketplace/marketplacesystemmap", icon: Network, permissions: [], usersPermissions: [], atLeastOnePermission: true},
+            {title: resolveLanguageKey("menus.eCommerceMarketplace.listings.title"), url: "/eCommerceMarketplace/listings", icon: IconListDetails, permissions: [], usersPermissions: [], atLeastOnePermission: true},
+            {title: resolveLanguageKey("menus.eCommerceMarketplace.listingaddons.title"), url: "/eCommerceMarketplace/listingaddons", icon: Package, permissions: [], usersPermissions: [], atLeastOnePermission: true},
+            {title: resolveLanguageKey("menus.eCommerceMarketplace.listingpackages.title"), url: "/eCommerceMarketplace/listingpackages", icon: Package, permissions: [], usersPermissions: [], atLeastOnePermission: true},
+
+
+            {title: resolveLanguageKey("menus.eCommerceMarketplace.listingflags.title"), url: "/eCommerceMarketplace/listingflags", icon: Flag, permissions: [], usersPermissions: [], atLeastOnePermission: true},
+            {title: resolveLanguageKey("menus.eCommerceMarketplace.promotions.title"), url: "/eCommerceMarketplace/promotions", icon: Tag, permissions: [], usersPermissions: [], atLeastOnePermission: true},
+            {title: resolveLanguageKey("menus.eCommerceMarketplace.taskrequests.title"), url: "/eCommerceMarketplace/taskrequests", icon: ClipboardList, permissions: [], usersPermissions: [], atLeastOnePermission: true},
+            {title: resolveLanguageKey("menus.eCommerceMarketplace.bids.title"), url: "/eCommerceMarketplace/bids", icon: Gavel, permissions: [], usersPermissions: [], atLeastOnePermission: true},
+            {title: resolveLanguageKey("menus.eCommerceMarketplace.orders.title"), url: "/eCommerceMarketplace/orders", icon: ShoppingBag, permissions: [], usersPermissions: [], atLeastOnePermission: true},
+            {title: resolveLanguageKey("menus.eCommerceMarketplace.disputes.title"), url: "/eCommerceMarketplace/disputes", icon: AlertTriangle, permissions: [], usersPermissions: [], atLeastOnePermission: true},
+            {title: resolveLanguageKey("menus.eCommerceMarketplace.reviews.title"), url: "/eCommerceMarketplace/reviews", icon: Star, permissions: [], usersPermissions: [], atLeastOnePermission: true},
+            {title: resolveLanguageKey("menus.eCommerceMarketplace.bookings.title"), url: "/eCommerceMarketplace/bookings", icon: Calendar, permissions: [], usersPermissions: [], atLeastOnePermission: true},
+            {title: resolveLanguageKey("menus.eCommerceMarketplace.providerprofile.title"), url: "/eCommerceMarketplace/providerprofile", icon: User, permissions: [], usersPermissions: [], atLeastOnePermission: true},
         ];
 
         return [{
-            title: resolveLanguageKey("menus.eCommerce.title"),
+            title: resolveLanguageKey("menus.eCommerceMarketplace.title"),
             permissions: [],
             usersPermissions: [],
             atLeastOnePermission: true,

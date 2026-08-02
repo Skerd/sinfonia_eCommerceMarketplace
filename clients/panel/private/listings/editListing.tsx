@@ -11,7 +11,7 @@ function nonEmptyListingFaqs(rows: {question?: string; answer?: string}[] | unde
 }
 
 export default createGenericEditPage<Listing, EditListingFormType>({
-    languagePath: "src/modules/eCommerce/clients/panel/private/listings/editListing.tsx",
+    languagePath: "src/modules/eCommerceMarketplace/clients/panel/private/listings/editListing.tsx",
     collectionName: "listings",
     accessModel: "listings",
     apiUrl: "/api/eCommerceMarketplace/listing",

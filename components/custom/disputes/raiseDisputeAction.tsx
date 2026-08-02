@@ -152,6 +152,6 @@ function RaiseDisputeActionShell({resolveLanguageKey, ...rest}: RaiseDisputeActi
 }
 
 export default compose(
-    withLanguage("src/modules/eCommerce/components/custom/disputes/raiseDisputeAction.tsx"),
+    withLanguage("src/modules/eCommerceMarketplace/components/custom/disputes/raiseDisputeAction.tsx"),
     withDebug(true, true),
 )(RaiseDisputeActionShell);

@@ -12,6 +12,7 @@ export default createGenericEditPage<ListingPackage, EditListingPackageFormType>
     schema: editListingPackageFormSchema,
     buildInitialValues: (data, writeFields) => ({
         _id: data._id,
+        listing: writeFields.listing ? data.listing?._id : undefined,
         name: writeFields.name ? data.name : undefined,
         description: writeFields.description ? (data.description ?? "") : undefined,
         price: writeFields.price

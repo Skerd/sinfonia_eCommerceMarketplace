@@ -15,20 +15,22 @@ import { Flag, User } from "lucide-react";
 import type { ListingFlag } from "armonia/src/modules/eCommerceMarketplace/api/eCommerceMarketplace/private/listingFlag/listingFlag.dto.ts";
 import type { DeletedData } from "armonia/src/modules/core/types/shared.types.ts";
 import ListingFlagSheetView from "@eCommerceMarketplaceModule/clients/panel/private/listingFlags/center/sheetView/listingFlagSheetView.tsx";
+import ResolveListingFlagDropdown from "@eCommerceMarketplaceModule/clients/panel/private/listingFlags/center/actions/resolveListingFlagDropdown.tsx";
+import DismissListingFlagDropdown from "@eCommerceMarketplaceModule/clients/panel/private/listingFlags/center/actions/dismissListingFlagDropdown.tsx";
+import ChangeListingFlagLifecycleAction, {
+    type ListingFlagLifecycleVerb,
+} from "@eCommerceMarketplaceModule/components/custom/listingFlags/changeListingFlagLifecycleAction.tsx";
 
-const STATUS_CONFIG: Record<string, { band: string; dot: string; text: string }> = {
+const STATUS_CONFIG: Record<string, { dot: string; text: string }> = {
     pending: {
-        band: "bg-linear-to-r from-amber-400 to-amber-300",
         dot: "bg-amber-500",
         text: "text-amber-600",
     },
     reviewed: {
-        band: "bg-linear-to-r from-blue-500 to-blue-400",
         dot: "bg-blue-500",
         text: "text-blue-600",
     },
     dismissed: {
-        band: "bg-linear-to-r from-slate-400 to-slate-300",
         dot: "bg-muted-foreground/40",
         text: "text-muted-foreground",
     },
@@ -38,15 +40,14 @@ type ListingFlagCardProps = WithLanguageType & {
     listingFlag: ListingFlag;
     onDelete?: (deleted?: ListingFlag, response?: DeletedData) => void;
     onRestore?: () => void;
+    onLifecyclePatched?: (patch: Partial<ListingFlag>) => void;
     hideActions?: boolean;
     sheetOnly?: boolean;
 };
 
 function formatReporterName(flag: ListingFlag): string {
-    const { name, surname, fullName } = flag.user ?? {};
-    if (fullName?.trim()) return fullName.trim();
-    const combined = [name, surname].filter(Boolean).join(" ").trim();
-    return combined || "—";
+    const { name, surname } = flag.user ?? {};
+    return [name, surname].filter(Boolean).join(" ").trim() || "—";
 }
 
 function formatEnumLabel(
@@ -63,6 +64,7 @@ function ListingFlagCard({
     resolveLanguageKey,
     onDelete: onDeleteProp,
     onRestore: onRestoreProp,
+    onLifecyclePatched,
     hideActions = false,
     sheetOnly = false,
 }: ListingFlagCardProps) {
@@ -74,6 +76,11 @@ function ListingFlagCard({
     useEffect(() => {
         setFlag(flagProp);
     }, [flagProp]);
+
+    const applyLifecyclePatch = (patch: Partial<ListingFlag>) => {
+        setFlag((prev) => ({...prev, ...patch}));
+        onLifecyclePatched?.(patch);
+    };
 
     const onDelete = (data: DeletedData) => {
         if (!data.deletedBy && !data.deletedAt) {
@@ -102,7 +109,7 @@ function ListingFlagCard({
     const editPath = (() => {
         const params = new URLSearchParams();
         params.set("listingFlagId", flag._id);
-        return `/eCommerce/listingflags/edit?${params.toString()}`;
+        return `/eCommerceMarketplace/listingflags/edit?${params.toString()}`;
     })();
 
     return (
@@ -116,8 +123,6 @@ function ListingFlagCard({
                     )}
                     onClick={() => setAction("view")}
                 >
-                    <div className={cn("h-1 w-full", statusCfg.band)} />
-
                     {(read.deletedBy || read.deletedAt) && (
                         <DeletedInfo deletedAt={flag.deletedAt} deletedBy={flag.deletedBy} />
                     )}
@@ -134,7 +139,12 @@ function ListingFlagCard({
                                         deletedData={flag}
                                         onAction={(a: string) => setAction(a)}
                                         editPath={editPath}
-                                    />
+                                        hideEdit={flag.status !== "pending"}
+                                        allowMenuForCustomChildren
+                                    >
+                                        <ResolveListingFlagDropdown listingFlag={flag} onAction={(a: string) => setAction(a)} />
+                                        <DismissListingFlagDropdown listingFlag={flag} onAction={(a: string) => setAction(a)} />
+                                    </ActionMenu>
                                 </div>
                             )}
                         </div>
@@ -156,6 +166,21 @@ function ListingFlagCard({
                     listingFlag={flag}
                     onDelete={onDelete}
                     onRestore={onRestore}
+                    onListLifecyclePatched={applyLifecyclePatch}
+                />
+            )}
+            {(action === "resolve" || action === "dismiss") && (
+                <ChangeListingFlagLifecycleAction
+                    listingFlagId={flag._id}
+                    listingFlagTitle={listingTitle}
+                    verb={action as ListingFlagLifecycleVerb}
+                    openAlert
+                    url={`/api/eCommerceMarketplace/listingFlag/${action}`}
+                    onSuccess={(patch: Partial<ListingFlag>) => {
+                        applyLifecyclePatch(patch);
+                        setAction("");
+                    }}
+                    onCancel={() => setAction("")}
                 />
             )}
             {action === "delete" && (

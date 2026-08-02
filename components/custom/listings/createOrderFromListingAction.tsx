@@ -159,6 +159,6 @@ function CreateOrderFromListingActionShell({resolveLanguageKey, ...rest}: Create
 }
 
 export default compose(
-    withLanguage("src/modules/eCommerce/components/custom/listings/createOrderFromListingAction.tsx"),
+    withLanguage("src/modules/eCommerceMarketplace/components/custom/listings/createOrderFromListingAction.tsx"),
     withDebug(true, true),
 )(CreateOrderFromListingActionShell);

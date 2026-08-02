@@ -4,7 +4,7 @@ import type {TaskRequest} from "armonia/src/modules/eCommerceMarketplace/api/eCo
 import type {EditTaskRequestFormType} from "armonia/src/modules/eCommerceMarketplace/api/eCommerceMarketplace/private/taskRequest/taskRequest.schema-def.ts";
 
 export default createGenericEditPage<TaskRequest, EditTaskRequestFormType>({
-    languagePath: "src/modules/eCommerce/clients/panel/private/taskRequests/editTaskRequest.tsx",
+    languagePath: "src/modules/eCommerceMarketplace/clients/panel/private/taskRequests/editTaskRequest.tsx",
     collectionName: "taskrequests",
     accessModel: "taskRequests",
     apiUrl: "/api/eCommerceMarketplace/taskRequest",

@@ -39,6 +39,6 @@ function RejectBidDropdown({bid, onAction, resolveLanguageKey}: RejectBidDropdow
 }
 
 export default compose(
-    withLanguage("src/modules/eCommerce/clients/panel/private/bids/center/actions/rejectBidDropdown.tsx"),
+    withLanguage("src/modules/eCommerceMarketplace/clients/panel/private/bids/center/actions/rejectBidDropdown.tsx"),
     withDebug(true, true),
 )(RejectBidDropdown);

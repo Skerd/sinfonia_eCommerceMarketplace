@@ -8,18 +8,39 @@
     "title": "Ndrysho paketën e listimit",
     "description": "Modifiko emrin, çmimin ose kohën e dorëzimit të paketës."
   },
-  "formButtons": { "cancel": "Anulo", "submit": "Ruaj ndryshimet" },
+  "formButtons": {
+    "cancel": "Anulo",
+    "submit": "Ruaj ndryshimet"
+  },
   "form": {
+    "idLabel": "ID e regjistrimit",
+    "listingIdLabel": "Listimi",
+    "listingIdPlaceholder": "Zgjidh listimin",
     "nameLabel": "Emri i paketës",
+    "namePlaceholder": "p.sh. Bazë, Standarde, Premium",
     "descriptionLabel": "Përshkrimi",
+    "descriptionPlaceholder": "Çfarë përfshin kjo paketë...",
     "priceAmountLabel": "Çmimi",
-    "currencyLabel": "Monedha",
+    "priceAmountPlaceholder": "0.00",
+    "currencyLabel": "Valuta",
+    "currencyPlaceholder": "Zgjidh valutën",
     "deliveryDaysLabel": "Ditë dorëzimi",
-    "sortOrderLabel": "Rendi i shfaqjes"
+    "deliveryDaysPlaceholder": "p.sh. 3",
+    "sortOrderLabel": "Rendi i shfaqjes",
+    "sortOrderPlaceholder": "p.sh. 1"
   },
   "axios": {
-    "start": { "title": "Po ruhet paketa", "time": 3000 },
-    "success": { "title": "Paketa u përditësua", "time": 3000 },
-    "error": { "title": "Nuk u përditësua paketa", "time": 3000 }
+    "start": {
+      "title": "Po ruhet paketa",
+      "time": 3000
+    },
+    "success": {
+      "title": "Paketa u përditësua",
+      "time": 3000
+    },
+    "error": {
+      "title": "Nuk u përditësua paketa",
+      "time": 3000
+    }
   }
 }

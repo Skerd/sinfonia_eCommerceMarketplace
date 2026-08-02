@@ -10,7 +10,7 @@ import ListingPackageCard from "./center/cardView/listingPackageCard.tsx";
 function buildListingPackageEditPath(pkg: ListingPackage) {
     const params = new URLSearchParams();
     params.set("listingPackageId", pkg._id);
-    return `/eCommerce/listingpackages/edit?${params.toString()}`;
+    return `/eCommerceMarketplace/listingpackages/edit?${params.toString()}`;
 }
 
 function AllListingPackages({ resolveLanguageKey }: WithLanguageType) {
@@ -20,7 +20,7 @@ function AllListingPackages({ resolveLanguageKey }: WithLanguageType) {
             collectionName="listingPackages"
             accessModel="listingPackages"
             tableConfigKey="listingpackages"
-            createPath="/eCommerce/listingpackages/create"
+            createPath="/eCommerceMarketplace/listingpackages/create"
             createIcon={<IconPlus />}
             createLanguageKey="createListingPackage"
             buildEditPath={buildListingPackageEditPath}

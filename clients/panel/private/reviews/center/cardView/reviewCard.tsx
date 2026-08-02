@@ -225,6 +225,6 @@ function ReviewCard({
 }
 
 export default compose(
-    withLanguage("src/modules/eCommerce/clients/panel/private/reviews/center/cardView/reviewCard.tsx"),
+    withLanguage("src/modules/eCommerceMarketplace/clients/panel/private/reviews/center/cardView/reviewCard.tsx"),
     withDebug(true, true),
 )(ReviewCard);

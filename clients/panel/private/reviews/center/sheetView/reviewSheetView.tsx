@@ -89,6 +89,6 @@ function ReviewSheetView({
 }
 
 export default compose(
-    withLanguage("src/modules/eCommerce/clients/panel/private/reviews/center/sheetView/reviewSheetView.tsx"),
+    withLanguage("src/modules/eCommerceMarketplace/clients/panel/private/reviews/center/sheetView/reviewSheetView.tsx"),
     withDebug(true, true),
 )(ReviewSheetView);

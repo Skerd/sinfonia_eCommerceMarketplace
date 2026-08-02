@@ -43,6 +43,6 @@ function SubmitOrderDeliveryDropdown({order, onAction, resolveLanguageKey}: Subm
 }
 
 export default compose(
-    withLanguage("src/modules/eCommerce/clients/panel/private/orders/center/actions/submitOrderDeliveryDropdown.tsx"),
+    withLanguage("src/modules/eCommerceMarketplace/clients/panel/private/orders/center/actions/submitOrderDeliveryDropdown.tsx"),
     withDebug(true, true),
 )(SubmitOrderDeliveryDropdown);

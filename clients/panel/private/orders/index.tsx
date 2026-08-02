@@ -33,7 +33,7 @@ function AllOrders({resolveLanguageKey}: WithLanguageType) {
             tableConfigKey="orders"
             buildEditPath={() => ""}
             resolveLanguageKey={resolveLanguageKey}
-            sheetLanguagePath="src/modules/eCommerce/clients/panel/private/orders/center/sheetView/orderSheetView.tsx"
+            sheetLanguagePath="src/modules/eCommerceMarketplace/clients/panel/private/orders/center/sheetView/orderSheetView.tsx"
             cardViewClassName="grid grid-cols-1 gap-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4"
             rowActionMenu={{hideEdit: true, allowMenuForCustomChildren: true}}
             renderActionMenuChildren={(order, bindRowAction) => (
@@ -147,6 +147,6 @@ function AllOrders({resolveLanguageKey}: WithLanguageType) {
 }
 
 export default compose(
-    withLanguage("src/modules/eCommerce/clients/panel/private/orders/index.tsx"),
+    withLanguage("src/modules/eCommerceMarketplace/clients/panel/private/orders/index.tsx"),
     withDebug(true, true),
 )(AllOrders);

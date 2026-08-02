@@ -28,9 +28,9 @@ function providerProfileEditPath(profile: ProviderProfile) {
     if (!profile._id) return "";
     const params = new URLSearchParams();
     params.set("profileId", profile._id);
-    const name = profile.user?.fullName || profile.user?.name;
+    const name = [profile.user?.name, profile.user?.surname].filter(Boolean).join(" ");
     if (name) params.set("profileName", name);
-    return `/eCommerce/providerprofile/edit?${params.toString()}`;
+    return `/eCommerceMarketplace/providerprofile/edit?${params.toString()}`;
 }
 
 function ProviderProfileSheetView({
@@ -57,7 +57,6 @@ function ProviderProfileSheetView({
     const entityId = profileProp?._id ?? fetchId;
     const asProfile = sheetData as ProviderProfile;
     const displayName =
-        asProfile.user?.fullName ||
         [asProfile.user?.name, asProfile.user?.surname].filter(Boolean).join(" ") ||
         undefined;
 

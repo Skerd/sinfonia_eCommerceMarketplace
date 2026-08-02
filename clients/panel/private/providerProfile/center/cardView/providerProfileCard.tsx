@@ -26,7 +26,7 @@ type ProviderProfileCardProps = WithLanguageType & {
 };
 
 function profileDisplayName(profile: ProviderProfile) {
-    return profile.user?.fullName || [profile.user?.name, profile.user?.surname].filter(Boolean).join(" ") || undefined;
+    return [profile.user?.name, profile.user?.surname].filter(Boolean).join(" ") || undefined;
 }
 
 function ProviderProfileCard({
@@ -52,7 +52,7 @@ function ProviderProfileCard({
         params.set("profileId", profile._id);
         const name = profile.user?.name;
         if (name) params.set("profileName", name);
-        return `/eCommerce/providerprofile/edit?${params.toString()}`;
+        return `/eCommerceMarketplace/providerprofile/edit?${params.toString()}`;
     })();
 
     const connectStatusLabel = profile.stripePayoutsEnabled

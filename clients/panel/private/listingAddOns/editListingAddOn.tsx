@@ -12,6 +12,7 @@ export default createGenericEditPage<ListingAddOn, EditListingAddOnFormType>({
     schema: editListingAddOnFormSchema,
     buildInitialValues: (data, writeFields) => ({
         _id: data._id,
+        listing: writeFields.listing ? data.listing?._id : undefined,
         name: writeFields.name ? data.name : undefined,
         price: writeFields.price
             ? {

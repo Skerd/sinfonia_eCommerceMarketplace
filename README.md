@@ -10,49 +10,61 @@ Enable via `VITE_ENABLED_MODULES=eCommerceMarketplace`.
 
 ```
 eCommerceMarketplace/
-├── assets/languages/
+├── assets/languages/           # Module-owned i18n (en-US, sq-AL)
 ├── clients/panel/
 │   ├── private/<resource>/     # Panel pages
 │   ├── sidebarContribution.tsx
 │   ├── routeConfigContribution.tsx
-│   └── widgetContribution.tsx
+│   ├── widgetContribution.tsx
+│   ├── tenancySettingsContribution.tsx
+│   └── siteRoomContribution.ts
 └── components/custom/
     ├── listings/
     ├── bids/
     ├── taskRequests/
     ├── orders/
     ├── disputes/
-    └── promotions/
+    ├── promotions/
+    └── providerProfile/
 ```
 
 ## Panel pages
 
-| Page folder | Description |
-|-------------|-------------|
-| `listings` | Marketplace listings |
-| `systemMap` | Marketplace architecture map (`/eCommerce/marketplacesystemmap`) |
-| `listingPackages` | Listing packages |
-| `listingAddOns` | Add-ons |
-| `listingFlags` | Moderation flags |
-| `providerProfile` | Provider profiles |
-| `providerAvailability` | Provider scheduling |
-| `taskRequests` | Buyer requests |
-| `bids` | Provider bids |
-| `bookings` | Appointments / bookings |
-| `orders` | Marketplace orders |
-| `reviews` | Reviews |
-| `disputes` | Disputes |
-| `promotions` | Promotions |
+Routes are registered in `routeConfigContribution.tsx` under menu `eCommerceMarketplace`.
+
+| Page folder | URL segment | Description |
+|-------------|-------------|-------------|
+| `systemMap` | `/eCommerceMarketplace/marketplacesystemmap` | Marketplace architecture map |
+| `listings` | `/eCommerceMarketplace/listings` | Marketplace listings |
+| `listingPackages` | `/eCommerceMarketplace/listingpackages` | Listing packages |
+| `listingAddOns` | `/eCommerceMarketplace/listingaddons` | Add-ons |
+| `listingFlags` | `/eCommerceMarketplace/listingflags` | Moderation flags |
+| `providerProfile` | `/eCommerceMarketplace/providerprofile` | Provider profiles (incl. weekly availability) |
+| `taskRequests` | `/eCommerceMarketplace/taskrequests` | Buyer requests |
+| `bids` | `/eCommerceMarketplace/bids` | Provider bids |
+| `bookings` | `/eCommerceMarketplace/bookings` | Appointments / bookings |
+| `orders` | `/eCommerceMarketplace/orders` | Marketplace orders |
+| `reviews` | `/eCommerceMarketplace/reviews` | Reviews |
+| `disputes` | `/eCommerceMarketplace/disputes` | Disputes |
+| `promotions` | `/eCommerceMarketplace/promotions` | Promotions |
+| `listingCategories` | `/tenancy/systemSettings/listingcategories` | Listing taxonomy (tenancy) |
 
 ## Custom components
 
-Domain-specific UI beyond generic entity pages lives in `components/custom/` — tailored flows for bids, disputes, listing management, task requests, orders, and promotions.
+Domain-specific UI beyond generic entity pages lives in `components/custom/` — tailored flows for bids, disputes, listing management, task requests, orders, promotions, and provider Connect.
 
 ## Contributions
 
-- **Sidebar** — marketplace nav group
-- **Routes** — URL → page mapping for all resources above
+- **Sidebar** (`order: 36`) — "Marketplace" nav group (`menus.eCommerceMarketplace.*`)
+- **Routes** (`order: 45`) — URL → page mapping for all resources above
 - **Widgets** — marketplace dashboard widgets
+- **Tenancy settings** — listing categories under Configurations
+
+## Order mutations
+
+Panel order actions call maestro `OrderActions` under `/api/eCommerceMarketplace/order/*`
+(`submitDelivery`, `acceptDelivery`, `requestRevision`, etc.). Delivery / milestone / revision
+list endpoints are read-only; escrow is owned by **finance**.
 
 ## Path alias
 
@@ -62,7 +74,7 @@ import ListingsPage from "@eCommerceMarketplaceModule/clients/panel/private/list
 
 ## Relationship to eCommerce
 
-**eCommerce** covers standard catalog commerce (products, cart, warehouse). **eCommerceMarketplace** covers peer-to-peer / services flows. Both can be enabled together.
+**eCommerce** covers standard catalog commerce (products, cart, warehouse) under `/eCommerce/`. **eCommerceMarketplace** covers peer-to-peer / services flows under `/eCommerceMarketplace/`. Both can be enabled together.
 
 ## Related packages
 

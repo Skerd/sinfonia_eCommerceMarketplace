@@ -18,6 +18,6 @@ function DeactivateListingDropdown({onAction, resolveLanguageKey}: DeactivateLis
 }
 
 export default compose(
-    withLanguage("src/modules/eCommerce/clients/panel/private/listings/center/actions/deactivateListingDropdown.tsx"),
+    withLanguage("src/modules/eCommerceMarketplace/clients/panel/private/listings/center/actions/deactivateListingDropdown.tsx"),
     withDebug(true, true),
 )(DeactivateListingDropdown);

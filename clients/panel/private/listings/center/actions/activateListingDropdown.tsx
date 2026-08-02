@@ -18,6 +18,6 @@ function ActivateListingDropdown({onAction, resolveLanguageKey}: ActivateListing
 }
 
 export default compose(
-    withLanguage("src/modules/eCommerce/clients/panel/private/listings/center/actions/activateListingDropdown.tsx"),
+    withLanguage("src/modules/eCommerceMarketplace/clients/panel/private/listings/center/actions/activateListingDropdown.tsx"),
     withDebug(true, true),
 )(ActivateListingDropdown);

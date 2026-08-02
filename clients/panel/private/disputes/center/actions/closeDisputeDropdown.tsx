@@ -30,6 +30,6 @@ function CloseDisputeDropdown({dispute, onAction, resolveLanguageKey}: Props) {
 }
 
 export default compose(
-    withLanguage("src/modules/eCommerce/clients/panel/private/disputes/center/actions/closeDisputeDropdown.tsx"),
+    withLanguage("src/modules/eCommerceMarketplace/clients/panel/private/disputes/center/actions/closeDisputeDropdown.tsx"),
     withDebug(true, true),
 )(CloseDisputeDropdown);

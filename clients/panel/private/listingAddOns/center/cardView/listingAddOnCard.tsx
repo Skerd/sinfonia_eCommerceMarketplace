@@ -52,7 +52,7 @@ function ListingAddOnCard({
     const editPath = (() => {
         const params = new URLSearchParams();
         params.set("listingAddOnId", addOn._id);
-        return `/eCommerce/listingaddons/edit?${params.toString()}`;
+        return `/eCommerceMarketplace/listingaddons/edit?${params.toString()}`;
     })();
 
     const currencyPrefix = addOn.price.currency?.symbol?.trim() || addOn.price.currency?.abbreviation?.trim();
@@ -68,8 +68,6 @@ function ListingAddOnCard({
                 )}
                 onClick={() => setAction("view")}
             >
-                <div className="h-1 w-full bg-primary/60" />
-
                 {(read as any).deletedBy && (
                     <DeletedInfo deletedAt={(addOn as any).deletedAt} deletedBy={(addOn as any).deletedBy} />
                 )}
@@ -92,6 +90,12 @@ function ListingAddOnCard({
                     </div>
 
                     <div className="h-px bg-border" />
+
+                    {(read as any).provider && addOn.provider && (
+                        <span className="text-xs font-medium text-muted-foreground truncate">
+                            {addOn.provider.name} {addOn.provider.surname}
+                        </span>
+                    )}
 
                     <div className="flex items-end justify-between gap-2">
                         {(read as any).listing && addOn.listing?.title && (
@@ -138,6 +142,6 @@ function ListingAddOnCard({
 }
 
 export default compose(
-    withLanguage("src/modules/eCommerce/clients/panel/private/listingAddOns/center/cardView/listingAddOnCard.tsx"),
+    withLanguage("src/modules/eCommerceMarketplace/clients/panel/private/listingAddOns/center/cardView/listingAddOnCard.tsx"),
     withDebug(true, true),
 )(ListingAddOnCard);

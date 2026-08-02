@@ -28,12 +28,12 @@ function AllDisputes({resolveLanguageKey}: WithLanguageType) {
             collectionName="disputes"
             accessModel="disputes"
             tableConfigKey="disputes"
-            createPath="/eCommerce/disputes/create"
+            createPath="/eCommerceMarketplace/disputes/create"
             createIcon={<IconPlus />}
             createLanguageKey="createDispute"
             buildEditPath={noopDisputeEditPath}
             resolveLanguageKey={resolveLanguageKey}
-            sheetLanguagePath="src/modules/eCommerce/clients/panel/private/disputes/center/sheetView/disputeSheetView.tsx"
+            sheetLanguagePath="src/modules/eCommerceMarketplace/clients/panel/private/disputes/center/sheetView/disputeSheetView.tsx"
             cardViewClassName="grid grid-cols-1 gap-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4"
             rowActionMenu={{allowMenuForCustomChildren: true, hideEdit: true}}
             renderActionMenuChildren={(dispute, bindRowAction) => (
@@ -93,6 +93,6 @@ function AllDisputes({resolveLanguageKey}: WithLanguageType) {
 }
 
 export default compose(
-    withLanguage("src/modules/eCommerce/clients/panel/private/disputes/index.tsx"),
+    withLanguage("src/modules/eCommerceMarketplace/clients/panel/private/disputes/index.tsx"),
     withDebug(true, true),
 )(AllDisputes);

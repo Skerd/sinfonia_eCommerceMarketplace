@@ -52,7 +52,7 @@ function ListingPackageCard({
     const editPath = (() => {
         const params = new URLSearchParams();
         params.set("listingPackageId", pkg._id);
-        return `/eCommerce/listingpackages/edit?${params.toString()}`;
+        return `/eCommerceMarketplace/listingpackages/edit?${params.toString()}`;
     })();
 
     const currencyPrefix = pkg.price.currency?.symbol?.trim() || pkg.price.currency?.abbreviation?.trim();
@@ -68,8 +68,6 @@ function ListingPackageCard({
                 )}
                 onClick={() => setAction("view")}
             >
-                <div className="h-1 w-full bg-primary/60" />
-
                 {(read as any).deletedBy && (
                     <DeletedInfo deletedAt={(pkg as any).deletedAt} deletedBy={(pkg as any).deletedBy} />
                 )}
@@ -103,6 +101,12 @@ function ListingPackageCard({
                     )}
 
                     <div className="h-px bg-border" />
+
+                    {(read as any).provider && pkg.provider && (
+                        <span className="text-xs font-medium text-muted-foreground truncate">
+                            {pkg.provider.name} {pkg.provider.surname}
+                        </span>
+                    )}
 
                     <div className="flex items-end justify-between gap-2">
                         {(read as any).listing && pkg.listing?.title && (
@@ -147,6 +151,6 @@ function ListingPackageCard({
 }
 
 export default compose(
-    withLanguage("src/modules/eCommerce/clients/panel/private/listingPackages/center/cardView/listingPackageCard.tsx"),
+    withLanguage("src/modules/eCommerceMarketplace/clients/panel/private/listingPackages/center/cardView/listingPackageCard.tsx"),
     withDebug(true, true),
 )(ListingPackageCard);

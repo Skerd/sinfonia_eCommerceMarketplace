@@ -1,0 +1,33 @@
+{
+  "path": "src/modules/eCommerceMarketplace/clients/panel/private/promotions/index.tsx",
+  "title": "Promotions",
+  "description": "Manage featured and sponsored listing promotions.",
+  "createPromotion": "Create promotion",
+  "searchPlaceholder": "Search or add filters...",
+  "fields": {
+    "name": "Name",
+    "listing": "Listing",
+    "type": "Type",
+    "lifecycleStatus": "Lifecycle",
+    "stopReason": "Stop reason",
+    "startAt": "Start",
+    "endAt": "End",
+    "company": "Company",
+    "createdBy": "Created by",
+    "createdAt": "Created",
+    "updatedAt": "Updated",
+    "deletedAt": "Deleted",
+    "deletedBy": "Deleted by",
+    "!enums": {
+      "type": {
+        "featured": "Featured",
+        "sponsored": "Sponsored"
+      },
+      "lifecycleStatus": {
+        "active": "Active",
+        "paused": "Paused",
+        "stopped": "Stopped"
+      }
+    }
+  }
+}

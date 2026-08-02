@@ -107,6 +107,6 @@ function BidSheetView({
 }
 
 export default compose(
-    withLanguage("src/modules/eCommerce/clients/panel/private/bids/center/sheetView/bidSheetView.tsx"),
+    withLanguage("src/modules/eCommerceMarketplace/clients/panel/private/bids/center/sheetView/bidSheetView.tsx"),
     withDebug(true, true),
 )(BidSheetView);

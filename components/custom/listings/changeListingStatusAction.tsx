@@ -159,5 +159,5 @@ function ChangeListingStatusActionShell({
 }
 
 export default compose(
-    withLanguage("src/modules/eCommerce/components/custom/listings/changeListingStatusAction.tsx"),
+    withLanguage("src/modules/eCommerceMarketplace/components/custom/listings/changeListingStatusAction.tsx"),
 )(ChangeListingStatusActionShell);

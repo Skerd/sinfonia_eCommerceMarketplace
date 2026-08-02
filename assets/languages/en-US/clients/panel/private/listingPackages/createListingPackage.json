@@ -4,7 +4,10 @@
     "title": "Create listing package",
     "description": "Define a service tier that customers can select when ordering from a listing."
   },
-  "formButtons": { "cancel": "Cancel", "submit": "Create package" },
+  "formButtons": {
+    "cancel": "Cancel",
+    "submit": "Create package"
+  },
   "form": {
     "listingIdLabel": "Listing",
     "listingIdPlaceholder": "Select listing",
@@ -15,14 +18,24 @@
     "priceAmountLabel": "Price",
     "priceAmountPlaceholder": "0.00",
     "currencyLabel": "Currency",
+    "currencyPlaceholder": "Select currency",
     "deliveryDaysLabel": "Delivery days",
     "deliveryDaysPlaceholder": "e.g. 3",
     "sortOrderLabel": "Display order",
     "sortOrderPlaceholder": "e.g. 1"
   },
   "axios": {
-    "start": { "title": "Creating package", "time": 3000 },
-    "success": { "title": "Package created", "time": 3000 },
-    "error": { "title": "Could not create package", "time": 3000 }
+    "start": {
+      "title": "Creating package",
+      "time": 3000
+    },
+    "success": {
+      "title": "Package created",
+      "time": 3000
+    },
+    "error": {
+      "title": "Could not create package",
+      "time": 3000
+    }
   }
 }

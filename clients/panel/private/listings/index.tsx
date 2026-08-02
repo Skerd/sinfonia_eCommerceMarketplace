@@ -16,7 +16,7 @@ export function listingEditPath(listing: Pick<Listing, "_id" | "title">) {
     const params = new URLSearchParams();
     params.set("listingId", listing._id);
     if (listing.title) params.set("listingTitle", listing.title);
-    return `/eCommerce/listings/edit?${params.toString()}`;
+    return `/eCommerceMarketplace/listings/edit?${params.toString()}`;
 }
 
 function AllListings({resolveLanguageKey}: WithLanguageType) {
@@ -26,12 +26,12 @@ function AllListings({resolveLanguageKey}: WithLanguageType) {
             collectionName="listings"
             accessModel="listings"
             tableConfigKey="listings"
-            createPath="/eCommerce/listings/create"
+            createPath="/eCommerceMarketplace/listings/create"
             createIcon={<IconPlus />}
             createLanguageKey="createListing"
             buildEditPath={listingEditPath}
             resolveLanguageKey={resolveLanguageKey}
-            sheetLanguagePath="src/modules/eCommerce/clients/panel/private/listings/center/sheetView/listingSheetView.tsx"
+            sheetLanguagePath="src/modules/eCommerceMarketplace/clients/panel/private/listings/center/sheetView/listingSheetView.tsx"
             cardViewClassName="grid grid-cols-1 gap-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4"
             rowActionMenu={{allowMenuForCustomChildren: true}}
             renderActionMenuChildren={(entity, bindRowAction) => (
@@ -86,6 +86,6 @@ function AllListings({resolveLanguageKey}: WithLanguageType) {
 }
 
 export default compose(
-    withLanguage("src/modules/eCommerce/clients/panel/private/listings/index.tsx"),
+    withLanguage("src/modules/eCommerceMarketplace/clients/panel/private/listings/index.tsx"),
     withDebug(true, true),
 )(AllListings);
