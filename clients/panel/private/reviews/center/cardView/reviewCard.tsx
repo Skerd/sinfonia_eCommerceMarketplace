@@ -18,11 +18,11 @@ import type {DeletedData} from "armonia/src/modules/core/types/shared.types.ts";
 import ReviewSheetView from "../sheetView/reviewSheetView.tsx";
 
 const RATING_CONFIG: Record<number, {text: string}> = {
-    1: {text: "text-slate-600"},
-    2: {text: "text-orange-600"},
-    3: {text: "text-amber-600"},
-    4: {text: "text-yellow-600"},
-    5: {text: "text-emerald-600"},
+    1: {text: "text-muted-foreground"},
+    2: {text: "text-warning"},
+    3: {text: "text-warning"},
+    4: {text: "text-warning"},
+    5: {text: "text-success"},
 };
 
 type ReviewCardProps = WithLanguageType & {
@@ -107,9 +107,9 @@ function ReviewCard({
             {!sheetOnly && (
                 <Card
                     className={cn(
-                        "group p-0 h-full relative overflow-hidden transition-all duration-300",
-                        "hover:shadow-xl hover:cursor-pointer",
-                        "border border-border/60 shadow-sm gap-0",
+                        "group p-0 h-full relative overflow-hidden transition-[box-shadow,--tw-ring-color] duration-200",
+                        "hover:cursor-pointer hover:shadow-md hover:ring-primary/40",
+                        "shadow-sm gap-0",
                     )}
                     onClick={() => setAction("view")}
                 >

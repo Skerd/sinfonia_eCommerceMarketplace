@@ -36,8 +36,8 @@ function ExtendOrderDropdown({order, onAction, resolveLanguageKey}: ExtendOrderD
 
     return (
         <DropdownMenuItem onClick={() => triggerAction()}>
-            <CalendarPlus size={16} className="text-violet-600" />
-            <span className="text-violet-600">{resolveLanguageKey("title")}</span>
+            <CalendarPlus size={16} className="text-primary" />
+            <span className="text-primary">{resolveLanguageKey("title")}</span>
             <DropdownMenuShortcut>⌘{shortcut}</DropdownMenuShortcut>
         </DropdownMenuItem>
     );

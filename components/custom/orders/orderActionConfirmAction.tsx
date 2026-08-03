@@ -101,10 +101,10 @@ function OrderActionConfirmAction({
               : CircleX;
     const iconClass =
         actionKey === "cancel"
-            ? "text-red-600"
+            ? "text-destructive"
             : actionKey === "start"
-              ? "text-blue-600"
-              : "text-green-600";
+              ? "text-info"
+              : "text-success";
 
     return (
         <AlertDialog open={open} onOpenChange={setOpen}>

@@ -119,7 +119,7 @@ function CreateOrderFromListingAction({
                         {loading ? (
                             <LoaderCircle className="size-4 animate-spin" />
                         ) : (
-                            <ShoppingCart size={16} className="text-blue-600" />
+                            <ShoppingCart size={16} className="text-info" />
                         )}
                         {resolveLanguageKey("createOrder.confirm")}
                     </AlertDialogAction>

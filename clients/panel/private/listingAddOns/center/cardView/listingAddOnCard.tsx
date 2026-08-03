@@ -85,9 +85,9 @@ function ListingAddOnCard({
         <>
             <Card
                 className={cn(
-                    "group p-0 h-full relative overflow-hidden transition-all duration-300",
-                    "hover:shadow-xl hover:cursor-pointer",
-                    "border border-border/60 shadow-sm gap-0",
+                    "group p-0 h-full relative overflow-hidden transition-[box-shadow,--tw-ring-color] duration-200",
+                    "hover:cursor-pointer hover:shadow-md hover:ring-primary/40",
+                    "shadow-sm gap-0",
                 )}
                 onClick={() => setAction("view")}
             >

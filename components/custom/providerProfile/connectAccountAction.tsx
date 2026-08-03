@@ -91,7 +91,7 @@ function ConnectAccountAction({
     if (!write) return <HiddenElement />;
 
     const ActionIcon = actionKey === "createAccountLink" ? Landmark : RefreshCw;
-    const iconClass = actionKey === "createAccountLink" ? "text-violet-600" : "text-sky-600";
+    const iconClass = actionKey === "createAccountLink" ? "text-primary" : "text-info";
 
     return (
         <AlertDialog open={open} onOpenChange={setOpen}>

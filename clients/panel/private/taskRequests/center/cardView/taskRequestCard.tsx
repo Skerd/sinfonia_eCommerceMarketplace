@@ -148,8 +148,8 @@ function TaskRequestCard({
             {!sheetOnly && (
                 <Card
                     className={cn(
-                        "group p-0 h-full relative overflow-hidden transition-all duration-300",
-                        "hover:shadow-xl hover:cursor-pointer",
+                        "group p-0 h-full relative overflow-hidden transition-[box-shadow,--tw-ring-color] duration-200",
+                        "hover:cursor-pointer hover:shadow-md hover:ring-primary/40",
                         "border border-border/60 shadow-sm gap-2 pb-2"
                     )}
                     onClick={fetchId ? undefined : () => setAction("view")}
@@ -243,14 +243,14 @@ function TaskRequestCard({
                                 {!!read?.status && entity.status ? (
                                     <span className={cn(
                                         "inline-flex items-center gap-1.5 text-[10px] font-semibold uppercase tracking-wide shrink-0",
-                                        entity.status === "open"   ? "text-emerald-600" :
-                                        entity.status === "awarded"? "text-amber-600"   :
+                                        entity.status === "open"   ? "text-success" :
+                                        entity.status === "awarded"? "text-warning"   :
                                         "text-muted-foreground",
                                     )}>
                                         <span className={cn(
                                             "w-1.5 h-1.5 rounded-full shrink-0",
-                                            entity.status === "open"    ? "bg-emerald-500 animate-pulse" :
-                                            entity.status === "awarded" ? "bg-amber-500"                 :
+                                            entity.status === "open"    ? "bg-success animate-pulse" :
+                                            entity.status === "awarded" ? "bg-warning"                 :
                                             "bg-muted-foreground/40",
                                         )} />
                                         {resolveLanguageKey("statuses." + entity.status)}
@@ -297,8 +297,8 @@ function TaskRequestCard({
                                     {!!read?.expiresAt && expiresLabel ? (
                                         <span className={cn(
                                             "flex items-center gap-1 shrink-0 px-2 py-0.5 rounded-full bg-muted",
-                                            isExpiringSoon && "bg-amber-100 text-amber-700 dark:bg-amber-900/30 dark:text-amber-400",
-                                            isExpired && "bg-rose-100 text-rose-600 dark:bg-rose-900/30 dark:text-rose-400",
+                                            isExpiringSoon && "bg-warning/10 text-warning dark:bg-warning/30",
+                                            isExpired && "bg-destructive/10 text-destructive dark:bg-destructive/30",
                                         )}>
                                             <IconCalendar className="w-3 h-3" />
                                             {expiresLabel}

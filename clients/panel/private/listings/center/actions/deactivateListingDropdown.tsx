@@ -11,7 +11,7 @@ type DeactivateListingDropdownProps = WithLanguageType & {
 function DeactivateListingDropdown({onAction, resolveLanguageKey}: DeactivateListingDropdownProps) {
     return (
         <DropdownMenuItem onClick={() => onAction("deactivate")}>
-            <CircleX size={16} className="text-orange-500" />
+            <CircleX size={16} className="text-warning" />
             <span>{resolveLanguageKey("title")}</span>
         </DropdownMenuItem>
     );

@@ -21,9 +21,9 @@ import type {DisputeLifecycleVerb} from "@eCommerceMarketplaceModule/components/
 import {IconPackage} from "@tabler/icons-react";
 
 const STATUS_CONFIG: Record<string, {dot: string; dotAnim: string; text: string}> = {
-    open:         {dot: "bg-rose-500",            dotAnim: "animate-pulse", text: "text-rose-600"},
-    under_review: {dot: "bg-amber-500",           dotAnim: "animate-pulse", text: "text-amber-600"},
-    resolved:     {dot: "bg-emerald-500",         dotAnim: "",              text: "text-emerald-600"},
+    open:         {dot: "bg-destructive",            dotAnim: "animate-pulse", text: "text-destructive"},
+    under_review: {dot: "bg-warning",           dotAnim: "animate-pulse", text: "text-warning"},
+    resolved:     {dot: "bg-success",         dotAnim: "",              text: "text-success"},
     closed:       {dot: "bg-muted-foreground/40", dotAnim: "",              text: "text-muted-foreground"},
 };
 
@@ -114,9 +114,9 @@ function DisputeCard({
             {!sheetOnly && (
                 <Card
                     className={cn(
-                        "group p-0 h-full relative overflow-hidden transition-all duration-300",
-                        "hover:shadow-xl hover:cursor-pointer",
-                        "border border-border/60 shadow-sm gap-0",
+                        "group p-0 h-full relative overflow-hidden transition-[box-shadow,--tw-ring-color] duration-200",
+                        "hover:cursor-pointer hover:shadow-md hover:ring-primary/40",
+                        "shadow-sm gap-0",
                     )}
                     onClick={() => setAction("view")}
                 >

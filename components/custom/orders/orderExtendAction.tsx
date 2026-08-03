@@ -130,7 +130,7 @@ function OrderExtendAction({
                         {loading ? (
                             <LoaderCircle className="size-4 animate-spin" />
                         ) : (
-                            <CalendarPlus size={16} className="text-violet-600" />
+                            <CalendarPlus size={16} className="text-primary" />
                         )}
                         {resolveLanguageKey("extend.confirm")}
                     </AlertDialogAction>

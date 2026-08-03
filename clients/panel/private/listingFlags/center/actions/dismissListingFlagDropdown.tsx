@@ -21,7 +21,7 @@ function DismissListingFlagDropdown({listingFlag, onAction, resolveLanguageKey}:
 
     return (
         <DropdownMenuItem onClick={() => onAction("dismiss")}>
-            <CircleX size={16} className="text-red-600" />
+            <CircleX size={16} className="text-destructive" />
             <span>{resolveLanguageKey("title")}</span>
         </DropdownMenuItem>
     );

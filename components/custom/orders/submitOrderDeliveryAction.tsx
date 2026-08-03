@@ -119,7 +119,7 @@ function SubmitOrderDeliveryAction({
                         {loading ? (
                             <LoaderCircle className="size-4 animate-spin" />
                         ) : (
-                            <PackageCheck size={16} className="text-emerald-600" />
+                            <PackageCheck size={16} className="text-success" />
                         )}
                         {resolveLanguageKey("submitDelivery.confirm")}
                     </AlertDialogAction>

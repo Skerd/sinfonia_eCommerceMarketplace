@@ -11,7 +11,7 @@ type PausePromotionDropdownProps = WithLanguageType & {
 function PausePromotionDropdown({onAction, resolveLanguageKey}: PausePromotionDropdownProps) {
     return (
         <DropdownMenuItem onClick={() => onAction("pause")}>
-            <CirclePause size={16} className="text-amber-600" />
+            <CirclePause size={16} className="text-warning" />
             <span>{resolveLanguageKey("title")}</span>
         </DropdownMenuItem>
     );

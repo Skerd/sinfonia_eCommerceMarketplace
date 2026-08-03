@@ -26,8 +26,8 @@ function CreateOrderFromListingDropdown({listing, onAction, resolveLanguageKey}:
 
     return (
         <DropdownMenuItem onClick={() => onAction("createOrderFromListing")}>
-            <ShoppingCart size={16} className="text-blue-600" />
-            <span className="text-blue-600">{resolveLanguageKey("title")}</span>
+            <ShoppingCart size={16} className="text-info" />
+            <span className="text-info">{resolveLanguageKey("title")}</span>
         </DropdownMenuItem>
     );
 }

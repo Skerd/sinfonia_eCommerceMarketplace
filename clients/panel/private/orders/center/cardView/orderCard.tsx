@@ -31,10 +31,10 @@ import type {OrderStatus} from "armonia/src/modules/eCommerceMarketplace/api/eCo
 import {IconArrowRight, IconCalendar} from "@tabler/icons-react";
 
 const STATUS_CONFIG: Record<string, {dot: string; dotAnim: string; text: string}> = {
-    pending:     {dot: "bg-amber-500",        dotAnim: "",             text: "text-amber-600"},
-    accepted:    {dot: "bg-blue-500",         dotAnim: "animate-pulse",text: "text-blue-600"},
-    in_progress: {dot: "bg-violet-500",       dotAnim: "animate-pulse",text: "text-violet-600"},
-    completed:   {dot: "bg-emerald-500",     dotAnim: "",             text: "text-emerald-600"},
+    pending:     {dot: "bg-warning",        dotAnim: "",             text: "text-warning"},
+    accepted:    {dot: "bg-info",         dotAnim: "animate-pulse",text: "text-info"},
+    in_progress: {dot: "bg-primary",       dotAnim: "animate-pulse",text: "text-primary"},
+    completed:   {dot: "bg-success",     dotAnim: "",             text: "text-success"},
     cancelled:   {dot: "bg-muted-foreground/40",dotAnim: "",           text: "text-muted-foreground"},
 };
 
@@ -112,9 +112,9 @@ function OrderCard({
         <>
             <Card
                 className={cn(
-                    "group p-0 h-full relative overflow-hidden transition-all duration-300",
-                    "hover:shadow-xl hover:cursor-pointer",
-                    "border border-border/60 shadow-sm gap-0",
+                    "group p-0 h-full relative overflow-hidden transition-[box-shadow,--tw-ring-color] duration-200",
+                    "hover:cursor-pointer hover:shadow-md hover:ring-primary/40",
+                    "shadow-sm gap-0",
                 )}
                 onClick={() => setAction("view")}
             >

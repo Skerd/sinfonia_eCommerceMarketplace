@@ -11,7 +11,7 @@ type ResumePromotionDropdownProps = WithLanguageType & {
 function ResumePromotionDropdown({onAction, resolveLanguageKey}: ResumePromotionDropdownProps) {
     return (
         <DropdownMenuItem onClick={() => onAction("resume")}>
-            <CirclePlay size={16} className="text-emerald-600" />
+            <CirclePlay size={16} className="text-success" />
             <span>{resolveLanguageKey("title")}</span>
         </DropdownMenuItem>
     );

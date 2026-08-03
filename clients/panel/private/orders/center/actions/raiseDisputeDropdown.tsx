@@ -35,7 +35,7 @@ function RaiseDisputeDropdown({order, onAction, resolveLanguageKey}: Props) {
 
     return (
         <DropdownMenuItem onClick={() => onAction(actionKey)}>
-            <AlertTriangle size={16} className="text-amber-600" />
+            <AlertTriangle size={16} className="text-warning" />
             <span>{resolveLanguageKey("title")}</span>
         </DropdownMenuItem>
     );

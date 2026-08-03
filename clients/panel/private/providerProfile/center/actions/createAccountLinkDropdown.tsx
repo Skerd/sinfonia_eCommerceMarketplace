@@ -38,8 +38,8 @@ function CreateAccountLinkDropdown({profile, onAction, resolveLanguageKey}: Crea
 
     return (
         <DropdownMenuItem onClick={() => triggerAction()}>
-            <Landmark size={16} className="text-violet-600" />
-            <span className="text-violet-600">{resolveLanguageKey(labelKey)}</span>
+            <Landmark size={16} className="text-primary" />
+            <span className="text-primary">{resolveLanguageKey(labelKey)}</span>
             <DropdownMenuShortcut>⌘{shortcut}</DropdownMenuShortcut>
         </DropdownMenuItem>
     );

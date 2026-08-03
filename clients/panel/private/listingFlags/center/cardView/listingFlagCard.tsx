@@ -24,12 +24,12 @@ import ChangeListingFlagLifecycleAction, {
 
 const STATUS_CONFIG: Record<string, { dot: string; text: string }> = {
     pending: {
-        dot: "bg-amber-500",
-        text: "text-amber-600",
+        dot: "bg-warning",
+        text: "text-warning",
     },
     reviewed: {
-        dot: "bg-blue-500",
-        text: "text-blue-600",
+        dot: "bg-info",
+        text: "text-info",
     },
     dismissed: {
         dot: "bg-muted-foreground/40",
@@ -131,9 +131,9 @@ function ListingFlagCard({
             {!sheetOnly && (
                 <Card
                     className={cn(
-                        "group p-0 h-full relative overflow-hidden transition-all duration-300",
-                        "hover:shadow-xl hover:cursor-pointer",
-                        "border border-border/60 shadow-sm gap-0",
+                        "group p-0 h-full relative overflow-hidden transition-[box-shadow,--tw-ring-color] duration-200",
+                        "hover:cursor-pointer hover:shadow-md hover:ring-primary/40",
+                        "shadow-sm gap-0",
                     )}
                     onClick={() => setAction("view")}
                 >

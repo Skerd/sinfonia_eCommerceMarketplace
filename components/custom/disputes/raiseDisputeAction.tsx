@@ -122,7 +122,7 @@ function RaiseDisputeAction({
                         {loading ? (
                             <LoaderCircle className="size-4 animate-spin" />
                         ) : (
-                            <AlertTriangle size={16} className="text-amber-600" />
+                            <AlertTriangle size={16} className="text-warning" />
                         )}
                         {resolveLanguageKey("raise.confirm")}
                     </AlertDialogAction>

@@ -35,8 +35,8 @@ function StartOrderDropdown({order, onAction, resolveLanguageKey}: StartOrderDro
 
     return (
         <DropdownMenuItem onClick={() => triggerAction()}>
-            <Play size={16} className="text-blue-600" />
-            <span className="text-blue-600">{resolveLanguageKey("title")}</span>
+            <Play size={16} className="text-info" />
+            <span className="text-info">{resolveLanguageKey("title")}</span>
             <DropdownMenuShortcut>⌘{shortcut}</DropdownMenuShortcut>
         </DropdownMenuItem>
     );

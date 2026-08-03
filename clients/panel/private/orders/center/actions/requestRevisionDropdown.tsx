@@ -35,8 +35,8 @@ function RequestRevisionDropdown({order, onAction, resolveLanguageKey}: RequestR
 
     return (
         <DropdownMenuItem onClick={() => triggerAction()}>
-            <RotateCcw size={16} className="text-amber-600" />
-            <span className="text-amber-600">{resolveLanguageKey("title")}</span>
+            <RotateCcw size={16} className="text-warning" />
+            <span className="text-warning">{resolveLanguageKey("title")}</span>
             <DropdownMenuShortcut>⌘{shortcut}</DropdownMenuShortcut>
         </DropdownMenuItem>
     );

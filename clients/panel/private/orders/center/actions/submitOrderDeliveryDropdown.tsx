@@ -35,8 +35,8 @@ function SubmitOrderDeliveryDropdown({order, onAction, resolveLanguageKey}: Subm
 
     return (
         <DropdownMenuItem onClick={() => triggerAction()}>
-            <PackageCheck size={16} className="text-emerald-600" />
-            <span className="text-emerald-600">{resolveLanguageKey("title")}</span>
+            <PackageCheck size={16} className="text-success" />
+            <span className="text-success">{resolveLanguageKey("title")}</span>
             <DropdownMenuShortcut>⌘{shortcut}</DropdownMenuShortcut>
         </DropdownMenuItem>
     );

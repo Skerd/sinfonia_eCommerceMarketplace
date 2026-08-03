@@ -23,7 +23,7 @@ function CloseDisputeDropdown({dispute, onAction, resolveLanguageKey}: Props) {
 
     return (
         <DropdownMenuItem onClick={() => onAction("close")}>
-            <CircleX size={16} className="text-red-600" />
+            <CircleX size={16} className="text-destructive" />
             <span className="">{resolveLanguageKey("title")}</span>
         </DropdownMenuItem>
     );

@@ -122,8 +122,8 @@ function ListingCard({
             {!sheetOnly && (
                 <Card
                     className={cn(
-                        "group p-0 h-full relative overflow-hidden transition-all duration-300",
-                        "hover:shadow-xl hover:cursor-pointer",
+                        "group p-0 h-full relative overflow-hidden transition-[box-shadow,--tw-ring-color] duration-200",
+                        "hover:cursor-pointer hover:shadow-md hover:ring-primary/40",
                         "border border-border/60 shadow-sm gap-2 pb-2",
                     )}
                     onClick={() => setAction("view")}
@@ -186,7 +186,7 @@ function ListingCard({
                             {(isFeatured || isSponsored || !read?.promotions) && (
                                 <HiddenElement randomLength={read?.promotions ? 0 : 6}>
                                     {!!read?.promotions && (isFeatured || isSponsored) ? (
-                                        <span className="inline-flex items-center gap-1 text-[10px] font-bold px-2.5 py-1 rounded-full bg-amber-400 text-amber-950 uppercase tracking-wide shadow-sm shrink-0 ml-auto">
+                                        <span className="inline-flex items-center gap-1 text-[10px] font-bold px-2.5 py-1 rounded-full bg-warning/20 text-warning uppercase tracking-wide shadow-sm shrink-0 ml-auto">
                                             <IconSparkles className="w-3 h-3" />
                                             {isFeatured
                                                 ? resolveLanguageKey("featured")
@@ -226,14 +226,14 @@ function ListingCard({
                                 {!!read?.status && listing.status ? (
                                     <span className={cn(
                                         "inline-flex items-center gap-1.5 text-[10px] font-semibold uppercase tracking-wide shrink-0",
-                                        listing.status === "active" ? "text-emerald-600" :
-                                        listing.status === "inactive" ? "text-amber-600" :
+                                        listing.status === "active" ? "text-success" :
+                                        listing.status === "inactive" ? "text-warning" :
                                         "text-muted-foreground",
                                     )}>
                                         <span className={cn(
                                             "w-1.5 h-1.5 rounded-full shrink-0",
-                                            listing.status === "active" ? "bg-emerald-500 animate-pulse" :
-                                            listing.status === "inactive" ? "bg-amber-500" :
+                                            listing.status === "active" ? "bg-success animate-pulse" :
+                                            listing.status === "inactive" ? "bg-warning" :
                                             "bg-muted-foreground/40",
                                         )} />
                                         {resolveLanguageKey("statuses." + listing.status)}

@@ -151,11 +151,11 @@ function PromotionCard({
         displayStatus === "stopped"
             ? "bg-muted-foreground/35"
             : displayStatus === "paused"
-              ? "bg-amber-500/60"
+              ? "bg-warning/60"
               : displayStatus === "active"
                 ? isFeatured
-                    ? "bg-amber-400"
-                    : "bg-blue-500"
+                    ? "bg-warning/20"
+                    : "bg-info"
                 : displayStatus === "ended"
                   ? "bg-muted-foreground/40"
                   : "bg-muted-foreground/20";
@@ -163,10 +163,10 @@ function PromotionCard({
     const labelClass =
         displayStatus === "active"
             ? isFeatured
-                ? "text-amber-600"
-                : "text-blue-600"
+                ? "text-warning"
+                : "text-info"
             : displayStatus === "paused"
-              ? "text-amber-700 dark:text-amber-400"
+              ? "text-warning"
               : displayStatus === "stopped"
                 ? "text-destructive/90"
                 : displayStatus === "upcoming"
@@ -176,10 +176,10 @@ function PromotionCard({
     const dotClass =
         displayStatus === "active"
             ? isFeatured
-                ? "bg-amber-500 animate-pulse"
-                : "bg-blue-500 animate-pulse"
+                ? "bg-warning animate-pulse"
+                : "bg-info animate-pulse"
             : displayStatus === "paused"
-              ? "bg-amber-500"
+              ? "bg-warning"
               : displayStatus === "stopped"
                 ? "bg-destructive"
                 : displayStatus === "upcoming"
@@ -191,8 +191,8 @@ function PromotionCard({
             {!sheetOnly && (
                 <Card
                     className={cn(
-                        "group relative h-full overflow-hidden p-0 transition-all duration-300",
-                        "hover:shadow-xl hover:-translate-y-0.5 hover:cursor-pointer",
+                        "group relative h-full overflow-hidden p-0 transition-[box-shadow,--tw-ring-color,transform] duration-200",
+                        "hover:cursor-pointer hover:shadow-md hover:ring-primary/40 hover:-translate-y-0.5",
                         "border border-border/60 shadow-sm",
                     )}
                     onClick={() => setAction("view")}
@@ -212,8 +212,8 @@ function PromotionCard({
                                         className={cn(
                                             "inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[10px] font-bold uppercase tracking-wide",
                                             isFeatured
-                                                ? "bg-amber-100 text-amber-800 dark:bg-amber-900/40 dark:text-amber-300"
-                                                : "bg-blue-100 text-blue-800 dark:bg-blue-900/40 dark:text-blue-300",
+                                                ? "bg-warning/10 text-warning dark:bg-warning/40"
+                                                : "bg-info/10 text-info dark:bg-info/40",
                                         )}
                                     >
                                         {isFeatured ? <IconSparkles className="w-3 h-3" /> : <IconStar className="w-3 h-3" />}

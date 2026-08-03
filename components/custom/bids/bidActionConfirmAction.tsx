@@ -107,9 +107,9 @@ function BidActionConfirmAction({
                         {loading ? (
                             <LoaderCircle className="size-4 animate-spin" />
                         ) : isAccept ? (
-                            <CircleCheck size={16} className="text-green-600" />
+                            <CircleCheck size={16} className="text-success" />
                         ) : (
-                            <CircleX size={16} className="text-red-600" />
+                            <CircleX size={16} className="text-destructive" />
                         )}
                         {resolveLanguageKey(`${actionKey}.confirm`)}
                     </AlertDialogAction>

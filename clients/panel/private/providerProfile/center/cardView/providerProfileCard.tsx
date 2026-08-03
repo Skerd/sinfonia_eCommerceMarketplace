@@ -66,9 +66,9 @@ function ProviderProfileCard({
             {!sheetOnly && (
                 <Card
                     className={cn(
-                        "group p-0 h-full relative overflow-hidden transition-all duration-300",
-                        "hover:shadow-xl hover:cursor-pointer",
-                        "border border-border/60 shadow-sm gap-0",
+                        "group p-0 h-full relative overflow-hidden transition-[box-shadow,--tw-ring-color] duration-200",
+                        "hover:cursor-pointer hover:shadow-md hover:ring-primary/40",
+                        "shadow-sm gap-0",
                     )}
                     onClick={() => setAction("view")}
                 >
@@ -116,7 +116,7 @@ function ProviderProfileCard({
                             ) : <span />}
 
                             {profile.averageRating != null && (
-                                <span className="flex items-center gap-1 shrink-0 text-xs font-semibold text-amber-600">
+                                <span className="flex items-center gap-1 shrink-0 text-xs font-semibold text-warning">
                                     <IconStar className="w-3 h-3" />
                                     {profile.averageRating.toFixed(1)}
                                     {profile.reviewCount != null && (
@@ -130,9 +130,9 @@ function ProviderProfileCard({
                             className={cn(
                                 "inline-flex w-fit items-center text-[10px] font-semibold uppercase tracking-wide",
                                 profile.stripePayoutsEnabled
-                                    ? "text-emerald-600"
+                                    ? "text-success"
                                     : profile.stripeAccountId
-                                      ? "text-amber-600"
+                                      ? "text-warning"
                                       : "text-muted-foreground",
                             )}
                         >

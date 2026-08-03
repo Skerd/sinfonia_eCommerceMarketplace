@@ -11,7 +11,7 @@ type ActivateListingDropdownProps = WithLanguageType & {
 function ActivateListingDropdown({onAction, resolveLanguageKey}: ActivateListingDropdownProps) {
     return (
         <DropdownMenuItem onClick={() => onAction("activate")}>
-            <CircleCheck size={16} className="text-green-600" />
+            <CircleCheck size={16} className="text-success" />
             <span>{resolveLanguageKey("title")}</span>
         </DropdownMenuItem>
     );

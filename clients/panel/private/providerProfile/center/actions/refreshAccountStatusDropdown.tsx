@@ -35,8 +35,8 @@ function RefreshAccountStatusDropdown({profile, onAction, resolveLanguageKey}: R
 
     return (
         <DropdownMenuItem onClick={() => triggerAction()}>
-            <RefreshCw size={16} className="text-sky-600" />
-            <span className="text-sky-600">{resolveLanguageKey("title")}</span>
+            <RefreshCw size={16} className="text-info" />
+            <span className="text-info">{resolveLanguageKey("title")}</span>
             <DropdownMenuShortcut>⌘{shortcut}</DropdownMenuShortcut>
         </DropdownMenuItem>
     );
