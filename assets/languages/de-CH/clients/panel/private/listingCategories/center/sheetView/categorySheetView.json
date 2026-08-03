@@ -1,0 +1,13 @@
+{
+  "path": "src/modules/eCommerceMarketplace/clients/panel/private/listingCategories/center/sheetView/categorySheetView.tsx",
+  "failedTitle": "Kategorie konnten nicht geladen werden",
+  "failedDescription": "Something went wrong während laden diese kategorie. Click bis retry.",
+  "failedTooltipDescription": "Click bis retry fetching daten.",
+  "categorySubtitle": "Kategorie",
+  "listingCategorySubtitle": "Inserat kategorie",
+  "name": "Name",
+  "overview": "Übersicht",
+  "slug": "Slug",
+  "order": "Auftrag",
+  "parentListingCategory": "Parent kategorie"
+}
