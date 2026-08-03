@@ -51,6 +51,42 @@
       },
       "listingcategories": {
         "title": "Kategoritë e listimeve"
+      },
+      "listings": {
+        "title": "Listimet"
+      },
+      "taskrequests": {
+        "title": "Kërkesat për detyra"
+      },
+      "orders": {
+        "title": "Porositë"
+      },
+      "bids": {
+        "title": "Ofertat"
+      },
+      "bookings": {
+        "title": "Rezervimet"
+      },
+      "disputes": {
+        "title": "Ankesat"
+      },
+      "reviews": {
+        "title": "Vlerësimet"
+      },
+      "promotions": {
+        "title": "Promovimet"
+      },
+      "listingflags": {
+        "title": "Raportimet"
+      },
+      "providerprofile": {
+        "title": "Profilet e ofruesve"
+      },
+      "listingaddons": {
+        "title": "Shtesa të Listimeve"
+      },
+      "listingpackages": {
+        "title": "Paketat e Listimeve"
       }
     }
   }

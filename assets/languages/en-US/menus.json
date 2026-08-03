@@ -5,7 +5,7 @@
       "title": "Listings"
     },
     "taskrequests": {
-      "title": "Task Requests"
+      "title": "Task requests"
     },
     "orders": {
       "title": "Orders"
@@ -26,22 +26,22 @@
       "title": "Promotions"
     },
     "listingflags": {
-      "title": "Listing Flags"
+      "title": "Listing flags"
     },
     "providerprofile": {
-      "title": "Provider Profiles"
+      "title": "Provider profiles"
     },
     "listingaddons": {
-      "title": "Listing Add-Ons"
+      "title": "Listing add-ons"
     },
     "listingpackages": {
-      "title": "Listing Packages"
+      "title": "Listing packages"
     },
     "marketplacesystemmap": {
-      "title": "System Map"
+      "title": "System map"
     },
     "listingcategories": {
-      "title": "Listing Categories"
+      "title": "Listing categories"
     }
   },
   "tenancy": {
@@ -50,7 +50,43 @@
         "title": "eCommerce Marketplace"
       },
       "listingcategories": {
-        "title": "Listing Categories"
+        "title": "Listing categories"
+      },
+      "listings": {
+        "title": "Listings"
+      },
+      "taskrequests": {
+        "title": "Task requests"
+      },
+      "orders": {
+        "title": "Orders"
+      },
+      "bids": {
+        "title": "Bids"
+      },
+      "bookings": {
+        "title": "Bookings"
+      },
+      "disputes": {
+        "title": "Disputes"
+      },
+      "reviews": {
+        "title": "Reviews"
+      },
+      "promotions": {
+        "title": "Promotions"
+      },
+      "listingflags": {
+        "title": "Listing flags"
+      },
+      "providerprofile": {
+        "title": "Provider profiles"
+      },
+      "listingaddons": {
+        "title": "Listing add-ons"
+      },
+      "listingpackages": {
+        "title": "Listing packages"
       }
     }
   }
