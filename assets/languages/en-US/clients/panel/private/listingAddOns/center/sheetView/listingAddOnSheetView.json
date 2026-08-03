@@ -5,11 +5,16 @@
   "failedTooltipDescription": "Click to retry fetching data.",
   "listingAddOnSubtitle": "Listing Add-On",
   "overview": "Overview",
+  "lifecycle": "Lifecycle",
   "name": "Name",
   "listing": "Listing",
   "provider": "Provider",
   "priceAmount": "Price",
   "currency": "Currency",
   "deliveryDays": "Delivery (days)",
-  "createdAt": "Created"
+  "createdAt": "Created at",
+  "updatedAt": "Updated at",
+  "createdBy": "Created by",
+  "deletedAt": "Deleted at",
+  "deletedBy": "Deleted by"
 }

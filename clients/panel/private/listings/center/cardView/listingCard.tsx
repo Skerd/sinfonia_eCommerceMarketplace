@@ -101,7 +101,18 @@ function ListingCard({
 
     const isFeatured = listing.promotions?.some((p) => p.type === "featured");
     const isSponsored = listing.promotions?.some((p) => p.type === "sponsored");
-    const providerInitials = [listing.provider?.name?.[0], listing.provider?.surname?.[0]]
+    const canReadProviderName = !!(read?.provider?.keys?.name || read?.provider?.keys?.surname);
+    const providerName = [
+        read?.provider?.keys?.name ? listing.provider?.name : "",
+        read?.provider?.keys?.surname ? listing.provider?.surname : "",
+    ]
+        .filter(Boolean)
+        .join(" ")
+        .trim();
+    const providerInitials = [
+        read?.provider?.keys?.name ? listing.provider?.name?.[0] : "",
+        read?.provider?.keys?.surname ? listing.provider?.surname?.[0] : "",
+    ]
         .filter(Boolean)
         .join("")
         .toUpperCase();
@@ -119,18 +130,21 @@ function ListingCard({
                 >
                     {/* ── Image ─────────────────────────────────────────── */}
                     <div className="relative h-50 overflow-hidden bg-muted">
-                        {
-                            listing.mainImage ?
-                            <img
-                                src={`/api/auxiliary/media/${listing.mainImage._id}`}
-                                alt={listing.title}
-                                className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
-                            />
-                            :
-                            <div className="w-full h-full flex items-center justify-center bg-linear-to-br from-muted via-muted/70 to-muted/40">
-                                <IconPhoto className="w-14 h-14 text-muted-foreground/15" />
-                            </div>
-                        }
+                        <HiddenElement randomLength={read?.mainImage ? 0 : 12}>
+                            {!!read?.mainImage ? (
+                                listing.mainImage ? (
+                                    <img
+                                        src={`/api/auxiliary/media/${listing.mainImage._id}`}
+                                        alt={read?.title ? listing.title : ""}
+                                        className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                                    />
+                                ) : (
+                                    <div className="w-full h-full flex items-center justify-center bg-linear-to-br from-muted via-muted/70 to-muted/40">
+                                        <IconPhoto className="w-14 h-14 text-muted-foreground/15" />
+                                    </div>
+                                )
+                            ) : null}
+                        </HiddenElement>
 
                         {/* Gradient scrim for bottom overlays */}
                         <div className="absolute inset-0 transform-gpu bg-linear-to-t from-black/65 via-black/10 to-transparent pointer-events-none" />
@@ -161,19 +175,25 @@ function ListingCard({
 
                         {/* Bottom image row: category left, featured right */}
                         <div className="absolute bottom-2 left-2 right-2 flex items-end justify-between gap-2">
-                            {read?.category && listing.category?.name && (
-                                <span className="inline-flex items-center gap-1 text-[11px] font-medium px-2.5 py-1 rounded-full bg-white/15 backdrop-blur-sm text-white border border-white/20 shadow-sm truncate max-w-[60%]">
-                                    <IconFolder className="w-3 h-3 shrink-0" />
-                                    <span className="truncate">{listing.category.name}</span>
-                                </span>
-                            )}
-                            {(isFeatured || isSponsored) && (
-                                <span className="inline-flex items-center gap-1 text-[10px] font-bold px-2.5 py-1 rounded-full bg-amber-400 text-amber-950 uppercase tracking-wide shadow-sm shrink-0 ml-auto">
-                                    <IconSparkles className="w-3 h-3" />
-                                    {isFeatured
-                                        ? resolveLanguageKey("featured")
-                                        : resolveLanguageKey("sponsored")}
-                                </span>
+                            <HiddenElement randomLength={read?.category?.keys?.name ? 0 : 8}>
+                                {!!read?.category?.keys?.name && listing.category?.name ? (
+                                    <span className="inline-flex items-center gap-1 text-[11px] font-medium px-2.5 py-1 rounded-full bg-white/15 backdrop-blur-sm text-white border border-white/20 shadow-sm truncate max-w-[60%]">
+                                        <IconFolder className="w-3 h-3 shrink-0" />
+                                        <span className="truncate">{listing.category.name}</span>
+                                    </span>
+                                ) : null}
+                            </HiddenElement>
+                            {(isFeatured || isSponsored || !read?.promotions) && (
+                                <HiddenElement randomLength={read?.promotions ? 0 : 6}>
+                                    {!!read?.promotions && (isFeatured || isSponsored) ? (
+                                        <span className="inline-flex items-center gap-1 text-[10px] font-bold px-2.5 py-1 rounded-full bg-amber-400 text-amber-950 uppercase tracking-wide shadow-sm shrink-0 ml-auto">
+                                            <IconSparkles className="w-3 h-3" />
+                                            {isFeatured
+                                                ? resolveLanguageKey("featured")
+                                                : resolveLanguageKey("sponsored")}
+                                        </span>
+                                    ) : null}
+                                </HiddenElement>
                             )}
                         </div>
                     </div>
@@ -188,69 +208,81 @@ function ListingCard({
 
                         {/* Provider row + status */}
                         <div className="flex items-center justify-between gap-2">
-                            {read?.provider && listing.provider && (
-                                <div className="flex items-center gap-2 min-w-0">
-                                    <div className="w-6 h-6 rounded-full bg-primary/10 flex items-center justify-center shrink-0 ring-1 ring-primary/20">
-                                        <span className="text-[9px] font-bold text-primary leading-none">
-                                            {providerInitials || "?"}
+                            <HiddenElement randomLength={canReadProviderName ? 0 : 10}>
+                                {canReadProviderName && listing.provider ? (
+                                    <div className="flex items-center gap-2 min-w-0">
+                                        <div className="w-6 h-6 rounded-full bg-primary/10 flex items-center justify-center shrink-0 ring-1 ring-primary/20">
+                                            <span className="text-[9px] font-bold text-primary leading-none">
+                                                {providerInitials || "?"}
+                                            </span>
+                                        </div>
+                                        <span className="text-xs font-medium text-muted-foreground truncate">
+                                            {providerName || "—"}
                                         </span>
                                     </div>
-                                    <span className="text-xs font-medium text-muted-foreground truncate">
-                                        {listing.provider.name} {listing.provider.surname}
-                                    </span>
-                                </div>
-                            )}
-                            {read?.status && listing.status && (
-                                <span className={cn(
-                                    "inline-flex items-center gap-1.5 text-[10px] font-semibold uppercase tracking-wide shrink-0",
-                                    listing.status === "active" ? "text-emerald-600" :
-                                    listing.status === "inactive" ? "text-amber-600" :
-                                    "text-muted-foreground",
-                                )}>
+                                ) : null}
+                            </HiddenElement>
+                            <HiddenElement randomLength={read?.status ? 0 : 6}>
+                                {!!read?.status && listing.status ? (
                                     <span className={cn(
-                                        "w-1.5 h-1.5 rounded-full shrink-0",
-                                        listing.status === "active" ? "bg-emerald-500 animate-pulse" :
-                                        listing.status === "inactive" ? "bg-amber-500" :
-                                        "bg-muted-foreground/40",
-                                    )} />
-                                    {resolveLanguageKey("statuses." + listing.status)}
-                                </span>
-                            )}
+                                        "inline-flex items-center gap-1.5 text-[10px] font-semibold uppercase tracking-wide shrink-0",
+                                        listing.status === "active" ? "text-emerald-600" :
+                                        listing.status === "inactive" ? "text-amber-600" :
+                                        "text-muted-foreground",
+                                    )}>
+                                        <span className={cn(
+                                            "w-1.5 h-1.5 rounded-full shrink-0",
+                                            listing.status === "active" ? "bg-emerald-500 animate-pulse" :
+                                            listing.status === "inactive" ? "bg-amber-500" :
+                                            "bg-muted-foreground/40",
+                                        )} />
+                                        {resolveLanguageKey("statuses." + listing.status)}
+                                    </span>
+                                ) : null}
+                            </HiddenElement>
                         </div>
 
                         {/* Title */}
-                        <HiddenElement showLock randomLength={0}>
-                            {read?.title && (
+                        <HiddenElement randomLength={10}>
+                            {!!read?.title ? (
                                 <h3 className="font-semibold text-sm leading-snug line-clamp-2 text-foreground min-h-6">
                                     {listing.title || <ValueNotSet />}
                                 </h3>
-                            )}
+                            ) : null}
                         </HiddenElement>
 
                         {/* Description excerpt */}
-                        {read?.description && listing.description && (
-                            <p className="text-xs text-muted-foreground line-clamp-1 leading-normal -mt-0.5">
-                                {listing.description}
-                            </p>
+                        {(!!listing.description || !read?.description) && (
+                            <HiddenElement randomLength={read?.description ? 0 : 16}>
+                                {!!read?.description && listing.description ? (
+                                    <p className="text-xs text-muted-foreground line-clamp-1 leading-normal -mt-0.5">
+                                        {listing.description}
+                                    </p>
+                                ) : null}
+                            </HiddenElement>
                         )}
 
                         {/* Tags */}
-                        {listing.tags && listing.tags.length > 0 && (
-                            <div className="flex flex-wrap gap-1">
-                                {listing.tags.slice(0, 3).map((tag, i) => (
-                                    <span
-                                        key={i}
-                                        className="text-[10px] px-2 py-0.5 rounded-full bg-primary/10 text-primary/80 font-medium"
-                                    >
-                                        #{tag}
-                                    </span>
-                                ))}
-                                {listing.tags.length > 3 && (
-                                    <span className="text-[10px] text-muted-foreground font-medium self-center">
-                                        +{listing.tags.length - 3}
-                                    </span>
-                                )}
-                            </div>
+                        {((listing.tags && listing.tags.length > 0) || !read?.tags) && (
+                            <HiddenElement randomLength={read?.tags ? 0 : 12}>
+                                {!!read?.tags && listing.tags && listing.tags.length > 0 ? (
+                                    <div className="flex flex-wrap gap-1">
+                                        {listing.tags.slice(0, 3).map((tag, i) => (
+                                            <span
+                                                key={i}
+                                                className="text-[10px] px-2 py-0.5 rounded-full bg-primary/10 text-primary/80 font-medium"
+                                            >
+                                                #{tag}
+                                            </span>
+                                        ))}
+                                        {listing.tags.length > 3 && (
+                                            <span className="text-[10px] text-muted-foreground font-medium self-center">
+                                                +{listing.tags.length - 3}
+                                            </span>
+                                        )}
+                                    </div>
+                                ) : null}
+                            </HiddenElement>
                         )}
 
                         {/* Divider */}
@@ -259,35 +291,41 @@ function ListingCard({
                         {/* Footer: meta left | price right */}
                         <div className="flex items-end justify-between gap-2">
                             <div className="flex items-center gap-2 text-xs text-muted-foreground min-w-0 flex-wrap">
-                                {read?.address && listing.address?.city?.name && (
-                                    <span className="flex items-center gap-1 truncate">
-                                        <IconMapPin className="w-3.5 h-3.5 shrink-0" />
-                                        <span className="truncate">{listing.address.city.name}</span>
-                                    </span>
-                                )}
-                                {listing.deliveryDays != null && (
-                                    <span className="flex items-center gap-1 shrink-0 bg-muted px-2 py-0.5 rounded-full">
-                                        <IconClock className="w-3 h-3" />
-                                        {listing.deliveryDays}{resolveLanguageKey("days")}
-                                    </span>
-                                )}
+                                <HiddenElement randomLength={read?.address ? 0 : 8}>
+                                    {!!read?.address && listing.address?.city?.name ? (
+                                        <span className="flex items-center gap-1 truncate">
+                                            <IconMapPin className="w-3.5 h-3.5 shrink-0" />
+                                            <span className="truncate">{listing.address.city.name}</span>
+                                        </span>
+                                    ) : null}
+                                </HiddenElement>
+                                <HiddenElement randomLength={read?.deliveryDays ? 0 : 6}>
+                                    {!!read?.deliveryDays && listing.deliveryDays != null ? (
+                                        <span className="flex items-center gap-1 shrink-0 bg-muted px-2 py-0.5 rounded-full">
+                                            <IconClock className="w-3 h-3" />
+                                            {listing.deliveryDays}{resolveLanguageKey("days")}
+                                        </span>
+                                    ) : null}
+                                </HiddenElement>
                             </div>
 
-                            {read?.price && priceStr !== undefined && (
-                                <div className="shrink-0 text-right">
-                                    <div className="text-[9px] text-muted-foreground uppercase tracking-wide leading-none mb-0.5">
-                                        {resolveLanguageKey("from")}
+                            <HiddenElement randomLength={read?.price ? 0 : 8}>
+                                {!!read?.price && priceStr !== undefined ? (
+                                    <div className="shrink-0 text-right">
+                                        <div className="text-[9px] text-muted-foreground uppercase tracking-wide leading-none mb-0.5">
+                                            {resolveLanguageKey("from")}
+                                        </div>
+                                        <div className="flex items-baseline gap-0.5">
+                                            <span className="font-bold text-base text-foreground leading-none">
+                                                {priceStr}
+                                            </span>
+                                            {!!read?.pricingType && listing.pricingType === "hourly" && (
+                                                <span className="text-[10px] text-muted-foreground">/{resolveLanguageKey("perHour")}</span>
+                                            )}
+                                        </div>
                                     </div>
-                                    <div className="flex items-baseline gap-0.5">
-                                        <span className="font-bold text-base text-foreground leading-none">
-                                            {priceStr}
-                                        </span>
-                                        {listing.pricingType === "hourly" && (
-                                            <span className="text-[10px] text-muted-foreground">/{resolveLanguageKey("perHour")}</span>
-                                        )}
-                                    </div>
-                                </div>
-                            )}
+                                ) : null}
+                            </HiddenElement>
                         </div>
                     </div>
                 </Card>

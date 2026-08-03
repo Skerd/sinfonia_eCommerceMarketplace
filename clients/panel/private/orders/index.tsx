@@ -34,7 +34,6 @@ function AllOrders({resolveLanguageKey}: WithLanguageType) {
             buildEditPath={() => ""}
             resolveLanguageKey={resolveLanguageKey}
             sheetLanguagePath="src/modules/eCommerceMarketplace/clients/panel/private/orders/center/sheetView/orderSheetView.tsx"
-            cardViewClassName="grid grid-cols-1 gap-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4"
             rowActionMenu={{hideEdit: true, allowMenuForCustomChildren: true}}
             renderActionMenuChildren={(order, bindRowAction) => (
                 <>
@@ -74,7 +73,7 @@ function AllOrders({resolveLanguageKey}: WithLanguageType) {
                             currentDueDate={entity.deliveryDueDate}
                             openAlert
                             url="/api/eCommerceMarketplace/order/extend"
-                            onSuccess={(newDueDate) => {
+                            onSuccess={(newDueDate: string) => {
                                 listRef.current?.updateRow?.(entity._id, {
                                     deliveryDueDate: newDueDate,
                                 } as Partial<Order>);
@@ -137,9 +136,9 @@ function AllOrders({resolveLanguageKey}: WithLanguageType) {
             renderCard={(order, onDelete, onRestore, listRef) => (
                 <OrderCard
                     order={order}
-                    onDelete={(row, response?: DeletedData) => onDelete(row ?? order, response)}
+                    onDelete={(row: Order | undefined, response?: DeletedData) => onDelete(row ?? order, response)}
                     onRestore={() => onRestore(order)}
-                    onOrderUpdated={(updated) => listRef.current?.updateRow?.(order._id, updated as Partial<Order>)}
+                    onOrderUpdated={(updated: Order) => listRef.current?.updateRow?.(order._id, updated as Partial<Order>)}
                 />
             )}
         />

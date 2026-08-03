@@ -32,7 +32,7 @@ function AllTaskRequests({resolveLanguageKey}: WithLanguageType) {
             buildEditPath={taskRequestEditPath}
             resolveLanguageKey={resolveLanguageKey}
             sheetLanguagePath="src/modules/eCommerceMarketplace/clients/panel/private/taskRequests/center/sheetView/taskRequestSheetView.tsx"
-            cardViewClassName="grid grid-cols-1 gap-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4"
+            // cardViewClassName="grid grid-cols-1 gap-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4"
             rowActionMenu={{allowMenuForCustomChildren: true}}
             renderCard={(entity, onDelete, onRestore, listRef) => (
                 <TaskRequestCard

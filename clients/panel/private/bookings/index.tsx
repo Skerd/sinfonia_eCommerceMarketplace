@@ -20,12 +20,11 @@ function AllBookings({ resolveLanguageKey }: WithLanguageType) {
             buildEditPath={() => ""}
             resolveLanguageKey={resolveLanguageKey}
             sheetLanguagePath="src/modules/eCommerceMarketplace/clients/panel/private/bookings/center/sheetView/bookingSheetView.tsx"
-            cardViewClassName="grid grid-cols-1 gap-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4"
             rowActionMenu={{ hideEdit: true }}
             renderCard={(booking, onDelete, onRestore) => (
                 <BookingCard
                     booking={booking}
-                    onDelete={(row, response?: DeletedData) => onDelete(row ?? booking, response)}
+                    onDelete={(row: Booking | undefined, response?: DeletedData) => onDelete(row ?? booking, response)}
                     onRestore={() => onRestore(booking)}
                 />
             )}

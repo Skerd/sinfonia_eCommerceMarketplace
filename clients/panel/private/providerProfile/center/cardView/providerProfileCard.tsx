@@ -72,8 +72,6 @@ function ProviderProfileCard({
                     )}
                     onClick={() => setAction("view")}
                 >
-                    <div className="h-1 w-full bg-primary/60" />
-
                     <div className="p-3 flex flex-col gap-2">
                         <div className="flex items-start justify-between gap-2">
                             <div className="flex items-center gap-2 min-w-0">
@@ -150,7 +148,7 @@ function ProviderProfileCard({
                     onOpenChange={() => setAction("")}
                     profile={profile}
                     fetchId={profile._id}
-                    onSheetRowPatched={(patch) => setProfile({ ...profile, ...patch })}
+                    onSheetRowPatched={(patch: Partial<ProviderProfile>) => setProfile({ ...profile, ...patch })}
                 />
             )}
             {(action === "createAccountLink" || action === "refreshAccountStatus") && (
@@ -159,7 +157,12 @@ function ProviderProfileCard({
                     displayName={userName === "—" ? undefined : userName}
                     openAlert
                     url={`/api/eCommerceMarketplace/providerProfile/${action}`}
-                    onSuccess={(result) => {
+                    onSuccess={(result: {
+                        stripeAccountId?: string;
+                        chargesEnabled?: boolean;
+                        payoutsEnabled?: boolean;
+                        detailsSubmitted?: boolean;
+                    }) => {
                         setProfile({
                             ...profile,
                             ...(result.stripeAccountId ? {stripeAccountId: result.stripeAccountId} : {}),

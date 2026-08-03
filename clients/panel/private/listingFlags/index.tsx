@@ -34,7 +34,6 @@ function AllListingFlags({resolveLanguageKey}: WithLanguageType) {
             buildEditPath={buildListingFlagEditPath}
             resolveLanguageKey={resolveLanguageKey}
             sheetLanguagePath="src/modules/eCommerceMarketplace/clients/panel/private/listingFlags/center/sheetView/listingFlagSheetView.tsx"
-            cardViewClassName="grid grid-cols-1 gap-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4"
             rowActionMenu={{
                 allowMenuForCustomChildren: true,
                 hideEdit: (flag) => flag.status !== "pending",
@@ -84,7 +83,7 @@ function AllListingFlags({resolveLanguageKey}: WithLanguageType) {
             renderCard={(flag, onDelete, onRestore, listRef) => (
                 <ListingFlagCard
                     listingFlag={flag}
-                    onDelete={(row, response?: DeletedData) => onDelete(row ?? flag, response)}
+                    onDelete={(row: ListingFlag | undefined, response?: DeletedData) => onDelete(row ?? flag, response)}
                     onRestore={() => onRestore(flag)}
                     onLifecyclePatched={(patch: Partial<ListingFlag>) => listRef?.current?.updateRow?.(flag._id, patch)}
                 />

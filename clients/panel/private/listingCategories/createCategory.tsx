@@ -11,13 +11,10 @@ import {useAccess} from "@coreModule/helpers/hocs/withAccess.tsx";
 import {useViewConfig} from "@coreModule/helpers/hooks/useViewConfig.ts";
 import FormViewRenderer from "@coreModule/components/viewEngine/FormViewRenderer.tsx";
 import {createListingCategoryFormSchema} from "armonia/src/modules/eCommerceMarketplace/api/eCommerceMarketplace/private/listingCategory/createListingCategory.form.validator.ts";
-import type {z} from "zod";
 
 const LIST_PATH = "/tenancy/systemSettings/listingcategories";
 
 type CreateListingCategoryProps = WithLanguageType & WithAxiosType<ListingCategory, CreateListingCategoryFormType> & {};
-
-type CreateListingCategoryFormData = z.infer<ReturnType<typeof createListingCategoryFormSchema>>;
 
 function CreateListingCategory({
     resolveLanguageKey,
@@ -37,7 +34,7 @@ function CreateListingCategory({
     }
     if (!viewConfig) return null;
 
-    function onSubmit(data: CreateListingCategoryFormData) {
+    function onSubmit(data: CreateListingCategoryFormType) {
         const postBody: CreateListingCategoryFormType = {
             name: data.name,
             parentListingCategory: data.parentListingCategory || undefined,
@@ -47,11 +44,10 @@ function CreateListingCategory({
     }
 
     return (
-        <FormViewRenderer<CreateListingCategoryFormData>
+        <FormViewRenderer<CreateListingCategoryFormType>
             config={viewConfig}
             resolveLanguageKey={resolveLanguageKey}
             formSchema={formSchema}
-            //@ts-expect-error
             defaultValues={{}}
             loading={loading}
             innerRef={innerRef}

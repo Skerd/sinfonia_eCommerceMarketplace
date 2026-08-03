@@ -117,8 +117,21 @@ function TaskRequestCard({
     if (!entity?._id) return <></>;
 
     const budgetStr = formatBudget(entity);
-    const requesterInitials = [entity.requester?.name?.[0], entity.requester?.surname?.[0]]
-        .filter(Boolean).join("").toUpperCase();
+    const canReadRequesterName = !!(read?.requester?.keys?.name || read?.requester?.keys?.surname);
+    const requesterName = [
+        read?.requester?.keys?.name ? entity.requester?.name : "",
+        read?.requester?.keys?.surname ? entity.requester?.surname : "",
+    ]
+        .filter(Boolean)
+        .join(" ")
+        .trim();
+    const requesterInitials = [
+        read?.requester?.keys?.name ? entity.requester?.name?.[0] : "",
+        read?.requester?.keys?.surname ? entity.requester?.surname?.[0] : "",
+    ]
+        .filter(Boolean)
+        .join("")
+        .toUpperCase();
 
     const now = Date.now();
     const expiresMs = entity.expiresAt ? new Date(entity.expiresAt).getTime() : null;
@@ -128,6 +141,7 @@ function TaskRequestCard({
     const expiresLabel = expiresMs
         ? new Date(expiresMs).toLocaleDateString(undefined, {day: "2-digit", month: "short"})
         : null;
+    const canReadBudget = !!(read?.budgetMin || read?.budgetMax);
 
     return (
         <>
@@ -142,17 +156,21 @@ function TaskRequestCard({
                 >
                     {/* ── Image ─────────────────────────────────────────── */}
                     <div className="relative h-50 overflow-hidden bg-muted">
-                        {entity.mainImage ? (
-                            <img
-                                src={`/api/auxiliary/media/${entity.mainImage._id}`}
-                                alt={entity.title}
-                                className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
-                            />
-                        ) : (
-                            <div className="w-full h-full flex items-center justify-center bg-linear-to-br from-muted via-muted/70 to-muted/40">
-                                <IconPhoto className="w-14 h-14 text-muted-foreground/15" />
-                            </div>
-                        )}
+                        <HiddenElement randomLength={read?.mainImage ? 0 : 12}>
+                            {!!read?.mainImage ? (
+                                entity.mainImage ? (
+                                    <img
+                                        src={`/api/auxiliary/media/${entity.mainImage._id}`}
+                                        alt={read?.title ? entity.title : ""}
+                                        className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                                    />
+                                ) : (
+                                    <div className="w-full h-full flex items-center justify-center bg-linear-to-br from-muted via-muted/70 to-muted/40">
+                                        <IconPhoto className="w-14 h-14 text-muted-foreground/15" />
+                                    </div>
+                                )
+                            ) : null}
+                        </HiddenElement>
 
                         {/* Gradient scrim for bottom overlays */}
                         <div className="absolute inset-0 transform-gpu bg-linear-to-t from-black/65 via-black/10 to-transparent pointer-events-none" />
@@ -180,13 +198,15 @@ function TaskRequestCard({
 
                         {/* Bottom image row: category left, bid count right */}
                         <div className="absolute bottom-2 left-2 right-2 flex items-end justify-between gap-2">
-                            {read?.category && entity.category?.name && (
-                                <span className="inline-flex items-center gap-1 text-[11px] font-medium px-2.5 py-1 rounded-full bg-white/15 backdrop-blur-sm text-white border border-white/20 shadow-sm truncate max-w-[60%]">
-                                    <IconFolder className="w-3 h-3 shrink-0" />
-                                    <span className="truncate">{entity.category.name}</span>
-                                </span>
-                            )}
-                            {entity.bidCount != null && entity.bidCount > 0 && (
+                            <HiddenElement randomLength={read?.category?.keys?.name ? 0 : 8}>
+                                {!!read?.category?.keys?.name && entity.category?.name ? (
+                                    <span className="inline-flex items-center gap-1 text-[11px] font-medium px-2.5 py-1 rounded-full bg-white/15 backdrop-blur-sm text-white border border-white/20 shadow-sm truncate max-w-[60%]">
+                                        <IconFolder className="w-3 h-3 shrink-0" />
+                                        <span className="truncate">{entity.category.name}</span>
+                                    </span>
+                                ) : null}
+                            </HiddenElement>
+                            {(entity.bidCount != null && entity.bidCount > 0) && (
                                 <span className="inline-flex items-center gap-1 text-[10px] font-bold px-2.5 py-1 rounded-full bg-background/90 backdrop-blur-sm text-foreground shadow-sm shrink-0 ml-auto">
                                     <IconUsers className="w-3 h-3" />
                                     {entity.bidCount}
@@ -205,50 +225,58 @@ function TaskRequestCard({
 
                         {/* Requester row + status */}
                         <div className="flex items-center justify-between gap-2">
-                            {read?.requester && entity.requester && (
-                                <div className="flex items-center gap-2 min-w-0">
-                                    <div className="w-6 h-6 rounded-full bg-primary/10 flex items-center justify-center shrink-0 ring-1 ring-primary/20">
-                                        <span className="text-[9px] font-bold text-primary leading-none">
-                                            {requesterInitials || "?"}
+                            <HiddenElement randomLength={canReadRequesterName ? 0 : 10}>
+                                {canReadRequesterName && entity.requester ? (
+                                    <div className="flex items-center gap-2 min-w-0">
+                                        <div className="w-6 h-6 rounded-full bg-primary/10 flex items-center justify-center shrink-0 ring-1 ring-primary/20">
+                                            <span className="text-[9px] font-bold text-primary leading-none">
+                                                {requesterInitials}
+                                            </span>
+                                        </div>
+                                        <span className="text-xs font-medium text-muted-foreground truncate">
+                                            {requesterName}
                                         </span>
                                     </div>
-                                    <span className="text-xs font-medium text-muted-foreground truncate">
-                                        {entity.requester.name} {entity.requester.surname}
-                                    </span>
-                                </div>
-                            )}
-                            {read?.status && entity.status && (
-                                <span className={cn(
-                                    "inline-flex items-center gap-1.5 text-[10px] font-semibold uppercase tracking-wide shrink-0",
-                                    entity.status === "open"   ? "text-emerald-600" :
-                                    entity.status === "awarded"? "text-amber-600"   :
-                                    "text-muted-foreground",
-                                )}>
+                                ) : null}
+                            </HiddenElement>
+                            <HiddenElement randomLength={read?.status ? 0 : 6}>
+                                {!!read?.status && entity.status ? (
                                     <span className={cn(
-                                        "w-1.5 h-1.5 rounded-full shrink-0",
-                                        entity.status === "open"    ? "bg-emerald-500 animate-pulse" :
-                                        entity.status === "awarded" ? "bg-amber-500"                 :
-                                        "bg-muted-foreground/40",
-                                    )} />
-                                    {resolveLanguageKey("statuses." + entity.status)}
-                                </span>
-                            )}
+                                        "inline-flex items-center gap-1.5 text-[10px] font-semibold uppercase tracking-wide shrink-0",
+                                        entity.status === "open"   ? "text-emerald-600" :
+                                        entity.status === "awarded"? "text-amber-600"   :
+                                        "text-muted-foreground",
+                                    )}>
+                                        <span className={cn(
+                                            "w-1.5 h-1.5 rounded-full shrink-0",
+                                            entity.status === "open"    ? "bg-emerald-500 animate-pulse" :
+                                            entity.status === "awarded" ? "bg-amber-500"                 :
+                                            "bg-muted-foreground/40",
+                                        )} />
+                                        {resolveLanguageKey("statuses." + entity.status)}
+                                    </span>
+                                ) : null}
+                            </HiddenElement>
                         </div>
 
                         {/* Title */}
-                        <HiddenElement showLock randomLength={0}>
-                            {read?.title && (
+                        <HiddenElement randomLength={10}>
+                            {!!read?.title ? (
                                 <h3 className="font-semibold text-sm leading-snug line-clamp-2 text-foreground min-h-6">
                                     {entity.title || <ValueNotSet />}
                                 </h3>
-                            )}
+                            ) : null}
                         </HiddenElement>
 
                         {/* Description excerpt */}
-                        {read?.description && entity.description && (
-                            <p className="text-xs text-muted-foreground line-clamp-1 leading-normal -mt-0.5">
-                                {entity.description}
-                            </p>
+                        {(!!entity.description || !read?.description) && (
+                            <HiddenElement randomLength={read?.description ? 0 : 16}>
+                                {!!read?.description && entity.description ? (
+                                    <p className="text-xs text-muted-foreground line-clamp-1 leading-normal -mt-0.5">
+                                        {entity.description}
+                                    </p>
+                                ) : null}
+                            </HiddenElement>
                         )}
 
                         {/* Divider */}
@@ -257,36 +285,42 @@ function TaskRequestCard({
                         {/* Footer: location + expiry | budget */}
                         <div className="flex items-end justify-between gap-2">
                             <div className="flex items-center gap-2 text-xs text-muted-foreground min-w-0 flex-wrap">
-                                {read?.address && entity.address?.city?.name && (
-                                    <span className="flex items-center gap-1 truncate">
-                                        <IconMapPin className="w-3.5 h-3.5 shrink-0" />
-                                        <span className="truncate">{entity.address.city.name}</span>
-                                    </span>
-                                )}
-                                {read?.expiresAt && expiresLabel && (
-                                    <span className={cn(
-                                        "flex items-center gap-1 shrink-0 px-2 py-0.5 rounded-full bg-muted",
-                                        isExpiringSoon && "bg-amber-100 text-amber-700 dark:bg-amber-900/30 dark:text-amber-400",
-                                        isExpired && "bg-rose-100 text-rose-600 dark:bg-rose-900/30 dark:text-rose-400",
-                                    )}>
-                                        <IconCalendar className="w-3 h-3" />
-                                        {expiresLabel}
-                                    </span>
-                                )}
+                                <HiddenElement randomLength={read?.address ? 0 : 8}>
+                                    {!!read?.address && entity.address?.city?.name ? (
+                                        <span className="flex items-center gap-1 truncate">
+                                            <IconMapPin className="w-3.5 h-3.5 shrink-0" />
+                                            <span className="truncate">{entity.address.city.name}</span>
+                                        </span>
+                                    ) : null}
+                                </HiddenElement>
+                                <HiddenElement randomLength={read?.expiresAt ? 0 : 6}>
+                                    {!!read?.expiresAt && expiresLabel ? (
+                                        <span className={cn(
+                                            "flex items-center gap-1 shrink-0 px-2 py-0.5 rounded-full bg-muted",
+                                            isExpiringSoon && "bg-amber-100 text-amber-700 dark:bg-amber-900/30 dark:text-amber-400",
+                                            isExpired && "bg-rose-100 text-rose-600 dark:bg-rose-900/30 dark:text-rose-400",
+                                        )}>
+                                            <IconCalendar className="w-3 h-3" />
+                                            {expiresLabel}
+                                        </span>
+                                    ) : null}
+                                </HiddenElement>
                             </div>
 
-                            {(read?.budgetMin || read?.budgetMax) && budgetStr && (
-                                <div className="shrink-0 text-right">
-                                    <div className="text-[9px] text-muted-foreground uppercase tracking-wide leading-none mb-0.5">
-                                        {resolveLanguageKey("budget")}
+                            <HiddenElement randomLength={canReadBudget ? 0 : 8}>
+                                {canReadBudget && budgetStr ? (
+                                    <div className="shrink-0 text-right">
+                                        <div className="text-[9px] text-muted-foreground uppercase tracking-wide leading-none mb-0.5">
+                                            {resolveLanguageKey("budget")}
+                                        </div>
+                                        <div className="flex items-baseline gap-0.5">
+                                            <span className="font-bold text-base text-foreground leading-none">
+                                                {budgetStr}
+                                            </span>
+                                        </div>
                                     </div>
-                                    <div className="flex items-baseline gap-0.5">
-                                        <span className="font-bold text-base text-foreground leading-none">
-                                            {budgetStr}
-                                        </span>
-                                    </div>
-                                </div>
-                            )}
+                                ) : null}
+                            </HiddenElement>
                         </div>
                     </div>
                 </Card>

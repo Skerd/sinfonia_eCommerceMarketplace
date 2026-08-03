@@ -5,11 +5,16 @@
   "failedTooltipDescription": "Klikoni për të provuar përsëri marrjen e të dhënave.",
   "listingAddOnSubtitle": "Shtesë listimi",
   "overview": "Përmbledhje",
+  "lifecycle": "Cikli i jetës",
   "name": "Emri",
   "listing": "Listimi",
   "provider": "Ofruesi",
   "priceAmount": "Çmimi",
   "currency": "Valuta",
   "deliveryDays": "Dorëzimi (ditë)",
-  "createdAt": "Krijuar"
+  "createdAt": "Krijuar më",
+  "updatedAt": "Përditësuar më",
+  "createdBy": "Krijuar nga",
+  "deletedAt": "Fshirë më",
+  "deletedBy": "Fshirë nga"
 }

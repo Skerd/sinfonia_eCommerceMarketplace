@@ -17,12 +17,12 @@ import type {Review} from "armonia/src/modules/eCommerceMarketplace/api/eCommerc
 import type {DeletedData} from "armonia/src/modules/core/types/shared.types.ts";
 import ReviewSheetView from "../sheetView/reviewSheetView.tsx";
 
-const RATING_CONFIG: Record<number, {band: string; text: string}> = {
-    1: {band: "bg-linear-to-r from-slate-400 to-slate-300", text: "text-slate-600"},
-    2: {band: "bg-linear-to-r from-orange-400 to-orange-300", text: "text-orange-600"},
-    3: {band: "bg-linear-to-r from-amber-400 to-amber-300", text: "text-amber-600"},
-    4: {band: "bg-linear-to-r from-yellow-400 to-yellow-300", text: "text-yellow-600"},
-    5: {band: "bg-linear-to-r from-emerald-500 to-emerald-400", text: "text-emerald-600"},
+const RATING_CONFIG: Record<number, {text: string}> = {
+    1: {text: "text-slate-600"},
+    2: {text: "text-orange-600"},
+    3: {text: "text-amber-600"},
+    4: {text: "text-yellow-600"},
+    5: {text: "text-emerald-600"},
 };
 
 type ReviewCardProps = WithLanguageType & {
@@ -113,8 +113,6 @@ function ReviewCard({
                     )}
                     onClick={() => setAction("view")}
                 >
-                    <div className={cn("h-1 w-full", ratingCfg.band)} />
-
                     {(read.deletedBy || read.deletedAt) && (
                         <DeletedInfo deletedAt={review.deletedAt} deletedBy={review.deletedBy} />
                     )}

@@ -32,7 +32,7 @@ function AllReviews({resolveLanguageKey}: WithLanguageType) {
             buildEditPath={noopReviewEditPath}
             resolveLanguageKey={resolveLanguageKey}
             sheetLanguagePath="src/modules/eCommerceMarketplace/clients/panel/private/reviews/center/sheetView/reviewSheetView.tsx"
-            cardViewClassName="grid grid-cols-1 gap-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4"
+            cardViewClassName="grid grid-cols-1 gap-2 md:gap-4 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4"
             rowActionMenu={{hideEdit: true}}
             buildDeleteConfirmLabel={(entity) => reviewRowLabel(entity)}
             renderSheet={({entity, open, onOpenChange, onDelete, onRestore}) => (
@@ -52,7 +52,7 @@ function AllReviews({resolveLanguageKey}: WithLanguageType) {
             renderCard={(review, onDelete, onRestore) => (
                 <ReviewCard
                     review={review}
-                    onDelete={(row, response?: DeletedData) => onDelete(row ?? review, response)}
+                    onDelete={(row: Review | undefined, response?: DeletedData) => onDelete(row ?? review, response)}
                     onRestore={() => onRestore(review)}
                 />
             )}

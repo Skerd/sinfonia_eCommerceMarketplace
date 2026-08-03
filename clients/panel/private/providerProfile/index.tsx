@@ -13,7 +13,7 @@ import ConnectAccountAction, {
 
 function buildProfileEditPath(profile: ProviderProfile) {
     const params = new URLSearchParams();
-    params.set("profileId", profile._id ?? "");
+    params.set("profileId", profile._id);
     const name = [profile.user?.name, profile.user?.surname].filter(Boolean).join(" ");
     if (name) params.set("profileName", name);
     return `/eCommerceMarketplace/providerprofile/edit?${params.toString()}`;
@@ -48,7 +48,6 @@ function AllProviderProfiles({ resolveLanguageKey }: WithLanguageType) {
             buildEditPath={buildProfileEditPath}
             resolveLanguageKey={resolveLanguageKey}
             sheetLanguagePath="src/modules/eCommerceMarketplace/clients/panel/private/providerProfile/center/sheetView/providerProfileSheetView.tsx"
-            cardViewClassName="grid grid-cols-1 gap-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4"
             rowActionMenu={{ hideDelete: true, allowMenuForCustomChildren: true }}
             renderActionMenuChildren={(profile, bindRowAction) => (
                 <>
@@ -64,8 +63,13 @@ function AllProviderProfiles({ resolveLanguageKey }: WithLanguageType) {
                         displayName={profileDisplayName(entity)}
                         openAlert
                         url={`/api/eCommerceMarketplace/providerProfile/${action}`}
-                        onSuccess={(result) => {
-                            listRef.current?.updateRow?.(entity._id!, applyConnectPatch(result));
+                        onSuccess={(result: {
+                            stripeAccountId?: string;
+                            chargesEnabled?: boolean;
+                            payoutsEnabled?: boolean;
+                            detailsSubmitted?: boolean;
+                        }) => {
+                            listRef.current?.updateRow?.(entity._id, applyConnectPatch(result));
                             resetAction();
                         }}
                         onCancel={resetAction}
@@ -75,7 +79,7 @@ function AllProviderProfiles({ resolveLanguageKey }: WithLanguageType) {
             renderCard={(profile, onDelete, onRestore) => (
                 <ProviderProfileCard
                     profile={profile}
-                    onDelete={(p, response?: DeletedData) => onDelete(p ?? profile, response)}
+                    onDelete={(p: ProviderProfile | undefined, response?: DeletedData) => onDelete(p ?? profile, response)}
                     onRestore={() => onRestore(profile)}
                 />
             )}

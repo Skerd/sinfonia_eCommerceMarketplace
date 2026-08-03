@@ -67,7 +67,7 @@ function ListingCategorySheetView({
             hideActions={hideActions}
             onDelete={onDelete}
             onRestore={onRestore}
-            editPath={categoryEditPath(sheetData as Category)}
+            editPath={categoryEditPath(sheetData as ListingCategory)}
         />
     );
 }

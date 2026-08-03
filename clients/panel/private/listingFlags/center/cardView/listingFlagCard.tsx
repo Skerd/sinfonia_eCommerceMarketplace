@@ -11,6 +11,7 @@ import DeleteAction from "@coreModule/components/custom/actions/deleteAction.tsx
 import RestoreAction from "@coreModule/components/custom/actions/restoreAction.tsx";
 import DeletedInfo from "@coreModule/components/custom/deletedInfo";
 import InfoRow from "@coreModule/components/custom/infoRow.tsx";
+import ValueNotSet from "@coreModule/components/custom/valueNotSet.tsx";
 import { Flag, User } from "lucide-react";
 import type { ListingFlag } from "armonia/src/modules/eCommerceMarketplace/api/eCommerceMarketplace/private/listingFlag/listingFlag.dto.ts";
 import type { DeletedData } from "armonia/src/modules/core/types/shared.types.ts";
@@ -44,11 +45,6 @@ type ListingFlagCardProps = WithLanguageType & {
     hideActions?: boolean;
     sheetOnly?: boolean;
 };
-
-function formatReporterName(flag: ListingFlag): string {
-    const { name, surname } = flag.user ?? {};
-    return [name, surname].filter(Boolean).join(" ").trim() || "—";
-}
 
 function formatEnumLabel(
     resolveLanguageKey: (key: string) => unknown,
@@ -93,7 +89,15 @@ function ListingFlagCard({
     };
 
     const onRestore = () => {
-        if (onRestoreProp) onRestoreProp();
+        if (onRestoreProp) {
+            onRestoreProp();
+        } else {
+            setFlag({
+                ...flag,
+                deletedAt: undefined,
+                deletedBy: undefined,
+            } as ListingFlag);
+        }
     };
 
     if (hideAfterDeletion) return <></>;
@@ -101,10 +105,20 @@ function ListingFlagCard({
     if (!read || !Object.keys(read).length) return <HiddenElement />;
 
     const statusCfg = STATUS_CONFIG[flag.status] ?? STATUS_CONFIG.dismissed;
-    const listingTitle = flag.listing?.title?.trim() || "—";
+    const canReadListingTitle = !!read?.listing?.keys?.title;
+    const listingTitle = canReadListingTitle
+        ? (flag.listing?.title?.trim() || "—")
+        : undefined;
     const statusLabel = formatEnumLabel(resolveLanguageKey, "status_values", flag.status);
     const reasonLabel = formatEnumLabel(resolveLanguageKey, "reason_values", flag.reason);
-    const reporterName = formatReporterName(flag);
+    const canReadReporterName = !!(read?.user?.keys?.name || read?.user?.keys?.surname);
+    const reporterName = [
+        read?.user?.keys?.name ? flag.user?.name : "",
+        read?.user?.keys?.surname ? flag.user?.surname : "",
+    ]
+        .filter(Boolean)
+        .join(" ")
+        .trim();
 
     const editPath = (() => {
         const params = new URLSearchParams();
@@ -129,9 +143,13 @@ function ListingFlagCard({
 
                     <div className="p-3 flex flex-col gap-2">
                         <div className="flex items-start justify-between gap-2">
-                            <h3 className="font-semibold text-sm leading-snug line-clamp-2 text-foreground min-h-[2.5rem] flex-1 min-w-0">
-                                {listingTitle}
-                            </h3>
+                            <HiddenElement randomLength={canReadListingTitle ? 0 : 12}>
+                                {canReadListingTitle ? (
+                                    <h3 className="font-semibold text-sm leading-snug line-clamp-2 text-foreground min-h-[2.5rem] flex-1 min-w-0">
+                                        {listingTitle && listingTitle !== "—" ? listingTitle : <ValueNotSet />}
+                                    </h3>
+                                ) : null}
+                            </HiddenElement>
                             {!hideActions && (
                                 <div className="shrink-0" onClick={(e) => e.stopPropagation()}>
                                     <ActionMenu
@@ -149,13 +167,35 @@ function ListingFlagCard({
                             )}
                         </div>
 
-                        <span className={cn("inline-flex items-center gap-1.5 text-[10px] font-semibold uppercase tracking-wide -mt-1", statusCfg.text)}>
-                            <span className={cn("w-1.5 h-1.5 rounded-full shrink-0", statusCfg.dot)} />
-                            {statusLabel}
-                        </span>
+                        <HiddenElement randomLength={read?.status ? 0 : 6}>
+                            {!!read?.status && flag.status ? (
+                                <span className={cn("inline-flex items-center gap-1.5 text-[10px] font-semibold uppercase tracking-wide -mt-1", statusCfg.text)}>
+                                    <span className={cn("w-1.5 h-1.5 rounded-full shrink-0", statusCfg.dot)} />
+                                    {statusLabel}
+                                </span>
+                            ) : null}
+                        </HiddenElement>
 
-                        <InfoRow icon={Flag} label={resolveLanguageKey("reason")} value={reasonLabel} />
-                        <InfoRow icon={User} label={resolveLanguageKey("reporter")} value={reporterName} />
+                        <InfoRow
+                            icon={Flag}
+                            label={resolveLanguageKey("reason")}
+                            show
+                            value={
+                                <HiddenElement randomLength={read?.reason ? 0 : 8}>
+                                    {!!read?.reason ? reasonLabel : null}
+                                </HiddenElement>
+                            }
+                        />
+                        <InfoRow
+                            icon={User}
+                            label={resolveLanguageKey("reporter")}
+                            show
+                            value={
+                                <HiddenElement randomLength={canReadReporterName ? 0 : 10}>
+                                    {canReadReporterName ? (reporterName || "—") : null}
+                                </HiddenElement>
+                            }
+                        />
                     </div>
                 </Card>
             )}
@@ -188,6 +228,8 @@ function ListingFlagCard({
                     accessModel="listingflags"
                     deleteId={flag._id}
                     openAlert
+                    name={canReadListingTitle && listingTitle}
+                    confirmName={canReadListingTitle && listingTitle}
                     onSuccess={onDelete}
                     onCancel={() => setAction("")}
                     url="/api/eCommerceMarketplace/listingFlag"
@@ -198,6 +240,8 @@ function ListingFlagCard({
                     accessModel="listingflags"
                     deleteId={flag._id}
                     openAlert
+                    name={canReadListingTitle && listingTitle}
+                    confirmName={canReadListingTitle && listingTitle}
                     onSuccess={onRestore}
                     onCancel={() => setAction("")}
                     url="/api/eCommerceMarketplace/listingFlag/restore"

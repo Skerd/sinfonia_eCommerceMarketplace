@@ -26,11 +26,10 @@ function AllListingAddOns({ resolveLanguageKey }: WithLanguageType) {
             buildEditPath={buildListingAddOnEditPath}
             resolveLanguageKey={resolveLanguageKey}
             sheetLanguagePath="src/modules/eCommerceMarketplace/clients/panel/private/listingAddOns/center/sheetView/listingAddOnSheetView.tsx"
-            cardViewClassName="grid grid-cols-1 gap-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4"
             renderCard={(addOn, onDelete, onRestore) => (
                 <ListingAddOnCard
                     listingAddOn={addOn}
-                    onDelete={(row, response?: DeletedData) => onDelete(row ?? addOn, response)}
+                    onDelete={(row: ListingAddOn, response?: DeletedData) => onDelete(row ?? addOn, response)}
                     onRestore={() => onRestore(addOn)}
                 />
             )}

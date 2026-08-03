@@ -20,11 +20,11 @@ import CloseDisputeDropdown from "@eCommerceMarketplaceModule/clients/panel/priv
 import type {DisputeLifecycleVerb} from "@eCommerceMarketplaceModule/components/custom/disputes/changeDisputeLifecycleAction.tsx";
 import {IconPackage} from "@tabler/icons-react";
 
-const STATUS_CONFIG: Record<string, {band: string; dot: string; dotAnim: string; text: string}> = {
-    open:         {band: "bg-linear-to-r from-rose-500 to-rose-400",       dot: "bg-rose-500",            dotAnim: "animate-pulse", text: "text-rose-600"},
-    under_review: {band: "bg-linear-to-r from-amber-400 to-amber-300",     dot: "bg-amber-500",           dotAnim: "animate-pulse", text: "text-amber-600"},
-    resolved:     {band: "bg-linear-to-r from-emerald-500 to-emerald-400", dot: "bg-emerald-500",         dotAnim: "",              text: "text-emerald-600"},
-    closed:       {band: "bg-linear-to-r from-slate-400 to-slate-300",     dot: "bg-muted-foreground/40", dotAnim: "",              text: "text-muted-foreground"},
+const STATUS_CONFIG: Record<string, {dot: string; dotAnim: string; text: string}> = {
+    open:         {dot: "bg-rose-500",            dotAnim: "animate-pulse", text: "text-rose-600"},
+    under_review: {dot: "bg-amber-500",           dotAnim: "animate-pulse", text: "text-amber-600"},
+    resolved:     {dot: "bg-emerald-500",         dotAnim: "",              text: "text-emerald-600"},
+    closed:       {dot: "bg-muted-foreground/40", dotAnim: "",              text: "text-muted-foreground"},
 };
 
 type DisputeCardProps = WithLanguageType & {
@@ -120,9 +120,6 @@ function DisputeCard({
                     )}
                     onClick={() => setAction("view")}
                 >
-                    {/* ── Status accent band ────────────────────────────── */}
-                    <div className={cn("h-1 w-full", statusCfg.band)} />
-
                     {/* ── Deleted banner ────────────────────────────────── */}
                     {(read.deletedBy || read.deletedAt) && (
                         <DeletedInfo deletedAt={dispute.deletedAt} deletedBy={dispute.deletedBy} />

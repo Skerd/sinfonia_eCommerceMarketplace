@@ -26,11 +26,10 @@ function AllListingPackages({ resolveLanguageKey }: WithLanguageType) {
             buildEditPath={buildListingPackageEditPath}
             resolveLanguageKey={resolveLanguageKey}
             sheetLanguagePath="src/modules/eCommerceMarketplace/clients/panel/private/listingPackages/center/sheetView/listingPackageSheetView.tsx"
-            cardViewClassName="grid grid-cols-1 gap-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4"
             renderCard={(pkg, onDelete, onRestore) => (
                 <ListingPackageCard
                     listingPackage={pkg}
-                    onDelete={(row, response?: DeletedData) => onDelete(row ?? pkg, response)}
+                    onDelete={(row: ListingPackage | undefined, response?: DeletedData) => onDelete(row ?? pkg, response)}
                     onRestore={() => onRestore(pkg)}
                 />
             )}

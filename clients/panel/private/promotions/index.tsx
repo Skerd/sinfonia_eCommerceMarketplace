@@ -69,7 +69,7 @@ function AllPromotions({resolveLanguageKey}: WithLanguageType) {
                 );
             }}
             buildDeleteConfirmLabel={(entity) => entity.listing?.title}
-            cardViewClassName="grid grid-cols-1 gap-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4"
+            cardViewClassName="grid grid-cols-1 gap-2 md:gap-4 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4"
             renderCard={(promotion, onDelete, onRestore) => (
                 <PromotionCard
                     promotion={promotion}

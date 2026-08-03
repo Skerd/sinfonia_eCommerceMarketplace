@@ -10,6 +10,7 @@ import ActionMenu from "@coreModule/components/custom/actions/menu/actionMenu.ts
 import DeleteAction from "@coreModule/components/custom/actions/deleteAction.tsx";
 import RestoreAction from "@coreModule/components/custom/actions/restoreAction.tsx";
 import DeletedInfo from "@coreModule/components/custom/deletedInfo";
+import ValueNotSet from "@coreModule/components/custom/valueNotSet.tsx";
 import { IconClock, IconLayoutList } from "@tabler/icons-react";
 import type { ListingAddOn } from "armonia/src/modules/eCommerceMarketplace/api/eCommerceMarketplace/private/listingAddOn/listingAddOn.dto.ts";
 import type { DeletedData } from "armonia/src/modules/core/types/shared.types.ts";
@@ -44,9 +45,20 @@ function ListingAddOnCard({
             else setAddOn({ ...addOn, ...(data as any) });
         }
     };
-    const onRestore = () => { if (onRestoreProp) onRestoreProp(); };
+    const onRestore = () => {
+        if (onRestoreProp) {
+            onRestoreProp();
+        } else {
+            setAddOn({
+                ...addOn,
+                deletedAt: undefined,
+                deletedBy: undefined,
+            } as ListingAddOn);
+        }
+    };
 
-    if (hideAfterDeletion || !restore) return <></>;
+    if (hideAfterDeletion) return <></>;
+    if (!restore && (addOn as any).deletedAt != null) return <></>;
     if (!read || !Object.keys(read).length) return <HiddenElement />;
 
     const editPath = (() => {
@@ -55,8 +67,19 @@ function ListingAddOnCard({
         return `/eCommerceMarketplace/listingaddons/edit?${params.toString()}`;
     })();
 
-    const currencyPrefix = addOn.price.currency?.symbol?.trim() || addOn.price.currency?.abbreviation?.trim();
-    const priceDisplay = `${currencyPrefix ?? ""}${addOn.price.amount.toLocaleString(undefined, { minimumFractionDigits: 0, maximumFractionDigits: 2 })}`;
+    const currencyPrefix = addOn.price?.currency?.symbol?.trim() || addOn.price?.currency?.abbreviation?.trim();
+    const priceDisplay =
+        addOn.price?.amount != null
+            ? `${currencyPrefix ?? ""}${addOn.price.amount.toLocaleString(undefined, { minimumFractionDigits: 0, maximumFractionDigits: 2 })}`
+            : undefined;
+    const canReadProviderName = !!(read?.provider?.keys?.name || read?.provider?.keys?.surname);
+    const providerName = [
+        read?.provider?.keys?.name ? addOn.provider?.name : "",
+        read?.provider?.keys?.surname ? addOn.provider?.surname : "",
+    ]
+        .filter(Boolean)
+        .join(" ")
+        .trim();
 
     return (
         <>
@@ -68,15 +91,19 @@ function ListingAddOnCard({
                 )}
                 onClick={() => setAction("view")}
             >
-                {(read as any).deletedBy && (
+                {(read.deletedBy || read.deletedAt) && (
                     <DeletedInfo deletedAt={(addOn as any).deletedAt} deletedBy={(addOn as any).deletedBy} />
                 )}
 
                 <div className="p-3 flex flex-col gap-2">
                     <div className="flex items-start justify-between gap-2">
-                        <h3 className="font-semibold text-sm leading-snug line-clamp-2 text-foreground flex-1 min-w-0">
-                            {addOn.name}
-                        </h3>
+                        <HiddenElement randomLength={10}>
+                            {!!read?.name ? (
+                                <h3 className="font-semibold text-sm leading-snug line-clamp-2 text-foreground flex-1 min-w-0">
+                                    {addOn.name || <ValueNotSet />}
+                                </h3>
+                            ) : null}
+                        </HiddenElement>
                         {!hideActions && (
                             <div className="shrink-0" onClick={(e) => e.stopPropagation()}>
                                 <ActionMenu
@@ -91,30 +118,40 @@ function ListingAddOnCard({
 
                     <div className="h-px bg-border" />
 
-                    {(read as any).provider && addOn.provider && (
-                        <span className="text-xs font-medium text-muted-foreground truncate">
-                            {addOn.provider.name} {addOn.provider.surname}
-                        </span>
-                    )}
+                    <HiddenElement randomLength={canReadProviderName ? 0 : 10}>
+                        {canReadProviderName && addOn.provider ? (
+                            <span className="text-xs font-medium text-muted-foreground truncate">
+                                {providerName || "—"}
+                            </span>
+                        ) : null}
+                    </HiddenElement>
 
                     <div className="flex items-end justify-between gap-2">
-                        {(read as any).listing && addOn.listing?.title && (
-                            <span className="flex items-center gap-1 text-xs text-muted-foreground min-w-0 truncate">
-                                <IconLayoutList className="w-3 h-3 shrink-0" />
-                                <span className="truncate">{addOn.listing.title}</span>
-                            </span>
-                        )}
+                        <HiddenElement randomLength={read?.listing?.keys?.title ? 0 : 10}>
+                            {!!read?.listing?.keys?.title && addOn.listing?.title ? (
+                                <span className="flex items-center gap-1 text-xs text-muted-foreground min-w-0 truncate">
+                                    <IconLayoutList className="w-3 h-3 shrink-0" />
+                                    <span className="truncate">{addOn.listing.title}</span>
+                                </span>
+                            ) : null}
+                        </HiddenElement>
 
                         <div className="flex items-center gap-2 shrink-0 ml-auto">
-                            {addOn.deliveryDays != null && (
-                                <span className="flex items-center gap-1 text-xs text-muted-foreground bg-muted px-2 py-0.5 rounded-full">
-                                    <IconClock className="w-3 h-3" />
-                                    {addOn.deliveryDays}{resolveLanguageKey("days")}
-                                </span>
-                            )}
-                            <span className="font-bold text-base text-foreground leading-none">
-                                {priceDisplay}
-                            </span>
+                            <HiddenElement randomLength={read?.deliveryDays ? 0 : 6}>
+                                {!!read?.deliveryDays && addOn.deliveryDays != null ? (
+                                    <span className="flex items-center gap-1 text-xs text-muted-foreground bg-muted px-2 py-0.5 rounded-full">
+                                        <IconClock className="w-3 h-3" />
+                                        {addOn.deliveryDays}{resolveLanguageKey("days")}
+                                    </span>
+                                ) : null}
+                            </HiddenElement>
+                            <HiddenElement randomLength={read?.price ? 0 : 8}>
+                                {!!read?.price && priceDisplay != null ? (
+                                    <span className="font-bold text-base text-foreground leading-none">
+                                        {priceDisplay}
+                                    </span>
+                                ) : null}
+                            </HiddenElement>
                         </div>
                     </div>
                 </div>
@@ -128,14 +165,32 @@ function ListingAddOnCard({
                     fetchId={addOn._id}
                     onDelete={onDelete}
                     onRestore={onRestore}
-                    onSheetRowPatched={(patch) => setAddOn({...addOn, ...patch})}
+                    onSheetRowPatched={(patch: Partial<ListingAddOn>) => setAddOn({...addOn, ...patch})}
                 />
             )}
             {action === "delete" && (
-                <DeleteAction accessModel="listingAddOns" deleteId={addOn._id} openAlert onSuccess={onDelete} onCancel={() => setAction("")} url="/api/eCommerceMarketplace/listingAddOn" />
+                <DeleteAction
+                    accessModel="listingAddOns"
+                    deleteId={addOn._id}
+                    openAlert
+                    name={read?.name && addOn.name}
+                    confirmName={read?.name && addOn.name}
+                    onSuccess={onDelete}
+                    onCancel={() => setAction("")}
+                    url="/api/eCommerceMarketplace/listingAddOn"
+                />
             )}
             {action === "restore" && (
-                <RestoreAction accessModel="listingAddOns" deleteId={addOn._id} openAlert onSuccess={onRestore} onCancel={() => setAction("")} url="/api/eCommerceMarketplace/listingAddOn/restore" />
+                <RestoreAction
+                    accessModel="listingAddOns"
+                    deleteId={addOn._id}
+                    openAlert
+                    name={read?.name && addOn.name}
+                    confirmName={read?.name && addOn.name}
+                    onSuccess={onRestore}
+                    onCancel={() => setAction("")}
+                    url="/api/eCommerceMarketplace/listingAddOn/restore"
+                />
             )}
         </>
     );

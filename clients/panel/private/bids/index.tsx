@@ -27,7 +27,6 @@ function AllBids({resolveLanguageKey}: WithLanguageType) {
             createLanguageKey="createBid"
             buildEditPath={() => ""}
             resolveLanguageKey={resolveLanguageKey}
-            cardViewClassName="grid grid-cols-1 gap-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4"
             renderSheet={({entity, open, onOpenChange, onDelete, onRestore, listRef}) => (
                 <BidSheetView
                     open={open}
@@ -35,8 +34,8 @@ function AllBids({resolveLanguageKey}: WithLanguageType) {
                     bid={entity}
                     onDelete={onDelete}
                     onRestore={onRestore}
-                    onBidUpdated={(updated) => listRef.current?.updateRow?.(entity._id, updated as Partial<Bid>)}
-                    onSheetRowPatched={(patch) => listRef.current?.updateRow?.(entity._id, patch as Partial<Bid>)}
+                    onBidUpdated={(updated: Bid) => listRef.current?.updateRow?.(entity._id, updated as Partial<Bid>)}
+                    onSheetRowPatched={(patch: Partial<Bid>) => listRef.current?.updateRow?.(entity._id, patch)}
                 />
             )}
             rowActionMenu={{hideEdit: true, allowMenuForCustomChildren: true}}
@@ -68,7 +67,7 @@ function AllBids({resolveLanguageKey}: WithLanguageType) {
                     bid={bid}
                     onDelete={(row: Bid, response?: DeletedData) => onDelete(row ?? bid, response)}
                     onRestore={() => onRestore(bid)}
-                    onBidUpdated={(updated) => listRef.current?.updateRow?.(bid._id, updated as Partial<Bid>)}
+                    onBidUpdated={(updated: Bid) => listRef.current?.updateRow?.(bid._id, updated as Partial<Bid>)}
                 />
             )}
         />

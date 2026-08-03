@@ -101,7 +101,12 @@ function ProviderProfileSheetView({
                     displayName={displayName}
                     openAlert
                     url={`/api/eCommerceMarketplace/providerProfile/${action}`}
-                    onSuccess={(result) => {
+                    onSuccess={(result: {
+                        stripeAccountId?: string;
+                        chargesEnabled?: boolean;
+                        payoutsEnabled?: boolean;
+                        detailsSubmitted?: boolean;
+                    }) => {
                         const patch: Partial<ProviderProfile> = {
                             ...(result.stripeAccountId ? {stripeAccountId: result.stripeAccountId} : {}),
                             ...(result.chargesEnabled !== undefined ? {stripeChargesEnabled: result.chargesEnabled} : {}),

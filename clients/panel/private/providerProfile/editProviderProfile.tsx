@@ -16,12 +16,13 @@ export default createGenericEditPage<ProviderProfile, EditProviderProfileFormTyp
         bio: writeFields.bio ? (data.bio ?? "") : undefined,
         portfolio: writeFields.portfolio ? (data.portfolio?.map((m) => m._id) ?? []) : undefined,
         // Keep dayOfWeek as string so #SimpleSelect option values ("0"…"6") match on edit.
+        // Cast: InferEditForm embeds `_id` on array items; runtime slots have no item `_id`.
         availability: writeFields.availability
-            ? (data.availability ?? []).map((slot) => ({
+            ? ((data.availability ?? []).map((slot) => ({
                   dayOfWeek: String(slot.dayOfWeek) as unknown as number,
                   startTime: slot.startTime,
                   endTime: slot.endTime,
-              }))
+              })) as EditProviderProfileFormType["availability"])
             : undefined,
     }),
     submitIcon: <Save />,

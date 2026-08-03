@@ -30,12 +30,12 @@ import type {OrderConfirmActionKey} from "@eCommerceMarketplaceModule/components
 import type {OrderStatus} from "armonia/src/modules/eCommerceMarketplace/api/eCommerceMarketplace/private/order/order.schema-def.ts";
 import {IconArrowRight, IconCalendar} from "@tabler/icons-react";
 
-const STATUS_CONFIG: Record<string, {band: string; dot: string; dotAnim: string; text: string}> = {
-    pending:     {band: "bg-linear-to-r from-amber-400 to-amber-300",   dot: "bg-amber-500",        dotAnim: "",             text: "text-amber-600"},
-    accepted:    {band: "bg-linear-to-r from-blue-500 to-blue-400",     dot: "bg-blue-500",         dotAnim: "animate-pulse",text: "text-blue-600"},
-    in_progress: {band: "bg-linear-to-r from-violet-500 to-violet-400", dot: "bg-violet-500",       dotAnim: "animate-pulse",text: "text-violet-600"},
-    completed:   {band: "bg-linear-to-r from-emerald-500 to-emerald-400",dot: "bg-emerald-500",     dotAnim: "",             text: "text-emerald-600"},
-    cancelled:   {band: "bg-linear-to-r from-rose-500 to-rose-400",     dot: "bg-muted-foreground/40",dotAnim: "",           text: "text-muted-foreground"},
+const STATUS_CONFIG: Record<string, {dot: string; dotAnim: string; text: string}> = {
+    pending:     {dot: "bg-amber-500",        dotAnim: "",             text: "text-amber-600"},
+    accepted:    {dot: "bg-blue-500",         dotAnim: "animate-pulse",text: "text-blue-600"},
+    in_progress: {dot: "bg-violet-500",       dotAnim: "animate-pulse",text: "text-violet-600"},
+    completed:   {dot: "bg-emerald-500",     dotAnim: "",             text: "text-emerald-600"},
+    cancelled:   {dot: "bg-muted-foreground/40",dotAnim: "",           text: "text-muted-foreground"},
 };
 
 type OrderCardProps = WithLanguageType & {
@@ -118,9 +118,6 @@ function OrderCard({
                 )}
                 onClick={() => setAction("view")}
             >
-                {/* ── Status accent band ────────────────────────────── */}
-                <div className={cn("h-1 w-full", statusCfg.band)} />
-
                 {/* ── Deleted banner ────────────────────────────────── */}
                 {(read.deletedBy || read.deletedAt) && (
                     <DeletedInfo deletedAt={order.deletedAt} deletedBy={order.deletedBy} />
@@ -172,7 +169,7 @@ function OrderCard({
                                     <div className="w-5 h-5 rounded-full bg-muted flex items-center justify-center shrink-0 ring-1 ring-border">
                                         <span className="text-[8px] font-bold text-foreground leading-none">{customerInitials || "?"}</span>
                                     </div>
-                                    <span className="truncate">{order.customer.fullName || `${order.customer.name} ${order.customer.surname}`}</span>
+                                    <span className="truncate">{`${order.customer.name} ${order.customer.surname}`}</span>
                                 </span>
                             )}
                             {read?.customer && read?.provider && order.customer && order.provider && (
@@ -183,7 +180,7 @@ function OrderCard({
                                     <div className="w-5 h-5 rounded-full bg-primary/10 flex items-center justify-center shrink-0 ring-1 ring-primary/20">
                                         <span className="text-[8px] font-bold text-primary leading-none">{providerInitials || "?"}</span>
                                     </div>
-                                    <span className="truncate">{order.provider.fullName || `${order.provider.name} ${order.provider.surname}`}</span>
+                                    <span className="truncate">{`${order.provider.name} ${order.provider.surname}`}</span>
                                 </span>
                             )}
                         </div>
@@ -220,8 +217,8 @@ function OrderCard({
                     order={order}
                     onDelete={onDelete}
                     onRestore={onRestore}
-                    onOrderUpdated={(updated) => applyOrderUpdate(updated)}
-                    onSheetRowPatched={(patch) => applyOrderUpdate(patch)}
+                    onOrderUpdated={(updated: Order) => applyOrderUpdate(updated)}
+                    onSheetRowPatched={(patch: Partial<Order>) => applyOrderUpdate(patch)}
                 />
             )}
             {action === "delete" && (
@@ -278,7 +275,7 @@ function OrderCard({
                     currentDueDate={order.deliveryDueDate}
                     openAlert
                     url="/api/eCommerceMarketplace/order/extend"
-                    onSuccess={(newDueDate) => {
+                    onSuccess={(newDueDate: string) => {
                         applyOrderUpdate({deliveryDueDate: newDueDate});
                         setAction("");
                     }}

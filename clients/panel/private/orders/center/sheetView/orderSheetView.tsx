@@ -149,7 +149,7 @@ function OrderSheetView({
                     currentDueDate={asOrder.deliveryDueDate}
                     openAlert
                     url="/api/eCommerceMarketplace/order/extend"
-                    onSuccess={(newDueDate) => {
+                    onSuccess={(newDueDate: string) => {
                         applyOrderUpdate({deliveryDueDate: newDueDate});
                         setAction("");
                     }}

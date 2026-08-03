@@ -73,8 +73,6 @@ function BookingCard({
                     )}
                     onClick={() => setAction("view")}
                 >
-                    <div className="h-1 w-full bg-primary/60" />
-
                     {(read as any).deletedBy && (
                         <DeletedInfo deletedAt={(booking as any).deletedAt} deletedBy={(booking as any).deletedBy} />
                     )}
@@ -131,7 +129,7 @@ function BookingCard({
                     fetchId={booking._id}
                     onDelete={onDelete}
                     onRestore={onRestore}
-                    onSheetRowPatched={(patch) => setBooking({ ...booking, ...patch })}
+                    onSheetRowPatched={(patch: Partial<Booking>) => setBooking({ ...booking, ...patch })}
                 />
             )}
             {action === "delete" && (

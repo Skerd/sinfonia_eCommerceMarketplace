@@ -3,15 +3,33 @@
   "title": "Kërkesat për detyra",
   "description": "Publikoni dhe menaxhoni kërkesat e blerësit për oferta, punë me porosi ose prokurim.",
   "createTaskRequest": "Krijo kërkesë detyre",
+  "searchPlaceholder": "Kërko ose shto filtra...",
   "fields": {
     "title": "Titulli",
-    "requesterId": "Kërkuesi",
-    "categoryId": "Kategoria",
-    "addressCityId": "Qyteti",
+    "description": "Përshkrimi",
+    "requester": "Kërkuesi",
+    "category": "Kategoria",
+    "budgetMin": "Buxheti (min)",
+    "budgetMax": "Buxheti (max)",
+    "currency": "Monedha",
+    "address": "Adresa",
+    "expiresAt": "Skadon",
     "status": "Statusi",
+    "mainImage": "Imazhi kryesor",
+    "imageGallery": "Galeria e imazheve",
+    "videoGallery": "Galeria e videove",
+    "company": "Kompania",
     "createdBy": "Krijuar nga",
-    "deletedAt": "Fshirë",
-    "deletedBy": "Fshirë nga"
-  },
-  "searchPlaceholder": "Kërko ose shto filtra..."
+    "createdAt": "Krijuar më",
+    "updatedAt": "Përditësuar më",
+    "deletedAt": "Fshirë më",
+    "deletedBy": "Fshirë nga",
+    "!enums": {
+      "status": {
+        "open": "Hapur",
+        "closed": "Mbyllur",
+        "awarded": "Dhuruar"
+      }
+    }
+  }
 }

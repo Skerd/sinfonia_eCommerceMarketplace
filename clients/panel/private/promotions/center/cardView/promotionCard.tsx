@@ -132,7 +132,10 @@ function PromotionCard({
     const lifecycle = promotion.lifecycleStatus ?? "active";
     const displayStatus = derivePromotionDisplayStatus(promotion);
     const progress = deriveProgress(promotion.startAt, promotion.endAt);
-    const listingTitle = promotion.listing?.title;
+    const canReadListingTitle = !!read?.listing?.keys?.title;
+    const listingTitle = canReadListingTitle
+        ? (promotion.listing?.title || promotion.listing?.name)
+        : undefined;
     const endStillFuture =
         !!promotion.endAt && !Number.isNaN(new Date(promotion.endAt).getTime())
             ? new Date(promotion.endAt).getTime() > Date.now()
@@ -203,17 +206,21 @@ function PromotionCard({
                     <div className="p-3 flex flex-col gap-2.5">
                         {/* Header row: type badge + action menu */}
                         <div className="flex items-start justify-between gap-2">
-                            <div
-                                className={cn(
-                                    "inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[10px] font-bold uppercase tracking-wide",
-                                    isFeatured
-                                        ? "bg-amber-100 text-amber-800 dark:bg-amber-900/40 dark:text-amber-300"
-                                        : "bg-blue-100 text-blue-800 dark:bg-blue-900/40 dark:text-blue-300",
-                                )}
-                            >
-                                {isFeatured ? <IconSparkles className="w-3 h-3" /> : <IconStar className="w-3 h-3" />}
-                                {resolveLanguageKey(promotion.type)}
-                            </div>
+                            <HiddenElement randomLength={read?.type ? 0 : 8}>
+                                {!!read?.type ? (
+                                    <div
+                                        className={cn(
+                                            "inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[10px] font-bold uppercase tracking-wide",
+                                            isFeatured
+                                                ? "bg-amber-100 text-amber-800 dark:bg-amber-900/40 dark:text-amber-300"
+                                                : "bg-blue-100 text-blue-800 dark:bg-blue-900/40 dark:text-blue-300",
+                                        )}
+                                    >
+                                        {isFeatured ? <IconSparkles className="w-3 h-3" /> : <IconStar className="w-3 h-3" />}
+                                        {resolveLanguageKey(promotion.type)}
+                                    </div>
+                                ) : null}
+                            </HiddenElement>
                             {!hideActions && (
                                 <div className="shrink-0" onClick={(e) => e.stopPropagation()}>
                                     <ActionMenu
@@ -239,71 +246,79 @@ function PromotionCard({
                         </div>
 
                         {/* Name */}
-                        {read?.name && (
-                            <h3 className="font-semibold text-sm leading-snug line-clamp-1 text-foreground">
-                                {promotion.name ?? "—"}
-                            </h3>
-                        )}
+                        <HiddenElement randomLength={10}>
+                            {!!read?.name ? (
+                                <h3 className="font-semibold text-sm leading-snug line-clamp-1 text-foreground">
+                                    {promotion.name ?? "—"}
+                                </h3>
+                            ) : null}
+                        </HiddenElement>
 
                         {/* Listing reference */}
-                        {read?.listing && promotion.listing && (
-                            <div className="flex items-center gap-1.5 text-xs text-muted-foreground min-w-0">
-                                <IconListDetails className="w-3.5 h-3.5 shrink-0" />
-                                <span className="truncate">
-                                    {listingTitle || promotion.listing.name || "—"}
-                                </span>
-                            </div>
-                        )}
+                        <HiddenElement randomLength={canReadListingTitle ? 0 : 12}>
+                            {canReadListingTitle && promotion.listing ? (
+                                <div className="flex items-center gap-1.5 text-xs text-muted-foreground min-w-0">
+                                    <IconListDetails className="w-3.5 h-3.5 shrink-0" />
+                                    <span className="truncate">
+                                        {listingTitle || "—"}
+                                    </span>
+                                </div>
+                            ) : null}
+                        </HiddenElement>
 
                         {/* Divider */}
                         <div className="h-px bg-border" />
 
                         {/* Date range */}
                         <div className="flex flex-col gap-1.5">
-                            {(read?.startAt || read?.endAt) && (
-                                <div className="flex items-center justify-between gap-2 text-xs text-muted-foreground">
-                                    {read?.startAt && (
+                            <div className="flex items-center justify-between gap-2 text-xs text-muted-foreground">
+                                <HiddenElement randomLength={read?.startAt ? 0 : 8}>
+                                    {!!read?.startAt ? (
                                         <span className="flex items-center gap-1 shrink-0">
                                             <IconCalendar className="w-3 h-3" />
                                             {promotion.startAt
                                                 ? formatDate(promotion.startAt, {timeZone: timezone, format: dateOpts})
                                                 : "—"}
                                         </span>
-                                    )}
-                                    {read?.startAt && read?.endAt && (
-                                        <div className="flex-1 flex items-center gap-1 min-w-0">
-                                            <div className="h-px flex-1 bg-border" />
-                                            <span className="text-[9px] text-muted-foreground/60 shrink-0">
-                                                {resolveLanguageKey("to")}
-                                            </span>
-                                            <div className="h-px flex-1 bg-border" />
-                                        </div>
-                                    )}
-                                    {read?.endAt && (
+                                    ) : null}
+                                </HiddenElement>
+                                {!!(read?.startAt && read?.endAt) && (
+                                    <div className="flex-1 flex items-center gap-1 min-w-0">
+                                        <div className="h-px flex-1 bg-border" />
+                                        <span className="text-[9px] text-muted-foreground/60 shrink-0">
+                                            {resolveLanguageKey("to")}
+                                        </span>
+                                        <div className="h-px flex-1 bg-border" />
+                                    </div>
+                                )}
+                                <HiddenElement randomLength={read?.endAt ? 0 : 8}>
+                                    {!!read?.endAt ? (
                                         <span className="flex items-center gap-1 shrink-0">
                                             <IconCalendar className="w-3 h-3" />
                                             {promotion.endAt
                                                 ? formatDate(promotion.endAt, {timeZone: timezone, format: dateOpts})
                                                 : "—"}
                                         </span>
-                                    )}
-                                </div>
-                            )}
+                                    ) : null}
+                                </HiddenElement>
+                            </div>
 
-                            {(read?.startAt && read?.endAt) && (
-                                <div className="flex items-center gap-2">
-                                    <div className="flex-1 h-1 rounded-full bg-muted overflow-hidden">
-                                        <div
-                                            className={cn("h-full rounded-full transition-all duration-500", barClass)}
-                                            style={{width: `${progress * 100}%`}}
-                                        />
+                            <HiddenElement randomLength={read?.startAt && read?.endAt ? 0 : 10}>
+                                {!!(read?.startAt && read?.endAt) ? (
+                                    <div className="flex items-center gap-2">
+                                        <div className="flex-1 h-1 rounded-full bg-muted overflow-hidden">
+                                            <div
+                                                className={cn("h-full rounded-full transition-all duration-500", barClass)}
+                                                style={{width: `${progress * 100}%`}}
+                                            />
+                                        </div>
+                                        <span className={cn("inline-flex items-center gap-1 text-[10px] font-semibold shrink-0", labelClass)}>
+                                            <span className={cn("w-1.5 h-1.5 rounded-full shrink-0", dotClass)} />
+                                            {resolveLanguageKey(displayStatus)}
+                                        </span>
                                     </div>
-                                    <span className={cn("inline-flex items-center gap-1 text-[10px] font-semibold shrink-0", labelClass)}>
-                                        <span className={cn("w-1.5 h-1.5 rounded-full shrink-0", dotClass)} />
-                                        {resolveLanguageKey(displayStatus)}
-                                    </span>
-                                </div>
-                            )}
+                                ) : null}
+                            </HiddenElement>
                         </div>
                     </div>
                 </Card>
@@ -326,8 +341,8 @@ function PromotionCard({
                             accessModel="promotions"
                             deleteId={promotion._id}
                             openAlert={action === "delete"}
-                            name={listingTitle}
-                            confirmName={listingTitle}
+                            name={canReadListingTitle && listingTitle}
+                            confirmName={canReadListingTitle && listingTitle}
                             onSuccess={onDelete}
                             onCancel={() => setAction("")}
                             url="/api/eCommerceMarketplace/promotion"
@@ -338,8 +353,8 @@ function PromotionCard({
                             accessModel="promotions"
                             deleteId={promotion._id}
                             openAlert={action === "restore"}
-                            name={listingTitle}
-                            confirmName={listingTitle}
+                            name={canReadListingTitle && listingTitle}
+                            confirmName={canReadListingTitle && listingTitle}
                             onSuccess={onRestore}
                             onCancel={() => setAction("")}
                             url="/api/eCommerceMarketplace/promotion/restore"

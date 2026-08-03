@@ -5,6 +5,7 @@
   "failedTooltipDescription": "Click to retry fetching data.",
   "listingPackageSubtitle": "Listing Package",
   "overview": "Overview",
+  "lifecycle": "Lifecycle",
   "description": "Description",
   "name": "Name",
   "listing": "Listing",
@@ -13,5 +14,9 @@
   "currency": "Currency",
   "deliveryDays": "Delivery (days)",
   "displayOrder": "Display order",
-  "createdAt": "Created"
+  "createdAt": "Created at",
+  "updatedAt": "Updated at",
+  "createdBy": "Created by",
+  "deletedAt": "Deleted at",
+  "deletedBy": "Deleted by"
 }

@@ -3,15 +3,33 @@
   "title": "Task requests",
   "description": "Post and manage buyer requests for quotes, custom work, or procurement.",
   "createTaskRequest": "Create task request",
+  "searchPlaceholder": "Search or add filters...",
   "fields": {
     "title": "Title",
-    "requesterId": "Requester",
-    "categoryId": "Category",
-    "addressCityId": "City",
+    "description": "Description",
+    "requester": "Requester",
+    "category": "Category",
+    "budgetMin": "Budget (min)",
+    "budgetMax": "Budget (max)",
+    "currency": "Currency",
+    "address": "Address",
+    "expiresAt": "Expires",
     "status": "Status",
+    "mainImage": "Main image",
+    "imageGallery": "Image gallery",
+    "videoGallery": "Video gallery",
+    "company": "Company",
     "createdBy": "Created by",
-    "deletedAt": "Deleted",
-    "deletedBy": "Deleted by"
-  },
-  "searchPlaceholder": "Search or add filters..."
+    "createdAt": "Created at",
+    "updatedAt": "Updated at",
+    "deletedAt": "Deleted at",
+    "deletedBy": "Deleted by",
+    "!enums": {
+      "status": {
+        "open": "Open",
+        "closed": "Closed",
+        "awarded": "Awarded"
+      }
+    }
+  }
 }

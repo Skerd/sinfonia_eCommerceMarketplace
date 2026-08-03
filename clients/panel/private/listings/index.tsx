@@ -32,7 +32,7 @@ function AllListings({resolveLanguageKey}: WithLanguageType) {
             buildEditPath={listingEditPath}
             resolveLanguageKey={resolveLanguageKey}
             sheetLanguagePath="src/modules/eCommerceMarketplace/clients/panel/private/listings/center/sheetView/listingSheetView.tsx"
-            cardViewClassName="grid grid-cols-1 gap-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4"
+            // cardViewClassName="grid grid-cols-1 gap-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4"
             rowActionMenu={{allowMenuForCustomChildren: true}}
             renderActionMenuChildren={(entity, bindRowAction) => (
                 <>

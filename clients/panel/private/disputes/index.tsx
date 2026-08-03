@@ -34,7 +34,6 @@ function AllDisputes({resolveLanguageKey}: WithLanguageType) {
             buildEditPath={noopDisputeEditPath}
             resolveLanguageKey={resolveLanguageKey}
             sheetLanguagePath="src/modules/eCommerceMarketplace/clients/panel/private/disputes/center/sheetView/disputeSheetView.tsx"
-            cardViewClassName="grid grid-cols-1 gap-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4"
             rowActionMenu={{allowMenuForCustomChildren: true, hideEdit: true}}
             renderActionMenuChildren={(dispute, bindRowAction) => (
                 <>
@@ -83,7 +82,7 @@ function AllDisputes({resolveLanguageKey}: WithLanguageType) {
             renderCard={(disputeRow, onDelete, onRestore, listRef) => (
                 <DisputeCard
                     dispute={disputeRow}
-                    onDelete={(row, response?: DeletedData) => onDelete(row ?? disputeRow, response)}
+                    onDelete={(row: Dispute | undefined, response?: DeletedData) => onDelete(row ?? disputeRow, response)}
                     onRestore={() => onRestore(disputeRow)}
                     onLifecyclePatched={(patch: Partial<Dispute>) => listRef?.current?.updateRow?.(disputeRow._id, patch)}
                 />

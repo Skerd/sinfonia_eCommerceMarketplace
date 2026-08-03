@@ -5,6 +5,7 @@
   "failedTooltipDescription": "Klikoni për të provuar përsëri marrjen e të dhënave.",
   "listingPackageSubtitle": "Paketë listimi",
   "overview": "Përmbledhje",
+  "lifecycle": "Cikli i jetës",
   "description": "Përshkrimi",
   "name": "Emri",
   "listing": "Listimi",
@@ -13,5 +14,9 @@
   "currency": "Valuta",
   "deliveryDays": "Dorëzimi (ditë)",
   "displayOrder": "Renditja",
-  "createdAt": "Krijuar"
+  "createdAt": "Krijuar më",
+  "updatedAt": "Përditësuar më",
+  "createdBy": "Krijuar nga",
+  "deletedAt": "Fshirë më",
+  "deletedBy": "Fshirë nga"
 }
