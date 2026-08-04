@@ -4,7 +4,6 @@ import withLanguage, {WithLanguageType} from "@coreModule/helpers/hocs/withLangu
 import withDebug from "@coreModule/helpers/hocs/withDebug.tsx";
 import {useAccess} from "@coreModule/helpers/hocs/withAccess.tsx";
 import HiddenElement from "@coreModule/components/custom/hiddenElement.tsx";
-import {Card} from "@coreModule/components/ui/card.tsx";
 import {cn} from "@coreModule/components/lib/utils.ts";
 import ActionMenu from "@coreModule/components/custom/actions/menu/actionMenu.tsx";
 import DeleteAction from "@coreModule/components/custom/actions/deleteAction.tsx";
@@ -16,6 +15,12 @@ import {Star} from "lucide-react";
 import type {Review} from "armonia/src/modules/eCommerceMarketplace/api/eCommerceMarketplace/private/review/review.dto.ts";
 import type {DeletedData} from "armonia/src/modules/core/types/shared.types.ts";
 import ReviewSheetView from "../sheetView/reviewSheetView.tsx";
+import {InfoRowGroup} from "@coreModule/components/custom/infoRowGroup.tsx";
+import {useEntityCard} from "@coreModule/helpers/hooks/useEntityCard.ts";
+import {EntityCardShell} from "@coreModule/components/custom/cards/EntityCardShell.tsx";
+import {EntityTextCardHeader} from "@coreModule/components/custom/cards/EntityTextCardHeader.tsx";
+import {CARD_BODY_CLASS} from "@coreModule/components/custom/cards/entityCard.constants.ts";
+import {Separator} from "@coreModule/components/ui/separator.tsx";
 
 const RATING_CONFIG: Record<number, {text: string}> = {
     1: {text: "text-muted-foreground"},
@@ -60,13 +65,10 @@ function ReviewCard({
     sheetOnly = false,
 }: ReviewCardProps) {
     const [action, setAction] = useState("");
-    const [review, setReview] = useState<Review>(reviewProp);
+    const [review, setEntity] = useState<Review>(reviewProp);
     const [hideAfterDeletion, setHideAfterDeletion] = useState(false);
     const {read, restore} = useAccess("reviews");
 
-    useEffect(() => {
-        setReview(reviewProp);
-    }, [reviewProp]);
 
     const onDelete = (data: DeletedData) => {
         if (!data.deletedBy && !data.deletedAt) {
@@ -74,7 +76,7 @@ function ReviewCard({
         } else if (onDeleteProp) {
             onDeleteProp(review, data);
         } else {
-            setReview({...review, ...(data as Partial<Review>)});
+            setEntity({...review, ...(data as Partial<Review>)});
         }
     };
 
@@ -105,14 +107,7 @@ function ReviewCard({
     return (
         <>
             {!sheetOnly && (
-                <Card
-                    className={cn(
-                        "group p-0 h-full relative overflow-hidden transition-[box-shadow,--tw-ring-color] duration-200",
-                        "hover:cursor-pointer hover:shadow-md hover:ring-primary/40",
-                        "shadow-sm gap-0",
-                    )}
-                    onClick={() => setAction("view")}
-                >
+                <EntityCardShell onClick={() => setAction("view")}>
                     {(read.deletedBy || read.deletedAt) && (
                         <DeletedInfo deletedAt={review.deletedAt} deletedBy={review.deletedBy} />
                     )}
@@ -137,7 +132,7 @@ function ReviewCard({
 
                         <span
                             className={cn(
-                                "inline-flex items-center gap-1.5 text-[10px] font-semibold uppercase tracking-wide -mt-1",
+                                "inline-flex items-center gap-1.5 text-3xs font-semibold uppercase tracking-wide -mt-1",
                                 ratingCfg.text,
                             )}
                         >
@@ -160,7 +155,7 @@ function ReviewCard({
                                     <TableAvatar mediaId={review.reviewer.photo} />
                                 ) : (
                                     <div className="w-5 h-5 rounded-full bg-muted flex items-center justify-center shrink-0 ring-1 ring-border">
-                                        <span className="text-[8px] font-bold text-foreground leading-none">
+                                        <span className="text-3xs font-bold text-foreground leading-none">
                                             {reviewerInitials || "?"}
                                         </span>
                                     </div>
@@ -179,14 +174,14 @@ function ReviewCard({
                                 </span>
                             )}
                             {review.order?._id && (
-                                <span className="flex items-center gap-1 text-[10px] text-muted-foreground shrink-0 ml-auto">
+                                <span className="flex items-center gap-1 text-3xs text-muted-foreground shrink-0 ml-auto">
                                     <IconPackage className="w-3 h-3" />
                                     <span className="font-mono truncate max-w-[5rem]">{review.order._id.slice(-6)}</span>
                                 </span>
                             )}
                         </div>
                     </div>
-                </Card>
+                </EntityCardShell>
             )}
             {action === "view" && (
                 <ReviewSheetView

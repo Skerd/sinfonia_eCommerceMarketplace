@@ -1,10 +1,8 @@
 import { compose } from "redux";
-import { useEffect, useState } from "react";
 import withLanguage, { WithLanguageType } from "@coreModule/helpers/hocs/withLanguage.tsx";
 import withDebug from "@coreModule/helpers/hocs/withDebug.tsx";
 import { useAccess } from "@coreModule/helpers/hocs/withAccess.tsx";
 import HiddenElement from "@coreModule/components/custom/hiddenElement.tsx";
-import { Card } from "@coreModule/components/ui/card.tsx";
 import { cn } from "@coreModule/components/lib/utils.ts";
 import ActionMenu from "@coreModule/components/custom/actions/menu/actionMenu.tsx";
 import DeleteAction from "@coreModule/components/custom/actions/deleteAction.tsx";
@@ -21,6 +19,12 @@ import DismissListingFlagDropdown from "@eCommerceMarketplaceModule/clients/pane
 import ChangeListingFlagLifecycleAction, {
     type ListingFlagLifecycleVerb,
 } from "@eCommerceMarketplaceModule/components/custom/listingFlags/changeListingFlagLifecycleAction.tsx";
+import {InfoRowGroup} from "@coreModule/components/custom/infoRowGroup.tsx";
+import {useEntityCard} from "@coreModule/helpers/hooks/useEntityCard.ts";
+import {EntityCardShell} from "@coreModule/components/custom/cards/EntityCardShell.tsx";
+import {EntityTextCardHeader} from "@coreModule/components/custom/cards/EntityTextCardHeader.tsx";
+import {CARD_BODY_CLASS} from "@coreModule/components/custom/cards/entityCard.constants.ts";
+import {Separator} from "@coreModule/components/ui/separator.tsx";
 
 const STATUS_CONFIG: Record<string, { dot: string; text: string }> = {
     pending: {
@@ -64,40 +68,16 @@ function ListingFlagCard({
     hideActions = false,
     sheetOnly = false,
 }: ListingFlagCardProps) {
-    const [action, setAction] = useState("");
-    const [flag, setFlag] = useState<ListingFlag>(flagProp);
-    const [hideAfterDeletion, setHideAfterDeletion] = useState(false);
+    const {action, setAction, entity: flag, setEntity, hideAfterDeletion, onDelete, onRestore} = useEntityCard({
+        entityProp: flagProp,
+        onDeleteProp,
+        onRestoreProp,
+    });
     const { read, restore } = useAccess("listingflags");
 
-    useEffect(() => {
-        setFlag(flagProp);
-    }, [flagProp]);
-
     const applyLifecyclePatch = (patch: Partial<ListingFlag>) => {
-        setFlag((prev) => ({...prev, ...patch}));
+        setEntity((prev) => ({...prev, ...patch}));
         onLifecyclePatched?.(patch);
-    };
-
-    const onDelete = (data: DeletedData) => {
-        if (!data.deletedBy && !data.deletedAt) {
-            setHideAfterDeletion(true);
-        } else if (onDeleteProp) {
-            onDeleteProp(flag, data);
-        } else {
-            setFlag({ ...flag, ...(data as Partial<ListingFlag>) });
-        }
-    };
-
-    const onRestore = () => {
-        if (onRestoreProp) {
-            onRestoreProp();
-        } else {
-            setFlag({
-                ...flag,
-                deletedAt: undefined,
-                deletedBy: undefined,
-            } as ListingFlag);
-        }
     };
 
     if (hideAfterDeletion) return <></>;
@@ -129,14 +109,7 @@ function ListingFlagCard({
     return (
         <>
             {!sheetOnly && (
-                <Card
-                    className={cn(
-                        "group p-0 h-full relative overflow-hidden transition-[box-shadow,--tw-ring-color] duration-200",
-                        "hover:cursor-pointer hover:shadow-md hover:ring-primary/40",
-                        "shadow-sm gap-0",
-                    )}
-                    onClick={() => setAction("view")}
-                >
+                <EntityCardShell onClick={() => setAction("view")}>
                     {(read.deletedBy || read.deletedAt) && (
                         <DeletedInfo deletedAt={flag.deletedAt} deletedBy={flag.deletedBy} />
                     )}
@@ -169,35 +142,37 @@ function ListingFlagCard({
 
                         <HiddenElement randomLength={read?.status ? 0 : 6}>
                             {!!read?.status && flag.status ? (
-                                <span className={cn("inline-flex items-center gap-1.5 text-[10px] font-semibold uppercase tracking-wide -mt-1", statusCfg.text)}>
+                                <span className={cn("inline-flex items-center gap-1.5 text-3xs font-semibold uppercase tracking-wide -mt-1", statusCfg.text)}>
                                     <span className={cn("w-1.5 h-1.5 rounded-full shrink-0", statusCfg.dot)} />
                                     {statusLabel}
                                 </span>
                             ) : null}
                         </HiddenElement>
 
-                        <InfoRow
-                            icon={Flag}
-                            label={resolveLanguageKey("reason")}
-                            show
-                            value={
-                                <HiddenElement randomLength={read?.reason ? 0 : 8}>
-                                    {!!read?.reason ? reasonLabel : null}
-                                </HiddenElement>
-                            }
-                        />
-                        <InfoRow
-                            icon={User}
-                            label={resolveLanguageKey("reporter")}
-                            show
-                            value={
-                                <HiddenElement randomLength={canReadReporterName ? 0 : 10}>
-                                    {canReadReporterName ? (reporterName || "—") : null}
-                                </HiddenElement>
-                            }
-                        />
+                        <InfoRowGroup>
+                            <InfoRow
+                                icon={Flag}
+                                label={resolveLanguageKey("reason")}
+                                show
+                                value={
+                                    <HiddenElement randomLength={read?.reason ? 0 : 8}>
+                                        {!!read?.reason ? reasonLabel : null}
+                                    </HiddenElement>
+                                }
+                            />
+                            <InfoRow
+                                icon={User}
+                                label={resolveLanguageKey("reporter")}
+                                show
+                                value={
+                                    <HiddenElement randomLength={canReadReporterName ? 0 : 10}>
+                                        {canReadReporterName ? (reporterName || "—") : null}
+                                    </HiddenElement>
+                                }
+                            />
+                        </InfoRowGroup>
                     </div>
-                </Card>
+                </EntityCardShell>
             )}
             {action === "view" && (
                 <ListingFlagSheetView

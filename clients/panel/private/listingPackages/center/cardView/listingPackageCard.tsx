@@ -15,6 +15,12 @@ import { IconClock, IconLayoutList } from "@tabler/icons-react";
 import type { ListingPackage } from "armonia/src/modules/eCommerceMarketplace/api/eCommerceMarketplace/private/listingPackage/listingPackage.dto.ts";
 import type { DeletedData } from "armonia/src/modules/core/types/shared.types.ts";
 import ListingPackageSheetView from "@eCommerceMarketplaceModule/clients/panel/private/listingPackages/center/sheetView/listingPackageSheetView.tsx";
+import {InfoRowGroup} from "@coreModule/components/custom/infoRowGroup.tsx";
+import {useEntityCard} from "@coreModule/helpers/hooks/useEntityCard.ts";
+import {EntityCardShell} from "@coreModule/components/custom/cards/EntityCardShell.tsx";
+import {EntityTextCardHeader} from "@coreModule/components/custom/cards/EntityTextCardHeader.tsx";
+import {CARD_BODY_CLASS} from "@coreModule/components/custom/cards/entityCard.constants.ts";
+import {Separator} from "@coreModule/components/ui/separator.tsx";
 
 type ListingPackageCardProps = WithLanguageType & {
     listingPackage: ListingPackage;
@@ -31,25 +37,25 @@ function ListingPackageCard({
     hideActions = false,
 }: ListingPackageCardProps) {
     const [action, setAction] = useState("");
-    const [pkg, setPkg] = useState<ListingPackage>(pkgProp);
+    const [pkg, setEntity] = useState<ListingPackage>(pkgProp);
     const [hideAfterDeletion, setHideAfterDeletion] = useState(false);
     const { read, restore } = useAccess("listingPackages");
 
-    useEffect(() => { setPkg(pkgProp); }, [pkgProp]);
+    useEffect(() => { setEntity(pkgProp); }, [pkgProp]);
 
     const onDelete = (data: DeletedData) => {
         if (!data.deletedBy && !data.deletedAt) {
             setHideAfterDeletion(true);
         } else {
             if (onDeleteProp) onDeleteProp(pkg, data);
-            else setPkg({ ...pkg, ...(data as any) });
+            else setEntity({ ...pkg, ...(data as any) });
         }
     };
     const onRestore = () => {
         if (onRestoreProp) {
             onRestoreProp();
         } else {
-            setPkg({
+            setEntity({
                 ...pkg,
                 deletedAt: undefined,
                 deletedBy: undefined,
@@ -83,14 +89,7 @@ function ListingPackageCard({
 
     return (
         <>
-            <Card
-                className={cn(
-                    "group p-0 h-full relative overflow-hidden transition-[box-shadow,--tw-ring-color] duration-200",
-                    "hover:cursor-pointer hover:shadow-md hover:ring-primary/40",
-                    "shadow-sm gap-0",
-                )}
-                onClick={() => setAction("view")}
-            >
+            <EntityCardShell onClick={() => setAction("view")}>
                 {(read.deletedBy || read.deletedAt) && (
                     <DeletedInfo deletedAt={(pkg as any).deletedAt} deletedBy={(pkg as any).deletedBy} />
                 )}
@@ -107,7 +106,7 @@ function ListingPackageCard({
                             </HiddenElement>
                             <HiddenElement randomLength={read?.order ? 0 : 4}>
                                 {!!read?.order && pkg.order != null ? (
-                                    <span className="shrink-0 text-[10px] font-medium px-1.5 py-0.5 rounded bg-muted text-muted-foreground">
+                                    <span className="shrink-0 text-3xs font-medium px-1.5 py-0.5 rounded bg-muted text-muted-foreground">
                                         #{pkg.order}
                                     </span>
                                 ) : null}
@@ -172,7 +171,7 @@ function ListingPackageCard({
                         </div>
                     </div>
                 </div>
-            </Card>
+            </EntityCardShell>
 
             {action === "view" && (
                 <ListingPackageSheetView
@@ -182,7 +181,7 @@ function ListingPackageCard({
                     fetchId={pkg._id}
                     onDelete={onDelete}
                     onRestore={onRestore}
-                    onSheetRowPatched={(patch: Partial<ListingPackage>) => setPkg({...pkg, ...patch})}
+                    onSheetRowPatched={(patch: Partial<ListingPackage>) => setEntity({...pkg, ...patch})}
                 />
             )}
             {action === "delete" && (

@@ -3,8 +3,7 @@ import withLanguage, {WithLanguageType} from "@coreModule/helpers/hocs/withLangu
 import withDebug from "@coreModule/helpers/hocs/withDebug.tsx";
 import HiddenElement from "@coreModule/components/custom/hiddenElement.tsx";
 import {useAccess} from "@coreModule/helpers/hocs/withAccess.tsx";
-import {useEffect, useState} from "react";
-import {Card} from "@coreModule/components/ui/card.tsx";
+import {useState} from "react";
 import {cn} from "@coreModule/components/lib/utils.ts";
 import type {Bid} from "armonia/src/modules/eCommerceMarketplace/api/eCommerceMarketplace/private/bid/bid.dto.ts";
 import DeletedInfo from "@coreModule/components/custom/deletedInfo";
@@ -17,6 +16,12 @@ import ActionMenu from "@coreModule/components/custom/actions/menu/actionMenu.ts
 import AcceptBidDropdown from "@eCommerceMarketplaceModule/clients/panel/private/bids/center/actions/acceptBidDropdown.tsx";
 import RejectBidDropdown from "@eCommerceMarketplaceModule/clients/panel/private/bids/center/actions/rejectBidDropdown.tsx";
 import BidActionConfirmAction from "@eCommerceMarketplaceModule/components/custom/bids/bidActionConfirmAction.tsx";
+import {InfoRowGroup} from "@coreModule/components/custom/infoRowGroup.tsx";
+import {useEntityCard} from "@coreModule/helpers/hooks/useEntityCard.ts";
+import {EntityCardShell} from "@coreModule/components/custom/cards/EntityCardShell.tsx";
+import {EntityTextCardHeader} from "@coreModule/components/custom/cards/EntityTextCardHeader.tsx";
+import {CARD_BODY_CLASS} from "@coreModule/components/custom/cards/entityCard.constants.ts";
+import {Separator} from "@coreModule/components/ui/separator.tsx";
 
 function formatAmount(bid: Bid): string | undefined {
     if (bid.amount == null) return undefined;
@@ -50,33 +55,14 @@ function BidCard({
     hideActions = false,
     sheetOnly = false,
 }: BidCardProps) {
-    const [action, setAction] = useState<string>("");
-    const [bid, setBid] = useState<Bid>(bidProp);
-    const [hideAfterDeletion, setHideAfterDeletion] = useState(false);
-
-    const onDelete = (data: DeletedData) => {
-        if (!data.deletedBy && !data.deletedAt) {
-            setHideAfterDeletion(true);
-        } else if (onDeleteProp) {
-            onDeleteProp(bid, data);
-        } else {
-            setBid({...bid, ...data});
-        }
-    };
-
-    const onRestore = () => {
-        if (onRestoreProp) {
-            onRestoreProp();
-        } else {
-            setBid({...bid, deletedAt: undefined, deletedBy: undefined});
-        }
-    };
+    const {action, setAction, entity: bid, setEntity, hideAfterDeletion, onDelete, onRestore} = useEntityCard({
+        entityProp: bidProp,
+        onDeleteProp,
+        onRestoreProp,
+    });
 
     const {read, restore} = useAccess("marketplacebids");
 
-    useEffect(() => {
-        setBid(bidProp);
-    }, [bidProp]);
 
     if (hideAfterDeletion) return <></>;
     if (!restore && bid.deletedAt != null) return <></>;
@@ -94,14 +80,7 @@ function BidCard({
     return (
         <>
             {!sheetOnly && (
-                <Card
-                    className={cn(
-                        "group p-0 h-full relative overflow-hidden transition-[box-shadow,--tw-ring-color] duration-200",
-                        "hover:cursor-pointer hover:shadow-md hover:ring-primary/40",
-                        "shadow-sm gap-0",
-                    )}
-                    onClick={() => setAction("view")}
-                >
+                <EntityCardShell onClick={() => setAction("view")}>
                     {(read.deletedBy || read.deletedAt) && (
                         <DeletedInfo deletedAt={bid.deletedAt} deletedBy={bid.deletedBy} />
                     )}
@@ -116,7 +95,7 @@ function BidCard({
                                             <TableAvatar mediaId={bid.bidder.photo} />
                                         ) : (
                                             <div className="w-5 h-5 rounded-full bg-primary/10 flex items-center justify-center shrink-0 ring-1 ring-primary/20">
-                                                <span className="text-[8px] font-bold text-primary leading-none">
+                                                <span className="text-3xs font-bold text-primary leading-none">
                                                     {bidderInitials || "?"}
                                                 </span>
                                             </div>
@@ -128,7 +107,7 @@ function BidCard({
                                 )}
                                 {read?.status && bid.status && (
                                     <span className={cn(
-                                        "inline-flex items-center gap-1 text-[10px] font-semibold uppercase tracking-wide shrink-0",
+                                        "inline-flex items-center gap-1 text-3xs font-semibold uppercase tracking-wide shrink-0",
                                         statusCfg.text,
                                     )}>
                                         <span className={cn("w-1.5 h-1.5 rounded-full", statusCfg.dot, statusCfg.dotAnim)} />
@@ -164,7 +143,7 @@ function BidCard({
                             )}
                         </div>
                     </div>
-                </Card>
+                </EntityCardShell>
             )}
 
             {!!action && (
@@ -176,8 +155,8 @@ function BidCard({
                             bid={bid}
                             onDelete={onDelete}
                             onRestore={onRestore}
-                            onBidUpdated={(updated: Bid) => setBid(updated)}
-                            onSheetRowPatched={(patch: Partial<Bid>) => setBid({...bid, ...patch})}
+                            onBidUpdated={(updated: Bid) => setEntity(updated)}
+                            onSheetRowPatched={(patch: Partial<Bid>) => setEntity({...bid, ...patch})}
                         />
                     )}
                     {action === "delete" && (
@@ -212,7 +191,7 @@ function BidCard({
                             openAlert
                             url={`/api/eCommerceMarketplace/bid/${action}`}
                             onSuccess={(updated: Bid) => {
-                                setBid(updated);
+                                setEntity(updated);
                                 onBidUpdated?.(updated);
                                 setAction("");
                             }}

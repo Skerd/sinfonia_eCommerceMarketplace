@@ -7,7 +7,6 @@ import {useAccess} from "@coreModule/helpers/hocs/withAccess.tsx";
 import HiddenElement from "@coreModule/components/custom/hiddenElement.tsx";
 import Loader from "@coreModule/components/custom/loader.tsx";
 import {ErrorView} from "@coreModule/components/custom/errorView.tsx";
-import {Card} from "@coreModule/components/ui/card.tsx";
 import {cn} from "@coreModule/components/lib/utils.ts";
 import DeletedInfo from "@coreModule/components/custom/deletedInfo";
 import ActionMenu from "@coreModule/components/custom/actions/menu/actionMenu.tsx";
@@ -24,6 +23,12 @@ import {formatDate} from "@coreModule/helpers/general";
 import {useSelector} from "react-redux";
 import {RootState} from "@coreModule/helpers/redux/store/generalStore.ts";
 import {IconCalendar, IconListDetails, IconSparkles, IconStar} from "@tabler/icons-react";
+import {InfoRowGroup} from "@coreModule/components/custom/infoRowGroup.tsx";
+import {useEntityCard} from "@coreModule/helpers/hooks/useEntityCard.ts";
+import {EntityCardShell} from "@coreModule/components/custom/cards/EntityCardShell.tsx";
+import {EntityTextCardHeader} from "@coreModule/components/custom/cards/EntityTextCardHeader.tsx";
+import {CARD_BODY_CLASS} from "@coreModule/components/custom/cards/entityCard.constants.ts";
+import {Separator} from "@coreModule/components/ui/separator.tsx";
 
 export type PromotionDisplayStatus = "stopped" | "paused" | "upcoming" | "active" | "ended";
 
@@ -76,7 +81,7 @@ function PromotionCard({
     resolveLanguageKey,
 }: PromotionCardProps) {
     const [action, setAction] = useState("");
-    const [promotion, setPromotion] = useState<Promotion>(promotionProp);
+    const [promotion, setEntity] = useState<Promotion>(promotionProp);
     const [forceReload, setForceReload] = useState(1);
     const {read, restore} = useAccess("promotions");
     const {timezone} = useSelector((state: RootState) => state.authentication.user);
@@ -87,7 +92,7 @@ function PromotionCard({
             return;
         }
         const next = {...promotion, ...data};
-        setPromotion(next);
+        setEntity(next);
         onDeleteProp?.(next, data);
     };
 
@@ -98,12 +103,12 @@ function PromotionCard({
             deletedBy: undefined,
             ...data,
         };
-        setPromotion(next);
+        setEntity(next);
         onRestoreProp?.(next);
     };
 
     useEffect(() => {
-        if (!fetchId) setPromotion(promotionProp);
+        if (!fetchId) setEntity(promotionProp);
     }, [promotionProp, fetchId]);
 
     useEffect(() => {
@@ -111,7 +116,7 @@ function PromotionCard({
     }, [fetchId, forceReload]);
 
     useImperativeHandle(innerRef, () => ({
-        success: (data: Promotion) => setPromotion(data),
+        success: (data: Promotion) => setEntity(data),
     }));
 
     if (!restore && promotion.deletedAt != null) return <></>;
@@ -189,14 +194,7 @@ function PromotionCard({
     return (
         <>
             {!sheetOnly && (
-                <Card
-                    className={cn(
-                        "group relative h-full overflow-hidden p-0 transition-[box-shadow,--tw-ring-color,transform] duration-200",
-                        "hover:cursor-pointer hover:shadow-md hover:ring-primary/40 hover:-translate-y-0.5",
-                        "border border-border/60 shadow-sm",
-                    )}
-                    onClick={() => setAction("view")}
-                >
+                <EntityCardShell onClick={() => setAction("view")}>
                     {/* ── Deleted banner ────────────────────────────────── */}
                     {(read.deletedBy || read.deletedAt) && (
                         <DeletedInfo deletedAt={promotion.deletedAt} deletedBy={promotion.deletedBy} />
@@ -210,7 +208,7 @@ function PromotionCard({
                                 {!!read?.type ? (
                                     <div
                                         className={cn(
-                                            "inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[10px] font-bold uppercase tracking-wide",
+                                            "inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-3xs font-bold uppercase tracking-wide",
                                             isFeatured
                                                 ? "bg-warning/10 text-warning dark:bg-warning/40"
                                                 : "bg-info/10 text-info dark:bg-info/40",
@@ -285,7 +283,7 @@ function PromotionCard({
                                 {!!(read?.startAt && read?.endAt) && (
                                     <div className="flex-1 flex items-center gap-1 min-w-0">
                                         <div className="h-px flex-1 bg-border" />
-                                        <span className="text-[9px] text-muted-foreground/60 shrink-0">
+                                        <span className="text-3xs text-muted-foreground/60 shrink-0">
                                             {resolveLanguageKey("to")}
                                         </span>
                                         <div className="h-px flex-1 bg-border" />
@@ -312,7 +310,7 @@ function PromotionCard({
                                                 style={{width: `${progress * 100}%`}}
                                             />
                                         </div>
-                                        <span className={cn("inline-flex items-center gap-1 text-[10px] font-semibold shrink-0", labelClass)}>
+                                        <span className={cn("inline-flex items-center gap-1 text-3xs font-semibold shrink-0", labelClass)}>
                                             <span className={cn("w-1.5 h-1.5 rounded-full shrink-0", dotClass)} />
                                             {resolveLanguageKey(displayStatus)}
                                         </span>
@@ -321,7 +319,7 @@ function PromotionCard({
                             </HiddenElement>
                         </div>
                     </div>
-                </Card>
+                </EntityCardShell>
             )}
 
             {!!action && (
@@ -368,7 +366,7 @@ function PromotionCard({
                             openAlert
                             url={`/api/eCommerceMarketplace/promotion/${action}`}
                             onSuccess={(patch: Partial<Promotion>) => {
-                                setPromotion({...promotion, ...patch});
+                                setEntity({...promotion, ...patch});
                                 setAction("");
                             }}
                             onCancel={() => setAction("")}

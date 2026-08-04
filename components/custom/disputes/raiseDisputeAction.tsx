@@ -96,7 +96,7 @@ function RaiseDisputeAction({
                     </AlertDialogTitle>
                     <AlertDialogDescription>{resolveLanguageKey("raise.description")}</AlertDialogDescription>
                 </AlertDialogHeader>
-                <div className="space-y-2 py-4">
+                <div className="flex flex-col gap-y-2 py-4">
                     <Label htmlFor="raise-dispute-reason">{resolveLanguageKey("raise.reasonLabel")}</Label>
                     <Textarea
                         id="raise-dispute-reason"

@@ -5,7 +5,6 @@ import withDebug from "@coreModule/helpers/hocs/withDebug.tsx";
 import HiddenElement from "@coreModule/components/custom/hiddenElement.tsx";
 import {useAccess} from "@coreModule/helpers/hocs/withAccess.tsx";
 import {useEffect, useImperativeHandle, useState} from "react";
-import {Card} from "@coreModule/components/ui/card.tsx";
 import ValueNotSet from "@coreModule/components/custom/valueNotSet.tsx";
 import {cn} from "@coreModule/components/lib/utils.ts";
 import type {TaskRequest} from "armonia/src/modules/eCommerceMarketplace/api/eCommerceMarketplace/private/taskRequest/taskRequest.dto.ts";
@@ -24,6 +23,13 @@ import TaskRequestNotifyAllConfirmAction from "@eCommerceMarketplaceModule/compo
 import {taskRequestEditPath} from "@eCommerceMarketplaceModule/clients/panel/private/taskRequests";
 import Loader from "@coreModule/components/custom/loader.tsx";
 import {ErrorView} from "@coreModule/components/custom/errorView.tsx";
+import {InfoRowGroup} from "@coreModule/components/custom/infoRowGroup.tsx";
+import {useEntityCard} from "@coreModule/helpers/hooks/useEntityCard.ts";
+import {EntityCardShell} from "@coreModule/components/custom/cards/EntityCardShell.tsx";
+import {EntityTextCardHeader} from "@coreModule/components/custom/cards/EntityTextCardHeader.tsx";
+import {CARD_BODY_CLASS} from "@coreModule/components/custom/cards/entityCard.constants.ts";
+import {Separator} from "@coreModule/components/ui/separator.tsx";
+import {EntityMediaHeader} from "@coreModule/components/custom/cards/EntityMediaHeader.tsx";
 
 function formatBudget(entity: TaskRequest): string | undefined {
     const {budgetMin, budgetMax, currency} = entity;
@@ -64,8 +70,10 @@ function TaskRequestCard({
     hideActions = false,
     sheetOnly = false,
 }: TaskRequestCardProps) {
-    const [action, setAction] = useState<string>("");
-    const [entity, setEntity] = useState<TaskRequest>(entityProp);
+    const {action, setAction, entity: entity, setEntity} = useEntityCard({
+        entityProp: entityProp,
+    });
+
     const [hideAfterDeletion, setHideAfterDeletion] = useState(false);
     const [forceReload, setForceReload] = useState(1);
 
@@ -146,13 +154,9 @@ function TaskRequestCard({
     return (
         <>
             {!sheetOnly && (
-                <Card
-                    className={cn(
-                        "group p-0 h-full relative overflow-hidden transition-[box-shadow,--tw-ring-color] duration-200",
-                        "hover:cursor-pointer hover:shadow-md hover:ring-primary/40",
-                        "border border-border/60 shadow-sm gap-2 pb-2"
-                    )}
+                <EntityCardShell
                     onClick={fetchId ? undefined : () => setAction("view")}
+                    disableClick={!!fetchId}
                 >
                     {/* ── Image ─────────────────────────────────────────── */}
                     <div className="relative h-50 overflow-hidden bg-muted">
@@ -200,14 +204,14 @@ function TaskRequestCard({
                         <div className="absolute bottom-2 left-2 right-2 flex items-end justify-between gap-2">
                             <HiddenElement randomLength={read?.category?.keys?.name ? 0 : 8}>
                                 {!!read?.category?.keys?.name && entity.category?.name ? (
-                                    <span className="inline-flex items-center gap-1 text-[11px] font-medium px-2.5 py-1 rounded-full bg-white/15 backdrop-blur-sm text-white border border-white/20 shadow-sm truncate max-w-[60%]">
+                                    <span className="inline-flex items-center gap-1 text-2xs font-medium px-2.5 py-1 rounded-full bg-overlay-foreground/15 backdrop-blur-sm text-overlay-foreground border border-overlay-foreground/20 shadow-sm truncate max-w-[60%]">
                                         <IconFolder className="w-3 h-3 shrink-0" />
                                         <span className="truncate">{entity.category.name}</span>
                                     </span>
                                 ) : null}
                             </HiddenElement>
                             {(entity.bidCount != null && entity.bidCount > 0) && (
-                                <span className="inline-flex items-center gap-1 text-[10px] font-bold px-2.5 py-1 rounded-full bg-background/90 backdrop-blur-sm text-foreground shadow-sm shrink-0 ml-auto">
+                                <span className="inline-flex items-center gap-1 text-3xs font-bold px-2.5 py-1 rounded-full bg-background/90 backdrop-blur-sm text-foreground shadow-sm shrink-0 ml-auto">
                                     <IconUsers className="w-3 h-3" />
                                     {entity.bidCount}
                                 </span>
@@ -229,7 +233,7 @@ function TaskRequestCard({
                                 {canReadRequesterName && entity.requester ? (
                                     <div className="flex items-center gap-2 min-w-0">
                                         <div className="w-6 h-6 rounded-full bg-primary/10 flex items-center justify-center shrink-0 ring-1 ring-primary/20">
-                                            <span className="text-[9px] font-bold text-primary leading-none">
+                                            <span className="text-3xs font-bold text-primary leading-none">
                                                 {requesterInitials}
                                             </span>
                                         </div>
@@ -242,7 +246,7 @@ function TaskRequestCard({
                             <HiddenElement randomLength={read?.status ? 0 : 6}>
                                 {!!read?.status && entity.status ? (
                                     <span className={cn(
-                                        "inline-flex items-center gap-1.5 text-[10px] font-semibold uppercase tracking-wide shrink-0",
+                                        "inline-flex items-center gap-1.5 text-3xs font-semibold uppercase tracking-wide shrink-0",
                                         entity.status === "open"   ? "text-success" :
                                         entity.status === "awarded"? "text-warning"   :
                                         "text-muted-foreground",
@@ -310,7 +314,7 @@ function TaskRequestCard({
                             <HiddenElement randomLength={canReadBudget ? 0 : 8}>
                                 {canReadBudget && budgetStr ? (
                                     <div className="shrink-0 text-right">
-                                        <div className="text-[9px] text-muted-foreground uppercase tracking-wide leading-none mb-0.5">
+                                        <div className="text-3xs text-muted-foreground uppercase tracking-wide leading-none mb-0.5">
                                             {resolveLanguageKey("budget")}
                                         </div>
                                         <div className="flex items-baseline gap-0.5">
@@ -323,7 +327,7 @@ function TaskRequestCard({
                             </HiddenElement>
                         </div>
                     </div>
-                </Card>
+                </EntityCardShell>
             )}
 
             {!!action && (

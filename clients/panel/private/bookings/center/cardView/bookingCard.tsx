@@ -14,6 +14,12 @@ import { IconCalendar, IconClock, IconUser } from "@tabler/icons-react";
 import type { Booking } from "armonia/src/modules/eCommerceMarketplace/api/eCommerceMarketplace/private/booking/booking.dto.ts";
 import type { DeletedData } from "armonia/src/modules/core/types/shared.types.ts";
 import BookingSheetView from "@eCommerceMarketplaceModule/clients/panel/private/bookings/center/sheetView/bookingSheetView.tsx";
+import {InfoRowGroup} from "@coreModule/components/custom/infoRowGroup.tsx";
+import {useEntityCard} from "@coreModule/helpers/hooks/useEntityCard.ts";
+import {EntityCardShell} from "@coreModule/components/custom/cards/EntityCardShell.tsx";
+import {EntityTextCardHeader} from "@coreModule/components/custom/cards/EntityTextCardHeader.tsx";
+import {CARD_BODY_CLASS} from "@coreModule/components/custom/cards/entityCard.constants.ts";
+import {Separator} from "@coreModule/components/ui/separator.tsx";
 
 type BookingCardProps = WithLanguageType & {
     booking: Booking;
@@ -39,18 +45,18 @@ function BookingCard({
     sheetOnly = false,
 }: BookingCardProps) {
     const [action, setAction] = useState("");
-    const [booking, setBooking] = useState<Booking>(bookingProp);
+    const [booking, setEntity] = useState<Booking>(bookingProp);
     const [hideAfterDeletion, setHideAfterDeletion] = useState(false);
     const { read, restore } = useAccess("bookings");
 
-    useEffect(() => { setBooking(bookingProp); }, [bookingProp]);
+    useEffect(() => { setEntity(bookingProp); }, [bookingProp]);
 
     const onDelete = (data: DeletedData) => {
         if (!data.deletedBy && !data.deletedAt) {
             setHideAfterDeletion(true);
         } else {
             if (onDeleteProp) onDeleteProp(booking, data);
-            else setBooking({ ...booking, ...(data as any) });
+            else setEntity({ ...booking, ...(data as any) });
         }
     };
     const onRestore = () => { if (onRestoreProp) onRestoreProp(); };
@@ -65,14 +71,7 @@ function BookingCard({
     return (
         <>
             {!sheetOnly && (
-                <Card
-                    className={cn(
-                        "group p-0 h-full relative overflow-hidden transition-[box-shadow,--tw-ring-color] duration-200",
-                        "hover:cursor-pointer hover:shadow-md hover:ring-primary/40",
-                        "shadow-sm gap-0",
-                    )}
-                    onClick={() => setAction("view")}
-                >
+                <EntityCardShell onClick={() => setAction("view")}>
                     {(read as any).deletedBy && (
                         <DeletedInfo deletedAt={(booking as any).deletedAt} deletedBy={(booking as any).deletedBy} />
                     )}
@@ -111,14 +110,14 @@ function BookingCard({
                                     {formatTime(booking.startAt)} – {formatTime(booking.endAt)}
                                 </span>
                                 {booking.timezone && (
-                                    <span className="text-[10px] text-muted-foreground font-medium shrink-0">
+                                    <span className="text-3xs text-muted-foreground font-medium shrink-0">
                                         {booking.timezone}
                                     </span>
                                 )}
                             </div>
                         </div>
                     </div>
-                </Card>
+                </EntityCardShell>
             )}
 
             {action === "view" && (
@@ -129,7 +128,7 @@ function BookingCard({
                     fetchId={booking._id}
                     onDelete={onDelete}
                     onRestore={onRestore}
-                    onSheetRowPatched={(patch: Partial<Booking>) => setBooking({ ...booking, ...patch })}
+                    onSheetRowPatched={(patch: Partial<Booking>) => setEntity({ ...booking, ...patch })}
                 />
             )}
             {action === "delete" && (

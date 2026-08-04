@@ -4,7 +4,6 @@ import withLanguage, {WithLanguageType} from "@coreModule/helpers/hocs/withLangu
 import withDebug from "@coreModule/helpers/hocs/withDebug.tsx";
 import {useAccess} from "@coreModule/helpers/hocs/withAccess.tsx";
 import HiddenElement from "@coreModule/components/custom/hiddenElement.tsx";
-import {Card} from "@coreModule/components/ui/card.tsx";
 import {cn} from "@coreModule/components/lib/utils.ts";
 import ActionMenu from "@coreModule/components/custom/actions/menu/actionMenu.tsx";
 import DeleteAction from "@coreModule/components/custom/actions/deleteAction.tsx";
@@ -19,6 +18,12 @@ import ResolveDisputeDropdown from "@eCommerceMarketplaceModule/clients/panel/pr
 import CloseDisputeDropdown from "@eCommerceMarketplaceModule/clients/panel/private/disputes/center/actions/closeDisputeDropdown.tsx";
 import type {DisputeLifecycleVerb} from "@eCommerceMarketplaceModule/components/custom/disputes/changeDisputeLifecycleAction.tsx";
 import {IconPackage} from "@tabler/icons-react";
+import {InfoRowGroup} from "@coreModule/components/custom/infoRowGroup.tsx";
+import {useEntityCard} from "@coreModule/helpers/hooks/useEntityCard.ts";
+import {EntityCardShell} from "@coreModule/components/custom/cards/EntityCardShell.tsx";
+import {EntityTextCardHeader} from "@coreModule/components/custom/cards/EntityTextCardHeader.tsx";
+import {CARD_BODY_CLASS} from "@coreModule/components/custom/cards/entityCard.constants.ts";
+import {Separator} from "@coreModule/components/ui/separator.tsx";
 
 const STATUS_CONFIG: Record<string, {dot: string; dotAnim: string; text: string}> = {
     open:         {dot: "bg-destructive",            dotAnim: "animate-pulse", text: "text-destructive"},
@@ -58,13 +63,10 @@ function DisputeCard({
     onLifecyclePatched,
 }: DisputeCardProps) {
     const [action, setAction] = useState("");
-    const [dispute, setDispute] = useState<Dispute>(disputeProp);
+    const [dispute, setEntity] = useState<Dispute>(disputeProp);
     const [hideAfterDeletion, setHideAfterDeletion] = useState(false);
     const {read, restore} = useAccess("disputes");
 
-    useEffect(() => {
-        setDispute(disputeProp);
-    }, [disputeProp]);
 
     const onDelete = (data: DeletedData) => {
         if (!data.deletedBy && !data.deletedAt) {
@@ -72,7 +74,7 @@ function DisputeCard({
         } else if (onDeleteProp) {
             onDeleteProp(dispute, data);
         } else {
-            setDispute({...dispute, ...(data as Partial<Dispute>)});
+            setEntity({...dispute, ...(data as Partial<Dispute>)});
         }
     };
 
@@ -81,7 +83,7 @@ function DisputeCard({
     };
 
     const applyLifecyclePatch = (patch: Partial<Dispute>) => {
-        setDispute((prev) => ({...prev, ...patch}));
+        setEntity((prev) => ({...prev, ...patch}));
         onLifecyclePatched?.(patch);
     };
 
@@ -112,14 +114,7 @@ function DisputeCard({
     return (
         <>
             {!sheetOnly && (
-                <Card
-                    className={cn(
-                        "group p-0 h-full relative overflow-hidden transition-[box-shadow,--tw-ring-color] duration-200",
-                        "hover:cursor-pointer hover:shadow-md hover:ring-primary/40",
-                        "shadow-sm gap-0",
-                    )}
-                    onClick={() => setAction("view")}
-                >
+                <EntityCardShell onClick={() => setAction("view")}>
                     {/* ── Deleted banner ────────────────────────────────── */}
                     {(read.deletedBy || read.deletedAt) && (
                         <DeletedInfo deletedAt={dispute.deletedAt} deletedBy={dispute.deletedBy} />
@@ -151,7 +146,7 @@ function DisputeCard({
                         </div>
 
                         {/* Status indicator */}
-                        <span className={cn("inline-flex items-center gap-1.5 text-[10px] font-semibold uppercase tracking-wide -mt-1", statusCfg.text)}>
+                        <span className={cn("inline-flex items-center gap-1.5 text-3xs font-semibold uppercase tracking-wide -mt-1", statusCfg.text)}>
                             <span className={cn("w-1.5 h-1.5 rounded-full shrink-0", statusCfg.dot, statusCfg.dotAnim)} />
                             {resolveLanguageKey(`status_values.${dispute.status}`) ?? dispute.status}
                         </span>
@@ -160,7 +155,7 @@ function DisputeCard({
                         {dispute.initiator && (
                             <div className="flex items-center gap-1.5 text-xs text-muted-foreground min-w-0">
                                 <div className="w-5 h-5 rounded-full bg-muted flex items-center justify-center shrink-0 ring-1 ring-border">
-                                    <span className="text-[8px] font-bold text-foreground leading-none">
+                                    <span className="text-3xs font-bold text-foreground leading-none">
                                         {initiatorInitials || "?"}
                                     </span>
                                 </div>
@@ -180,7 +175,7 @@ function DisputeCard({
                             )}
                             {amountStr && (
                                 <div className="shrink-0 text-right ml-auto">
-                                    <div className="text-[9px] text-muted-foreground uppercase tracking-wide leading-none mb-0.5">
+                                    <div className="text-3xs text-muted-foreground uppercase tracking-wide leading-none mb-0.5">
                                         {resolveLanguageKey("amount")}
                                     </div>
                                     <span className="font-bold text-base text-foreground leading-none">{amountStr}</span>
@@ -188,7 +183,7 @@ function DisputeCard({
                             )}
                         </div>
                     </div>
-                </Card>
+                </EntityCardShell>
             )}
 
             {action === "view" && (

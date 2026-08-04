@@ -1,10 +1,8 @@
 import { compose } from "redux";
-import { useEffect, useState } from "react";
 import withLanguage, { WithLanguageType } from "@coreModule/helpers/hocs/withLanguage.tsx";
 import withDebug from "@coreModule/helpers/hocs/withDebug.tsx";
 import { useAccess } from "@coreModule/helpers/hocs/withAccess.tsx";
 import HiddenElement from "@coreModule/components/custom/hiddenElement.tsx";
-import { Card } from "@coreModule/components/ui/card.tsx";
 import { cn } from "@coreModule/components/lib/utils.ts";
 import ActionMenu from "@coreModule/components/custom/actions/menu/actionMenu.tsx";
 import { IconStar, IconCode } from "@tabler/icons-react";
@@ -16,6 +14,12 @@ import RefreshAccountStatusDropdown from "@eCommerceMarketplaceModule/clients/pa
 import ConnectAccountAction, {
     type ConnectActionKey,
 } from "@eCommerceMarketplaceModule/components/custom/providerProfile/connectAccountAction.tsx";
+import {InfoRowGroup} from "@coreModule/components/custom/infoRowGroup.tsx";
+import {useEntityCard} from "@coreModule/helpers/hooks/useEntityCard.ts";
+import {EntityCardShell} from "@coreModule/components/custom/cards/EntityCardShell.tsx";
+import {EntityTextCardHeader} from "@coreModule/components/custom/cards/EntityTextCardHeader.tsx";
+import {CARD_BODY_CLASS} from "@coreModule/components/custom/cards/entityCard.constants.ts";
+import {Separator} from "@coreModule/components/ui/separator.tsx";
 
 type ProviderProfileCardProps = WithLanguageType & {
     profile: ProviderProfile;
@@ -35,11 +39,10 @@ function ProviderProfileCard({
     hideActions = false,
     sheetOnly = false,
 }: ProviderProfileCardProps) {
-    const [action, setAction] = useState("");
-    const [profile, setProfile] = useState<ProviderProfile>(profileProp);
+    const {action, setAction, entity: profile, setEntity} = useEntityCard({
+        entityProp: profileProp,
+    });
     const { read } = useAccess("providerProfiles");
-
-    useEffect(() => { setProfile(profileProp); }, [profileProp]);
 
     if (!read || !Object.keys(read).length) return <HiddenElement />;
 
@@ -64,19 +67,12 @@ function ProviderProfileCard({
     return (
         <>
             {!sheetOnly && (
-                <Card
-                    className={cn(
-                        "group p-0 h-full relative overflow-hidden transition-[box-shadow,--tw-ring-color] duration-200",
-                        "hover:cursor-pointer hover:shadow-md hover:ring-primary/40",
-                        "shadow-sm gap-0",
-                    )}
-                    onClick={() => setAction("view")}
-                >
+                <EntityCardShell onClick={() => setAction("view")}>
                     <div className="p-3 flex flex-col gap-2">
                         <div className="flex items-start justify-between gap-2">
                             <div className="flex items-center gap-2 min-w-0">
                                 <div className="w-7 h-7 rounded-full bg-primary/10 ring-1 ring-primary/20 flex items-center justify-center shrink-0">
-                                    <span className="text-[10px] font-bold text-primary leading-none">{initials || "?"}</span>
+                                    <span className="text-3xs font-bold text-primary leading-none">{initials || "?"}</span>
                                 </div>
                                 <h3 className="font-semibold text-sm leading-snug truncate text-foreground">
                                     {userName}
@@ -128,7 +124,7 @@ function ProviderProfileCard({
 
                         <span
                             className={cn(
-                                "inline-flex w-fit items-center text-[10px] font-semibold uppercase tracking-wide",
+                                "inline-flex w-fit items-center text-3xs font-semibold uppercase tracking-wide",
                                 profile.stripePayoutsEnabled
                                     ? "text-success"
                                     : profile.stripeAccountId
@@ -139,7 +135,7 @@ function ProviderProfileCard({
                             {connectStatusLabel}
                         </span>
                     </div>
-                </Card>
+                </EntityCardShell>
             )}
 
             {action === "view" && (
@@ -148,7 +144,7 @@ function ProviderProfileCard({
                     onOpenChange={() => setAction("")}
                     profile={profile}
                     fetchId={profile._id}
-                    onSheetRowPatched={(patch: Partial<ProviderProfile>) => setProfile({ ...profile, ...patch })}
+                    onSheetRowPatched={(patch: Partial<ProviderProfile>) => setEntity({ ...profile, ...patch })}
                 />
             )}
             {(action === "createAccountLink" || action === "refreshAccountStatus") && (
@@ -163,7 +159,7 @@ function ProviderProfileCard({
                         payoutsEnabled?: boolean;
                         detailsSubmitted?: boolean;
                     }) => {
-                        setProfile({
+                        setEntity({
                             ...profile,
                             ...(result.stripeAccountId ? {stripeAccountId: result.stripeAccountId} : {}),
                             ...(result.chargesEnabled !== undefined ? {stripeChargesEnabled: result.chargesEnabled} : {}),

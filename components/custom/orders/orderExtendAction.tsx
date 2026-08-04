@@ -100,7 +100,7 @@ function OrderExtendAction({
                         {resolveLanguageKey("extend.description")}
                     </AlertDialogDescription>
                 </AlertDialogHeader>
-                <div className="py-4 space-y-2">
+                <div className="flex flex-col py-4 gap-y-2">
                     <Label htmlFor="additionalDays">{resolveLanguageKey("extend.additionalDaysLabel")}</Label>
                     <Input
                         id="additionalDays"

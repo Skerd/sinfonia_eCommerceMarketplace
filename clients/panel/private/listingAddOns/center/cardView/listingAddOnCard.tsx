@@ -15,6 +15,12 @@ import { IconClock, IconLayoutList } from "@tabler/icons-react";
 import type { ListingAddOn } from "armonia/src/modules/eCommerceMarketplace/api/eCommerceMarketplace/private/listingAddOn/listingAddOn.dto.ts";
 import type { DeletedData } from "armonia/src/modules/core/types/shared.types.ts";
 import ListingAddOnSheetView from "@eCommerceMarketplaceModule/clients/panel/private/listingAddOns/center/sheetView/listingAddOnSheetView.tsx";
+import {InfoRowGroup} from "@coreModule/components/custom/infoRowGroup.tsx";
+import {useEntityCard} from "@coreModule/helpers/hooks/useEntityCard.ts";
+import {EntityCardShell} from "@coreModule/components/custom/cards/EntityCardShell.tsx";
+import {EntityTextCardHeader} from "@coreModule/components/custom/cards/EntityTextCardHeader.tsx";
+import {CARD_BODY_CLASS} from "@coreModule/components/custom/cards/entityCard.constants.ts";
+import {Separator} from "@coreModule/components/ui/separator.tsx";
 
 type ListingAddOnCardProps = WithLanguageType & {
     listingAddOn: ListingAddOn;
@@ -31,25 +37,25 @@ function ListingAddOnCard({
     hideActions = false,
 }: ListingAddOnCardProps) {
     const [action, setAction] = useState("");
-    const [addOn, setAddOn] = useState<ListingAddOn>(addOnProp);
+    const [addOn, setEntity] = useState<ListingAddOn>(addOnProp);
     const [hideAfterDeletion, setHideAfterDeletion] = useState(false);
     const { read, restore } = useAccess("listingAddOns");
 
-    useEffect(() => { setAddOn(addOnProp); }, [addOnProp]);
+    useEffect(() => { setEntity(addOnProp); }, [addOnProp]);
 
     const onDelete = (data: DeletedData) => {
         if (!data.deletedBy && !data.deletedAt) {
             setHideAfterDeletion(true);
         } else {
             if (onDeleteProp) onDeleteProp(addOn, data);
-            else setAddOn({ ...addOn, ...(data as any) });
+            else setEntity({ ...addOn, ...(data as any) });
         }
     };
     const onRestore = () => {
         if (onRestoreProp) {
             onRestoreProp();
         } else {
-            setAddOn({
+            setEntity({
                 ...addOn,
                 deletedAt: undefined,
                 deletedBy: undefined,
@@ -83,14 +89,7 @@ function ListingAddOnCard({
 
     return (
         <>
-            <Card
-                className={cn(
-                    "group p-0 h-full relative overflow-hidden transition-[box-shadow,--tw-ring-color] duration-200",
-                    "hover:cursor-pointer hover:shadow-md hover:ring-primary/40",
-                    "shadow-sm gap-0",
-                )}
-                onClick={() => setAction("view")}
-            >
+            <EntityCardShell onClick={() => setAction("view")}>
                 {(read.deletedBy || read.deletedAt) && (
                     <DeletedInfo deletedAt={(addOn as any).deletedAt} deletedBy={(addOn as any).deletedBy} />
                 )}
@@ -155,7 +154,7 @@ function ListingAddOnCard({
                         </div>
                     </div>
                 </div>
-            </Card>
+            </EntityCardShell>
 
             {action === "view" && (
                 <ListingAddOnSheetView
@@ -165,7 +164,7 @@ function ListingAddOnCard({
                     fetchId={addOn._id}
                     onDelete={onDelete}
                     onRestore={onRestore}
-                    onSheetRowPatched={(patch: Partial<ListingAddOn>) => setAddOn({...addOn, ...patch})}
+                    onSheetRowPatched={(patch: Partial<ListingAddOn>) => setEntity({...addOn, ...patch})}
                 />
             )}
             {action === "delete" && (

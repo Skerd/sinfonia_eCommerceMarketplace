@@ -4,7 +4,6 @@ import withLanguage, {WithLanguageType} from "@coreModule/helpers/hocs/withLangu
 import withDebug from "@coreModule/helpers/hocs/withDebug.tsx";
 import {useAccess} from "@coreModule/helpers/hocs/withAccess.tsx";
 import HiddenElement from "@coreModule/components/custom/hiddenElement.tsx";
-import {Card} from "@coreModule/components/ui/card.tsx";
 import {cn} from "@coreModule/components/lib/utils.ts";
 import ActionMenu from "@coreModule/components/custom/actions/menu/actionMenu.tsx";
 import DeleteAction from "@coreModule/components/custom/actions/deleteAction.tsx";
@@ -29,6 +28,12 @@ import RaiseDisputeAction from "@eCommerceMarketplaceModule/components/custom/di
 import type {OrderConfirmActionKey} from "@eCommerceMarketplaceModule/components/custom/orders/orderActionConfirmAction.tsx";
 import type {OrderStatus} from "armonia/src/modules/eCommerceMarketplace/api/eCommerceMarketplace/private/order/order.schema-def.ts";
 import {IconArrowRight, IconCalendar} from "@tabler/icons-react";
+import {InfoRowGroup} from "@coreModule/components/custom/infoRowGroup.tsx";
+import {useEntityCard} from "@coreModule/helpers/hooks/useEntityCard.ts";
+import {EntityCardShell} from "@coreModule/components/custom/cards/EntityCardShell.tsx";
+import {EntityTextCardHeader} from "@coreModule/components/custom/cards/EntityTextCardHeader.tsx";
+import {CARD_BODY_CLASS} from "@coreModule/components/custom/cards/entityCard.constants.ts";
+import {Separator} from "@coreModule/components/ui/separator.tsx";
 
 const STATUS_CONFIG: Record<string, {dot: string; dotAnim: string; text: string}> = {
     pending:     {dot: "bg-warning",        dotAnim: "",             text: "text-warning"},
@@ -55,13 +60,10 @@ function OrderCard({
     hideActions = false,
 }: OrderCardProps) {
     const [action, setAction] = useState("");
-    const [order, setOrder] = useState<Order>(orderProp);
+    const [order, setEntity] = useState<Order>(orderProp);
     const [hideAfterDeletion, setHideAfterDeletion] = useState(false);
     const {read, restore} = useAccess("orders");
 
-    useEffect(() => {
-        setOrder(orderProp);
-    }, [orderProp]);
 
     const onDelete = (data: DeletedData) => {
         if (!data.deletedBy && !data.deletedAt) {
@@ -69,7 +71,7 @@ function OrderCard({
         } else if (onDeleteProp) {
             onDeleteProp(order, data);
         } else {
-            setOrder({...order, ...data});
+            setEntity({...order, ...data});
         }
     };
 
@@ -77,7 +79,7 @@ function OrderCard({
         if (onRestoreProp) {
             onRestoreProp();
         } else {
-            setOrder({...order, deletedAt: undefined, deletedBy: undefined});
+            setEntity({...order, deletedAt: undefined, deletedBy: undefined});
         }
     };
 
@@ -90,7 +92,7 @@ function OrderCard({
     const title = order.listing?.title || order.taskRequest?.title || order._id;
 
     const applyOrderUpdate = (patch: Partial<Order>) => {
-        setOrder((prev) => {
+        setEntity((prev) => {
             const updated = {...prev, ...patch};
             onOrderUpdated?.(updated);
             return updated;
@@ -110,14 +112,7 @@ function OrderCard({
 
     return (
         <>
-            <Card
-                className={cn(
-                    "group p-0 h-full relative overflow-hidden transition-[box-shadow,--tw-ring-color] duration-200",
-                    "hover:cursor-pointer hover:shadow-md hover:ring-primary/40",
-                    "shadow-sm gap-0",
-                )}
-                onClick={() => setAction("view")}
-            >
+            <EntityCardShell onClick={() => setAction("view")}>
                 {/* ── Deleted banner ────────────────────────────────── */}
                 {(read.deletedBy || read.deletedAt) && (
                     <DeletedInfo deletedAt={order.deletedAt} deletedBy={order.deletedBy} />
@@ -155,7 +150,7 @@ function OrderCard({
 
                     {/* Status indicator */}
                     {read?.status && order.status && (
-                        <span className={cn("inline-flex items-center gap-1.5 text-[10px] font-semibold uppercase tracking-wide -mt-1", statusCfg.text)}>
+                        <span className={cn("inline-flex items-center gap-1.5 text-3xs font-semibold uppercase tracking-wide -mt-1", statusCfg.text)}>
                             <span className={cn("w-1.5 h-1.5 rounded-full shrink-0", statusCfg.dot, statusCfg.dotAnim)} />
                             {resolveLanguageKey("statuses." + order.status)}
                         </span>
@@ -167,7 +162,7 @@ function OrderCard({
                             {read?.customer && order.customer && (
                                 <span className="flex items-center gap-1.5 min-w-0 truncate">
                                     <div className="w-5 h-5 rounded-full bg-muted flex items-center justify-center shrink-0 ring-1 ring-border">
-                                        <span className="text-[8px] font-bold text-foreground leading-none">{customerInitials || "?"}</span>
+                                        <span className="text-3xs font-bold text-foreground leading-none">{customerInitials || "?"}</span>
                                     </div>
                                     <span className="truncate">{`${order.customer.name} ${order.customer.surname}`}</span>
                                 </span>
@@ -178,7 +173,7 @@ function OrderCard({
                             {read?.provider && order.provider && (
                                 <span className="flex items-center gap-1.5 min-w-0 truncate">
                                     <div className="w-5 h-5 rounded-full bg-primary/10 flex items-center justify-center shrink-0 ring-1 ring-primary/20">
-                                        <span className="text-[8px] font-bold text-primary leading-none">{providerInitials || "?"}</span>
+                                        <span className="text-3xs font-bold text-primary leading-none">{providerInitials || "?"}</span>
                                     </div>
                                     <span className="truncate">{`${order.provider.name} ${order.provider.surname}`}</span>
                                 </span>
@@ -200,7 +195,7 @@ function OrderCard({
 
                         {read?.amount && amountStr && (
                             <div className="shrink-0 text-right ml-auto">
-                                <div className="text-[9px] text-muted-foreground uppercase tracking-wide leading-none mb-0.5">
+                                <div className="text-3xs text-muted-foreground uppercase tracking-wide leading-none mb-0.5">
                                     {resolveLanguageKey("total")}
                                 </div>
                                 <span className="font-bold text-base text-foreground leading-none">{amountStr}</span>
@@ -208,7 +203,7 @@ function OrderCard({
                         )}
                     </div>
                 </div>
-            </Card>
+            </EntityCardShell>
 
             {action === "view" && (
                 <OrderSheetView

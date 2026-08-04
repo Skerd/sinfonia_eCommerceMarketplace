@@ -92,7 +92,7 @@ function SubmitOrderDeliveryAction({
                         {resolveLanguageKey("submitDelivery.description")}
                     </AlertDialogDescription>
                 </AlertDialogHeader>
-                <div className="py-4 space-y-2">
+                <div className="flex flex-col py-4 gap-y-2">
                     <Label htmlFor="deliveryMessage">{resolveLanguageKey("submitDelivery.messageLabel")}</Label>
                     <Textarea
                         id="deliveryMessage"

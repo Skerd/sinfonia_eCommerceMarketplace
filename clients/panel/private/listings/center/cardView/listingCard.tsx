@@ -3,8 +3,7 @@ import withLanguage, {WithLanguageType} from "@coreModule/helpers/hocs/withLangu
 import withDebug from "@coreModule/helpers/hocs/withDebug.tsx";
 import HiddenElement from "@coreModule/components/custom/hiddenElement.tsx";
 import {useAccess} from "@coreModule/helpers/hocs/withAccess.tsx";
-import {useEffect, useState} from "react";
-import {Card} from "@coreModule/components/ui/card.tsx";
+import {useState} from "react";
 import ValueNotSet from "@coreModule/components/custom/valueNotSet.tsx";
 import {cn} from "@coreModule/components/lib/utils.ts";
 import type {Listing} from "armonia/src/modules/eCommerceMarketplace/api/eCommerceMarketplace/private/listing/listing.dto.ts";
@@ -20,6 +19,13 @@ import DeactivateListingDropdown from "@eCommerceMarketplaceModule/clients/panel
 import CreateOrderFromListingDropdown from "@eCommerceMarketplaceModule/clients/panel/private/listings/center/actions/createOrderFromListingDropdown.tsx";
 import ChangeListingStatusAction from "@eCommerceMarketplaceModule/components/custom/listings/changeListingStatusAction.tsx";
 import CreateOrderFromListingAction from "@eCommerceMarketplaceModule/components/custom/listings/createOrderFromListingAction.tsx";
+import {InfoRowGroup} from "@coreModule/components/custom/infoRowGroup.tsx";
+import {useEntityCard} from "@coreModule/helpers/hooks/useEntityCard.ts";
+import {EntityCardShell} from "@coreModule/components/custom/cards/EntityCardShell.tsx";
+import {EntityTextCardHeader} from "@coreModule/components/custom/cards/EntityTextCardHeader.tsx";
+import {CARD_BODY_CLASS} from "@coreModule/components/custom/cards/entityCard.constants.ts";
+import {Separator} from "@coreModule/components/ui/separator.tsx";
+import {EntityMediaHeader} from "@coreModule/components/custom/cards/EntityMediaHeader.tsx";
 
 function listingEditPath(listing: Listing) {
     const params = new URLSearchParams();
@@ -55,37 +61,14 @@ function ListingCard({
     hideActions = false,
     sheetOnly = false,
 }: ListingCardProps) {
-    const [action, setAction] = useState<string>("");
-    const [listing, setListing] = useState<Listing>(listingProp);
-    const [hideAfterDeletion, setHideAfterDeletion] = useState(false);
-
-    const onDelete = (data: DeletedData) => {
-        if (!data.deletedBy && !data.deletedAt) {
-            setHideAfterDeletion(true);
-        } else if (onDeleteProp) {
-            onDeleteProp(listing, data);
-        } else {
-            setListing({...listing, ...data});
-        }
-    };
-
-    const onRestore = () => {
-        if (onRestoreProp) {
-            onRestoreProp();
-        } else {
-            setListing({
-                ...listing,
-                deletedAt: undefined,
-                deletedBy: undefined,
-            });
-        }
-    };
+    const {action, setAction, entity: listing, setEntity, hideAfterDeletion, onDelete, onRestore} = useEntityCard({
+        entityProp: listingProp,
+        onDeleteProp,
+        onRestoreProp,
+    });
 
     const {read, restore} = useAccess("listings");
 
-    useEffect(() => {
-        setListing(listingProp);
-    }, [listingProp]);
 
     if (hideAfterDeletion) {
         return <></>;
@@ -120,14 +103,7 @@ function ListingCard({
     return (
         <>
             {!sheetOnly && (
-                <Card
-                    className={cn(
-                        "group p-0 h-full relative overflow-hidden transition-[box-shadow,--tw-ring-color] duration-200",
-                        "hover:cursor-pointer hover:shadow-md hover:ring-primary/40",
-                        "border border-border/60 shadow-sm gap-2 pb-2",
-                    )}
-                    onClick={() => setAction("view")}
-                >
+                <EntityCardShell onClick={() => setAction("view")}>
                     {/* ── Image ─────────────────────────────────────────── */}
                     <div className="relative h-50 overflow-hidden bg-muted">
                         <HiddenElement randomLength={read?.mainImage ? 0 : 12}>
@@ -177,7 +153,7 @@ function ListingCard({
                         <div className="absolute bottom-2 left-2 right-2 flex items-end justify-between gap-2">
                             <HiddenElement randomLength={read?.category?.keys?.name ? 0 : 8}>
                                 {!!read?.category?.keys?.name && listing.category?.name ? (
-                                    <span className="inline-flex items-center gap-1 text-[11px] font-medium px-2.5 py-1 rounded-full bg-white/15 backdrop-blur-sm text-white border border-white/20 shadow-sm truncate max-w-[60%]">
+                                    <span className="inline-flex items-center gap-1 text-2xs font-medium px-2.5 py-1 rounded-full bg-overlay-foreground/15 backdrop-blur-sm text-overlay-foreground border border-overlay-foreground/20 shadow-sm truncate max-w-[60%]">
                                         <IconFolder className="w-3 h-3 shrink-0" />
                                         <span className="truncate">{listing.category.name}</span>
                                     </span>
@@ -186,7 +162,7 @@ function ListingCard({
                             {(isFeatured || isSponsored || !read?.promotions) && (
                                 <HiddenElement randomLength={read?.promotions ? 0 : 6}>
                                     {!!read?.promotions && (isFeatured || isSponsored) ? (
-                                        <span className="inline-flex items-center gap-1 text-[10px] font-bold px-2.5 py-1 rounded-full bg-warning/20 text-warning uppercase tracking-wide shadow-sm shrink-0 ml-auto">
+                                        <span className="inline-flex items-center gap-1 text-3xs font-bold px-2.5 py-1 rounded-full bg-warning/20 text-warning uppercase tracking-wide shadow-sm shrink-0 ml-auto">
                                             <IconSparkles className="w-3 h-3" />
                                             {isFeatured
                                                 ? resolveLanguageKey("featured")
@@ -212,7 +188,7 @@ function ListingCard({
                                 {canReadProviderName && listing.provider ? (
                                     <div className="flex items-center gap-2 min-w-0">
                                         <div className="w-6 h-6 rounded-full bg-primary/10 flex items-center justify-center shrink-0 ring-1 ring-primary/20">
-                                            <span className="text-[9px] font-bold text-primary leading-none">
+                                            <span className="text-3xs font-bold text-primary leading-none">
                                                 {providerInitials || "?"}
                                             </span>
                                         </div>
@@ -225,7 +201,7 @@ function ListingCard({
                             <HiddenElement randomLength={read?.status ? 0 : 6}>
                                 {!!read?.status && listing.status ? (
                                     <span className={cn(
-                                        "inline-flex items-center gap-1.5 text-[10px] font-semibold uppercase tracking-wide shrink-0",
+                                        "inline-flex items-center gap-1.5 text-3xs font-semibold uppercase tracking-wide shrink-0",
                                         listing.status === "active" ? "text-success" :
                                         listing.status === "inactive" ? "text-warning" :
                                         "text-muted-foreground",
@@ -270,13 +246,13 @@ function ListingCard({
                                         {listing.tags.slice(0, 3).map((tag, i) => (
                                             <span
                                                 key={i}
-                                                className="text-[10px] px-2 py-0.5 rounded-full bg-primary/10 text-primary/80 font-medium"
+                                                className="text-3xs px-2 py-0.5 rounded-full bg-primary/10 text-primary/80 font-medium"
                                             >
                                                 #{tag}
                                             </span>
                                         ))}
                                         {listing.tags.length > 3 && (
-                                            <span className="text-[10px] text-muted-foreground font-medium self-center">
+                                            <span className="text-3xs text-muted-foreground font-medium self-center">
                                                 +{listing.tags.length - 3}
                                             </span>
                                         )}
@@ -312,7 +288,7 @@ function ListingCard({
                             <HiddenElement randomLength={read?.price ? 0 : 8}>
                                 {!!read?.price && priceStr !== undefined ? (
                                     <div className="shrink-0 text-right">
-                                        <div className="text-[9px] text-muted-foreground uppercase tracking-wide leading-none mb-0.5">
+                                        <div className="text-3xs text-muted-foreground uppercase tracking-wide leading-none mb-0.5">
                                             {resolveLanguageKey("from")}
                                         </div>
                                         <div className="flex items-baseline gap-0.5">
@@ -320,7 +296,7 @@ function ListingCard({
                                                 {priceStr}
                                             </span>
                                             {!!read?.pricingType && listing.pricingType === "hourly" && (
-                                                <span className="text-[10px] text-muted-foreground">/{resolveLanguageKey("perHour")}</span>
+                                                <span className="text-3xs text-muted-foreground">/{resolveLanguageKey("perHour")}</span>
                                             )}
                                         </div>
                                     </div>
@@ -328,7 +304,7 @@ function ListingCard({
                             </HiddenElement>
                         </div>
                     </div>
-                </Card>
+                </EntityCardShell>
             )}
 
             {!!action && (
@@ -341,7 +317,7 @@ function ListingCard({
                             fetchId={listing._id}
                             onDelete={onDelete}
                             onRestore={onRestore}
-                            onSheetRowPatched={(patch: any) => setListing({...listing, ...patch})}
+                            onSheetRowPatched={(patch: any) => setEntity({...listing, ...patch})}
                         />
                     )}
                     {action === "delete" && (
@@ -376,7 +352,7 @@ function ListingCard({
                             openAlert
                             url={`/api/eCommerceMarketplace/listing/${action}`}
                             onSuccess={(newStatus: string) => {
-                                setListing({...listing, status: newStatus});
+                                setEntity({...listing, status: newStatus});
                                 setAction("");
                             }}
                             onCancel={() => setAction("")}
