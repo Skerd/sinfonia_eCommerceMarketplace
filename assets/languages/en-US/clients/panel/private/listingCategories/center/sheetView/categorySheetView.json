@@ -7,7 +7,13 @@
   "listingCategorySubtitle": "Listing category",
   "name": "Name",
   "overview": "Overview",
+  "lifecycle": "Lifecycle",
   "slug": "Slug",
   "order": "Order",
-  "parentListingCategory": "Parent category"
+  "parentListingCategory": "Parent category",
+  "createdAt": "Created at",
+  "updatedAt": "Updated at",
+  "createdBy": "Created by",
+  "deletedAt": "Deleted at",
+  "deletedBy": "Deleted by"
 }

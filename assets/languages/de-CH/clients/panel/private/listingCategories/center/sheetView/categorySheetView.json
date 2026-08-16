@@ -7,7 +7,13 @@
   "listingCategorySubtitle": "Inserat kategorie",
   "name": "Name",
   "overview": "Übersicht",
+  "lifecycle": "Lebenszyklus",
   "slug": "Slug",
   "order": "Auftrag",
-  "parentListingCategory": "Parent kategorie"
+  "parentListingCategory": "Parent kategorie",
+  "createdAt": "Erstellt am",
+  "updatedAt": "Aktualisiert am",
+  "createdBy": "Erstellt von",
+  "deletedAt": "Gelöscht am",
+  "deletedBy": "Gelöscht von"
 }
