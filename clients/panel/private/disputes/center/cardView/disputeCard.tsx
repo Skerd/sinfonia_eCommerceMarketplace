@@ -1,14 +1,7 @@
 import {compose} from "redux";
-import {useEffect, useState} from "react";
 import withLanguage, {WithLanguageType} from "@coreModule/helpers/hocs/withLanguage.tsx";
 import withDebug from "@coreModule/helpers/hocs/withDebug.tsx";
-import {useAccess} from "@coreModule/helpers/hocs/withAccess.tsx";
-import HiddenElement from "@coreModule/components/custom/hiddenElement.tsx";
 import {cn} from "@coreModule/components/lib/utils.ts";
-import ActionMenu from "@coreModule/components/custom/actions/menu/actionMenu.tsx";
-import DeleteAction from "@coreModule/components/custom/actions/deleteAction.tsx";
-import RestoreAction from "@coreModule/components/custom/actions/restoreAction.tsx";
-import DeletedInfo from "@coreModule/components/custom/deletedInfo";
 import type {Dispute} from "armonia/src/modules/eCommerceMarketplace/api/eCommerceMarketplace/private/dispute/dispute.dto.ts";
 import type {DeletedData} from "armonia/src/modules/core/types/shared.types.ts";
 import DisputeSheetView from "../sheetView/disputeSheetView.tsx";
@@ -18,219 +11,163 @@ import ResolveDisputeDropdown from "@eCommerceMarketplaceModule/clients/panel/pr
 import CloseDisputeDropdown from "@eCommerceMarketplaceModule/clients/panel/private/disputes/center/actions/closeDisputeDropdown.tsx";
 import type {DisputeLifecycleVerb} from "@eCommerceMarketplaceModule/components/custom/disputes/changeDisputeLifecycleAction.tsx";
 import {IconPackage} from "@tabler/icons-react";
-import {InfoRowGroup} from "@coreModule/components/custom/infoRowGroup.tsx";
-import {useEntityCard} from "@coreModule/helpers/hooks/useEntityCard.ts";
-import {EntityCardShell} from "@coreModule/components/custom/cards/EntityCardShell.tsx";
-import {EntityTextCardHeader} from "@coreModule/components/custom/cards/EntityTextCardHeader.tsx";
-import {CARD_BODY_CLASS} from "@coreModule/components/custom/cards/entityCard.constants.ts";
-import {Separator} from "@coreModule/components/ui/separator.tsx";
+import DisplayValue from "@coreModule/components/custom/displayValue/displayValue.tsx";
+import EntityCard from "@coreModule/components/custom/systemCards/entityCard.tsx";
+import type {WithAxiosLifecycleRef} from "@coreModule/helpers/hocs/withAxios.tsx";
+import type {RefObject} from "react";
 
 const STATUS_CONFIG: Record<string, {dot: string; dotAnim: string; text: string}> = {
-    open:         {dot: "bg-destructive",            dotAnim: "animate-pulse", text: "text-destructive"},
-    under_review: {dot: "bg-warning",           dotAnim: "animate-pulse", text: "text-warning"},
-    resolved:     {dot: "bg-success",         dotAnim: "",              text: "text-success"},
-    closed:       {dot: "bg-muted-foreground/40", dotAnim: "",              text: "text-muted-foreground"},
+    open: {dot: "bg-destructive", dotAnim: "animate-pulse", text: "text-destructive"},
+    under_review: {dot: "bg-warning", dotAnim: "animate-pulse", text: "text-warning"},
+    resolved: {dot: "bg-success", dotAnim: "", text: "text-success"},
+    closed: {dot: "bg-muted-foreground/40", dotAnim: "", text: "text-muted-foreground"},
 };
-
-type DisputeCardProps = WithLanguageType & {
-    dispute: Dispute;
-    onDelete?: (deleted?: Dispute, response?: DeletedData) => void;
-    onRestore?: () => void;
-    hideActions?: boolean;
-    sheetOnly?: boolean;
-    /** When lifecycle changes inside the card, mirror into the owning list/table row when provided. */
-    onLifecyclePatched?: (patch: Partial<Dispute>) => void;
-};
-
-function formatInitiatorName(dispute: Dispute) {
-    const {name, surname} = dispute.initiator ?? {};
-    const full = [name, surname].filter(Boolean).join(" ").trim();
-    return full || "—";
-}
 
 function disputeRowTitle(dispute: Dispute): string {
     const r = dispute.reason?.trim();
     return r ? (r.length > 80 ? `${r.slice(0, 80)}…` : r) : dispute._id;
 }
 
+type DisputeCardProps = WithLanguageType & {
+    dispute: Dispute;
+    fetchId?: string;
+    onDelete?: (deleted?: Dispute, response?: DeletedData) => void;
+    onRestore?: () => void;
+    hideActions?: boolean;
+    sheetOnly?: boolean;
+    onLifecyclePatched?: (patch: Partial<Dispute>) => void;
+    innerRef?: RefObject<WithAxiosLifecycleRef<Dispute> | null>;
+};
+
 function DisputeCard({
-    dispute: disputeProp,
+    dispute,
     resolveLanguageKey,
-    onDelete: onDeleteProp,
-    onRestore: onRestoreProp,
+    fetchId,
+    onDelete,
+    onRestore,
     hideActions = false,
     sheetOnly = false,
     onLifecyclePatched,
+    innerRef,
 }: DisputeCardProps) {
-    const [action, setAction] = useState("");
-    const [dispute, setEntity] = useState<Dispute>(disputeProp);
-    const [hideAfterDeletion, setHideAfterDeletion] = useState(false);
-    const {read, restore} = useAccess("disputes");
-
-
-    const onDelete = (data: DeletedData) => {
-        if (!data.deletedBy && !data.deletedAt) {
-            setHideAfterDeletion(true);
-        } else if (onDeleteProp) {
-            onDeleteProp(dispute, data);
-        } else {
-            setEntity({...dispute, ...(data as Partial<Dispute>)});
-        }
-    };
-
-    const onRestore = () => {
-        if (onRestoreProp) onRestoreProp();
-    };
-
-    const applyLifecyclePatch = (patch: Partial<Dispute>) => {
-        setEntity((prev) => ({...prev, ...patch}));
-        onLifecyclePatched?.(patch);
-    };
-
-    if (hideAfterDeletion) return <></>;
-    if (!restore && dispute.deletedAt != null) return <></>;
-    if (!read || !Object.keys(read).length) return <HiddenElement />;
-
-    const statusCfg = STATUS_CONFIG[dispute.status] ?? STATUS_CONFIG.closed;
-    const title = disputeRowTitle(dispute);
-
-    const initiatorName = formatInitiatorName(dispute);
-    const initiatorInitials = [dispute.initiator?.name?.[0], dispute.initiator?.surname?.[0]]
-        .filter(Boolean)
-        .join("")
-        .toUpperCase();
-
-    const orderTitle =
-        dispute.order?.listing?.title ||
-        dispute.order?.taskRequest?.title ||
-        dispute.order?.name ||
-        dispute.order?._id;
-
-    const amountStr =
-        dispute.order?.amount != null
-            ? `${dispute.order.currency?.symbol?.trim() || dispute.order.currency?.abbreviation?.trim() || ""} ${dispute.order.amount.toLocaleString(undefined, {minimumFractionDigits: 0, maximumFractionDigits: 2})}`.trim()
-            : null;
-
     return (
-        <>
-            {!sheetOnly && (
-                <EntityCardShell onClick={() => setAction("view")}>
-                    {/* ── Deleted banner ────────────────────────────────── */}
-                    {(read.deletedBy || read.deletedAt) && (
-                        <DeletedInfo deletedAt={dispute.deletedAt} deletedBy={dispute.deletedBy} />
+        <EntityCard
+            resource="disputes"
+            entity={dispute}
+            fetchId={fetchId}
+            singleUrl="/api/eCommerceMarketplace/dispute/single"
+            onDelete={onDelete}
+            onRestore={onRestore}
+            hideActions={hideActions}
+            hideEdit
+            sheetOnly={sheetOnly}
+            editPath={() => ""}
+            Sheet={DisputeSheetView}
+            sheetEntityProp="dispute"
+            deleteUrl="/api/eCommerceMarketplace/dispute"
+            restoreUrl="/api/eCommerceMarketplace/dispute/restore"
+            failedTitle=""
+            failedDescription=""
+            titlePath="reason"
+            innerRef={innerRef}
+            sheetProps={({entity: row, setEntity}) => ({
+                fetchId,
+                onListLifecyclePatched: (patch: Partial<Dispute>) => {
+                    setEntity({...row, ...patch});
+                    onLifecyclePatched?.(patch);
+                },
+            })}
+            extraDialogs={({action, setAction, entity: row, setEntity}) => (
+                <>
+                    {(action === "startReview" || action === "resolve" || action === "close") && (
+                        <ChangeDisputeLifecycleAction
+                            disputeId={row._id}
+                            disputeTitle={disputeRowTitle(row)}
+                            verb={action as DisputeLifecycleVerb}
+                            openAlert
+                            url={`/api/eCommerceMarketplace/dispute/${action}`}
+                            onSuccess={(patch: Partial<Dispute>) => {
+                                setEntity({...row, ...patch});
+                                onLifecyclePatched?.(patch);
+                                setAction("");
+                            }}
+                            onCancel={() => setAction("")}
+                        />
                     )}
-
-                    <div className="p-3 flex flex-col gap-2">
-
-                        {/* Title + action menu */}
-                        <div className="flex items-start justify-between gap-2">
-                            <h3 className="font-semibold text-sm leading-snug line-clamp-2 text-foreground min-h-[2.5rem] flex-1 min-w-0">
-                                {dispute.reason}
-                            </h3>
-                            {!hideActions && (
-                                <div className="shrink-0" onClick={(e) => e.stopPropagation()}>
-                                    <ActionMenu
-                                        accessModel="disputes"
-                                        deletedData={dispute}
-                                        onAction={(a: string) => setAction(a)}
-                                        editPath=""
-                                        hideEdit
-                                        allowMenuForCustomChildren
-                                    >
-                                        <StartReviewDisputeDropdown dispute={dispute} onAction={(a: string) => setAction(a)} />
-                                        <ResolveDisputeDropdown dispute={dispute} onAction={(a: string) => setAction(a)} />
-                                        <CloseDisputeDropdown dispute={dispute} onAction={(a: string) => setAction(a)} />
-                                    </ActionMenu>
-                                </div>
-                            )}
-                        </div>
-
-                        {/* Status indicator */}
-                        <span className={cn("inline-flex items-center gap-1.5 text-3xs font-semibold uppercase tracking-wide -mt-1", statusCfg.text)}>
-                            <span className={cn("w-1.5 h-1.5 rounded-full shrink-0", statusCfg.dot, statusCfg.dotAnim)} />
-                            {resolveLanguageKey(`status_values.${dispute.status}`) ?? dispute.status}
-                        </span>
-
-                        {/* Initiator */}
-                        {dispute.initiator && (
-                            <div className="flex items-center gap-1.5 text-xs text-muted-foreground min-w-0">
-                                <div className="w-5 h-5 rounded-full bg-muted flex items-center justify-center shrink-0 ring-1 ring-border">
-                                    <span className="text-3xs font-bold text-foreground leading-none">
-                                        {initiatorInitials || "?"}
-                                    </span>
-                                </div>
-                                <span className="truncate">{initiatorName}</span>
-                            </div>
-                        )}
-
-                        <div className="h-px bg-border" />
-
-                        {/* Footer: order reference + amount */}
-                        <div className="flex items-end justify-between gap-2">
-                            {orderTitle && (
-                                <span className="flex items-center gap-1 text-xs text-muted-foreground min-w-0 truncate">
-                                    <IconPackage className="w-3 h-3 shrink-0" />
-                                    <span className="truncate">{orderTitle}</span>
-                                </span>
-                            )}
-                            {amountStr && (
-                                <div className="shrink-0 text-right ml-auto">
-                                    <div className="text-3xs text-muted-foreground uppercase tracking-wide leading-none mb-0.5">
-                                        {resolveLanguageKey("amount")}
+                </>
+            )}
+        >
+            {({entity: row, setAction}) => {
+                const statusCfg = STATUS_CONFIG[row.status] ?? STATUS_CONFIG.closed;
+                const initiatorInitials = [row.initiator?.name?.[0], row.initiator?.surname?.[0]]
+                    .filter(Boolean)
+                    .join("")
+                    .toUpperCase();
+                const orderTitle =
+                    row.order?.listing?.title ||
+                    row.order?.taskRequest?.title ||
+                    row.order?.name ||
+                    row.order?._id;
+                return (
+                    <>
+                        <EntityCard.Header titlePath="reason" title={row.reason}>
+                            <StartReviewDisputeDropdown dispute={row} onAction={setAction} />
+                            <ResolveDisputeDropdown dispute={row} onAction={setAction} />
+                            <CloseDisputeDropdown dispute={row} onAction={setAction} />
+                        </EntityCard.Header>
+                        <div className="flex flex-col gap-2">
+                            <span
+                                className={cn(
+                                    "inline-flex items-center gap-1.5 text-3xs font-semibold tracking-wide uppercase",
+                                    statusCfg.text,
+                                )}
+                            >
+                                <span className={cn("h-1.5 w-1.5 shrink-0 rounded-full", statusCfg.dot, statusCfg.dotAnim)} />
+                                <DisplayValue
+                                    path="status"
+                                    type="enum"
+                                    languageKeyCategory="status_values"
+                                    value={row.status}
+                                />
+                            </span>
+                            {row.initiator ? (
+                                <div className="flex min-w-0 items-center gap-1.5 text-xs text-muted-foreground">
+                                    <div className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-muted ring-1 ring-border">
+                                        <span className="text-3xs font-bold leading-none text-foreground">
+                                            {initiatorInitials || "?"}
+                                        </span>
                                     </div>
-                                    <span className="font-bold text-base text-foreground leading-none">{amountStr}</span>
+                                    <DisplayValue path="initiator" type="user" value={row.initiator} />
                                 </div>
-                            )}
+                            ) : null}
+                            <div className="h-px bg-border" />
+                            <div className="flex items-end justify-between gap-2">
+                                {orderTitle ? (
+                                    <span className="flex min-w-0 items-center gap-1 truncate text-xs text-muted-foreground">
+                                        <IconPackage className="h-3 w-3 shrink-0" />
+                                        <DisplayValue path="order.listing.title" value={orderTitle} />
+                                    </span>
+                                ) : null}
+                                {row.order?.amount != null ? (
+                                    <div className="ml-auto shrink-0 text-right">
+                                        <div className="mb-0.5 text-3xs leading-none tracking-wide text-muted-foreground uppercase">
+                                            {resolveLanguageKey("amount")}
+                                        </div>
+                                        <span className="text-base font-bold leading-none text-foreground">
+                                            <DisplayValue
+                                                path="order.amount"
+                                                type="currency"
+                                                value={{amount: row.order.amount, currency: row.order.currency}}
+                                            />
+                                        </span>
+                                    </div>
+                                ) : null}
+                            </div>
                         </div>
-                    </div>
-                </EntityCardShell>
-            )}
-
-            {action === "view" && (
-                <DisputeSheetView
-                    open
-                    onOpenChange={() => setAction("")}
-                    dispute={dispute}
-                    onDelete={onDelete}
-                    onRestore={onRestore}
-                    onListLifecyclePatched={(patch: Partial<Dispute>) => applyLifecyclePatch(patch)}
-                />
-            )}
-            {(action === "startReview" || action === "resolve" || action === "close") && (
-                <ChangeDisputeLifecycleAction
-                    disputeId={dispute._id}
-                    disputeTitle={title}
-                    verb={action as DisputeLifecycleVerb}
-                    openAlert
-                    url={`/api/eCommerceMarketplace/dispute/${action}`}
-                    onSuccess={(patch: Partial<Dispute>) => {
-                        applyLifecyclePatch(patch);
-                        setAction("");
-                    }}
-                    onCancel={() => setAction("")}
-                />
-            )}
-            {action === "delete" && (
-                <DeleteAction
-                    accessModel="disputes"
-                    deleteId={dispute._id}
-                    openAlert
-                    onSuccess={onDelete}
-                    onCancel={() => setAction("")}
-                    url="/api/eCommerceMarketplace/dispute"
-                />
-            )}
-            {action === "restore" && (
-                <RestoreAction
-                    accessModel="disputes"
-                    deleteId={dispute._id}
-                    openAlert
-                    onSuccess={onRestore}
-                    onCancel={() => setAction("")}
-                    url="/api/eCommerceMarketplace/dispute/restore"
-                />
-            )}
-        </>
+                    </>
+                );
+            }}
+        </EntityCard>
     );
 }
 

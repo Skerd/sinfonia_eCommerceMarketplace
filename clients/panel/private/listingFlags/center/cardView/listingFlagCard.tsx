@@ -1,228 +1,148 @@
-import { compose } from "redux";
-import withLanguage, { WithLanguageType } from "@coreModule/helpers/hocs/withLanguage.tsx";
+import {compose} from "redux";
+import withLanguage, {WithLanguageType} from "@coreModule/helpers/hocs/withLanguage.tsx";
 import withDebug from "@coreModule/helpers/hocs/withDebug.tsx";
-import { useAccess } from "@coreModule/helpers/hocs/withAccess.tsx";
-import HiddenElement from "@coreModule/components/custom/hiddenElement.tsx";
-import { cn } from "@coreModule/components/lib/utils.ts";
-import ActionMenu from "@coreModule/components/custom/actions/menu/actionMenu.tsx";
-import DeleteAction from "@coreModule/components/custom/actions/deleteAction.tsx";
-import RestoreAction from "@coreModule/components/custom/actions/restoreAction.tsx";
-import DeletedInfo from "@coreModule/components/custom/deletedInfo";
-import InfoRow from "@coreModule/components/custom/infoRow.tsx";
-import ValueNotSet from "@coreModule/components/custom/valueNotSet.tsx";
-import { Flag, User } from "lucide-react";
-import type { ListingFlag } from "armonia/src/modules/eCommerceMarketplace/api/eCommerceMarketplace/private/listingFlag/listingFlag.dto.ts";
-import type { DeletedData } from "armonia/src/modules/core/types/shared.types.ts";
+import {cn} from "@coreModule/components/lib/utils.ts";
+import {Flag, User} from "lucide-react";
+import type {ListingFlag} from "armonia/src/modules/eCommerceMarketplace/api/eCommerceMarketplace/private/listingFlag/listingFlag.dto.ts";
+import type {DeletedData} from "armonia/src/modules/core/types/shared.types.ts";
 import ListingFlagSheetView from "@eCommerceMarketplaceModule/clients/panel/private/listingFlags/center/sheetView/listingFlagSheetView.tsx";
 import ResolveListingFlagDropdown from "@eCommerceMarketplaceModule/clients/panel/private/listingFlags/center/actions/resolveListingFlagDropdown.tsx";
 import DismissListingFlagDropdown from "@eCommerceMarketplaceModule/clients/panel/private/listingFlags/center/actions/dismissListingFlagDropdown.tsx";
 import ChangeListingFlagLifecycleAction, {
     type ListingFlagLifecycleVerb,
 } from "@eCommerceMarketplaceModule/components/custom/listingFlags/changeListingFlagLifecycleAction.tsx";
-import {InfoRowGroup} from "@coreModule/components/custom/infoRowGroup.tsx";
-import {useEntityCard} from "@coreModule/helpers/hooks/useEntityCard.ts";
-import {EntityCardShell} from "@coreModule/components/custom/cards/EntityCardShell.tsx";
-import {EntityTextCardHeader} from "@coreModule/components/custom/cards/EntityTextCardHeader.tsx";
-import {CARD_BODY_CLASS} from "@coreModule/components/custom/cards/entityCard.constants.ts";
-import {Separator} from "@coreModule/components/ui/separator.tsx";
+import DisplayRow from "@coreModule/components/custom/displayValue/displayRow.tsx";
+import DisplayValue from "@coreModule/components/custom/displayValue/displayValue.tsx";
+import EntityCard from "@coreModule/components/custom/systemCards/entityCard.tsx";
+import type {WithAxiosLifecycleRef} from "@coreModule/helpers/hocs/withAxios.tsx";
+import type {RefObject} from "react";
 
-const STATUS_CONFIG: Record<string, { dot: string; text: string }> = {
-    pending: {
-        dot: "bg-warning",
-        text: "text-warning",
-    },
-    reviewed: {
-        dot: "bg-info",
-        text: "text-info",
-    },
-    dismissed: {
-        dot: "bg-muted-foreground/40",
-        text: "text-muted-foreground",
-    },
+const STATUS_CONFIG: Record<string, {dot: string; text: string}> = {
+    pending: {dot: "bg-warning", text: "text-warning"},
+    reviewed: {dot: "bg-info", text: "text-info"},
+    dismissed: {dot: "bg-muted-foreground/40", text: "text-muted-foreground"},
 };
+
+function listingFlagEditPath(flag: ListingFlag) {
+    const params = new URLSearchParams();
+    params.set("listingFlagId", flag._id);
+    return `/eCommerceMarketplace/listingflags/edit?${params.toString()}`;
+}
 
 type ListingFlagCardProps = WithLanguageType & {
     listingFlag: ListingFlag;
+    fetchId?: string;
     onDelete?: (deleted?: ListingFlag, response?: DeletedData) => void;
     onRestore?: () => void;
     onLifecyclePatched?: (patch: Partial<ListingFlag>) => void;
     hideActions?: boolean;
     sheetOnly?: boolean;
+    innerRef?: RefObject<WithAxiosLifecycleRef<ListingFlag> | null>;
 };
 
-function formatEnumLabel(
-    resolveLanguageKey: (key: string) => unknown,
-    group: "status_values" | "reason_values",
-    value?: string,
-): string {
-    if (!value) return "—";
-    return (resolveLanguageKey(`${group}.${value}`) as string | undefined) ?? value;
-}
-
 function ListingFlagCard({
-    listingFlag: flagProp,
-    resolveLanguageKey,
-    onDelete: onDeleteProp,
-    onRestore: onRestoreProp,
+    listingFlag,
+    fetchId,
+    onDelete,
+    onRestore,
     onLifecyclePatched,
+    resolveLanguageKey,
     hideActions = false,
     sheetOnly = false,
+    innerRef,
 }: ListingFlagCardProps) {
-    const {action, setAction, entity: flag, setEntity, hideAfterDeletion, onDelete, onRestore} = useEntityCard({
-        entityProp: flagProp,
-        onDeleteProp,
-        onRestoreProp,
-    });
-    const { read, restore } = useAccess("listingflags");
-
-    const applyLifecyclePatch = (patch: Partial<ListingFlag>) => {
-        setEntity((prev) => ({...prev, ...patch}));
-        onLifecyclePatched?.(patch);
-    };
-
-    if (hideAfterDeletion) return <></>;
-    if (!restore && flag.deletedAt != null) return <></>;
-    if (!read || !Object.keys(read).length) return <HiddenElement />;
-
-    const statusCfg = STATUS_CONFIG[flag.status] ?? STATUS_CONFIG.dismissed;
-    const canReadListingTitle = !!read?.listing?.keys?.title;
-    const listingTitle = canReadListingTitle
-        ? (flag.listing?.title?.trim() || "—")
-        : undefined;
-    const statusLabel = formatEnumLabel(resolveLanguageKey, "status_values", flag.status);
-    const reasonLabel = formatEnumLabel(resolveLanguageKey, "reason_values", flag.reason);
-    const canReadReporterName = !!(read?.user?.keys?.name || read?.user?.keys?.surname);
-    const reporterName = [
-        read?.user?.keys?.name ? flag.user?.name : "",
-        read?.user?.keys?.surname ? flag.user?.surname : "",
-    ]
-        .filter(Boolean)
-        .join(" ")
-        .trim();
-
-    const editPath = (() => {
-        const params = new URLSearchParams();
-        params.set("listingFlagId", flag._id);
-        return `/eCommerceMarketplace/listingflags/edit?${params.toString()}`;
-    })();
-
     return (
-        <>
-            {!sheetOnly && (
-                <EntityCardShell onClick={() => setAction("view")}>
-                    {(read.deletedBy || read.deletedAt) && (
-                        <DeletedInfo deletedAt={flag.deletedAt} deletedBy={flag.deletedBy} />
+        <EntityCard
+            resource="listingflags"
+            entity={listingFlag}
+            fetchId={fetchId}
+            singleUrl="/api/eCommerceMarketplace/listingFlag/single"
+            onDelete={onDelete}
+            onRestore={onRestore}
+            hideActions={hideActions}
+            hideEdit={(row) => row.status !== "pending"}
+            sheetOnly={sheetOnly}
+            editPath={listingFlagEditPath}
+            Sheet={ListingFlagSheetView}
+            sheetEntityProp="listingFlag"
+            deleteUrl="/api/eCommerceMarketplace/listingFlag"
+            restoreUrl="/api/eCommerceMarketplace/listingFlag/restore"
+            failedTitle=""
+            failedDescription=""
+            titlePath="listing.title"
+            innerRef={innerRef}
+            sheetProps={({entity: row, setEntity}) => ({
+                fetchId,
+                onListLifecyclePatched: (patch: Partial<ListingFlag>) => {
+                    setEntity({...row, ...patch});
+                    onLifecyclePatched?.(patch);
+                },
+            })}
+            extraDialogs={({action, setAction, entity: row, setEntity}) => (
+                <>
+                    {(action === "resolve" || action === "dismiss") && (
+                        <ChangeListingFlagLifecycleAction
+                            listingFlagId={row._id}
+                            listingFlagTitle={row.listing?.title}
+                            verb={action as ListingFlagLifecycleVerb}
+                            openAlert
+                            url={`/api/eCommerceMarketplace/listingFlag/${action}`}
+                            onSuccess={(patch: Partial<ListingFlag>) => {
+                                setEntity({...row, ...patch});
+                                onLifecyclePatched?.(patch);
+                                setAction("");
+                            }}
+                            onCancel={() => setAction("")}
+                        />
                     )}
-
-                    <div className="p-3 flex flex-col gap-2">
-                        <div className="flex items-start justify-between gap-2">
-                            <HiddenElement randomLength={canReadListingTitle ? 0 : 12}>
-                                {canReadListingTitle ? (
-                                    <h3 className="font-semibold text-sm leading-snug line-clamp-2 text-foreground min-h-[2.5rem] flex-1 min-w-0">
-                                        {listingTitle && listingTitle !== "—" ? listingTitle : <ValueNotSet />}
-                                    </h3>
-                                ) : null}
-                            </HiddenElement>
-                            {!hideActions && (
-                                <div className="shrink-0" onClick={(e) => e.stopPropagation()}>
-                                    <ActionMenu
-                                        accessModel="listingflags"
-                                        deletedData={flag}
-                                        onAction={(a: string) => setAction(a)}
-                                        editPath={editPath}
-                                        hideEdit={flag.status !== "pending"}
-                                        allowMenuForCustomChildren
-                                    >
-                                        <ResolveListingFlagDropdown listingFlag={flag} onAction={(a: string) => setAction(a)} />
-                                        <DismissListingFlagDropdown listingFlag={flag} onAction={(a: string) => setAction(a)} />
-                                    </ActionMenu>
-                                </div>
-                            )}
-                        </div>
-
-                        <HiddenElement randomLength={read?.status ? 0 : 6}>
-                            {!!read?.status && flag.status ? (
-                                <span className={cn("inline-flex items-center gap-1.5 text-3xs font-semibold uppercase tracking-wide -mt-1", statusCfg.text)}>
-                                    <span className={cn("w-1.5 h-1.5 rounded-full shrink-0", statusCfg.dot)} />
-                                    {statusLabel}
-                                </span>
-                            ) : null}
-                        </HiddenElement>
-
-                        <InfoRowGroup>
-                            <InfoRow
+                </>
+            )}
+        >
+            {({entity: row, setAction}) => {
+                const statusCfg = STATUS_CONFIG[row.status] ?? STATUS_CONFIG.dismissed;
+                return (
+                    <>
+                        <EntityCard.Header titlePath="listing.title" title={row.listing?.title}>
+                            <ResolveListingFlagDropdown listingFlag={row} onAction={setAction} />
+                            <DismissListingFlagDropdown listingFlag={row} onAction={setAction} />
+                        </EntityCard.Header>
+                        <EntityCard.Body>
+                            <span
+                                className={cn(
+                                    "inline-flex items-center gap-1.5 text-3xs font-semibold uppercase tracking-wide",
+                                    statusCfg.text,
+                                )}
+                            >
+                                <span className={cn("h-1.5 w-1.5 shrink-0 rounded-full", statusCfg.dot)} />
+                                <DisplayValue
+                                    path="status"
+                                    type="enum"
+                                    languageKeyCategory="status_values"
+                                    value={row.status}
+                                />
+                            </span>
+                            <DisplayRow
                                 icon={Flag}
                                 label={resolveLanguageKey("reason")}
-                                show
-                                value={
-                                    <HiddenElement randomLength={read?.reason ? 0 : 8}>
-                                        {!!read?.reason ? reasonLabel : null}
-                                    </HiddenElement>
-                                }
+                                tooltip={resolveLanguageKey("reason")}
+                                path="reason"
+                                type="enum"
+                                languageKeyCategory="reason_values"
+                                value={row.reason}
                             />
-                            <InfoRow
+                            <DisplayRow
                                 icon={User}
                                 label={resolveLanguageKey("reporter")}
-                                show
-                                value={
-                                    <HiddenElement randomLength={canReadReporterName ? 0 : 10}>
-                                        {canReadReporterName ? (reporterName || "—") : null}
-                                    </HiddenElement>
-                                }
+                                tooltip={resolveLanguageKey("reporter")}
+                                path="user"
+                                type="user"
+                                value={row.user}
                             />
-                        </InfoRowGroup>
-                    </div>
-                </EntityCardShell>
-            )}
-            {action === "view" && (
-                <ListingFlagSheetView
-                    open
-                    onOpenChange={() => setAction("")}
-                    listingFlag={flag}
-                    onDelete={onDelete}
-                    onRestore={onRestore}
-                    onListLifecyclePatched={applyLifecyclePatch}
-                />
-            )}
-            {(action === "resolve" || action === "dismiss") && (
-                <ChangeListingFlagLifecycleAction
-                    listingFlagId={flag._id}
-                    listingFlagTitle={listingTitle}
-                    verb={action as ListingFlagLifecycleVerb}
-                    openAlert
-                    url={`/api/eCommerceMarketplace/listingFlag/${action}`}
-                    onSuccess={(patch: Partial<ListingFlag>) => {
-                        applyLifecyclePatch(patch);
-                        setAction("");
-                    }}
-                    onCancel={() => setAction("")}
-                />
-            )}
-            {action === "delete" && (
-                <DeleteAction
-                    accessModel="listingflags"
-                    deleteId={flag._id}
-                    openAlert
-                    name={canReadListingTitle && listingTitle}
-                    confirmName={canReadListingTitle && listingTitle}
-                    onSuccess={onDelete}
-                    onCancel={() => setAction("")}
-                    url="/api/eCommerceMarketplace/listingFlag"
-                />
-            )}
-            {action === "restore" && (
-                <RestoreAction
-                    accessModel="listingflags"
-                    deleteId={flag._id}
-                    openAlert
-                    name={canReadListingTitle && listingTitle}
-                    confirmName={canReadListingTitle && listingTitle}
-                    onSuccess={onRestore}
-                    onCancel={() => setAction("")}
-                    url="/api/eCommerceMarketplace/listingFlag/restore"
-                />
-            )}
-        </>
+                        </EntityCard.Body>
+                    </>
+                );
+            }}
+        </EntityCard>
     );
 }
 

@@ -1,35 +1,21 @@
 import {compose} from "redux";
 import withLanguage, {WithLanguageType} from "@coreModule/helpers/hocs/withLanguage.tsx";
-import withAxios, {WithAxiosType} from "@coreModule/helpers/hocs/withAxios.tsx";
 import withDebug from "@coreModule/helpers/hocs/withDebug.tsx";
-import HiddenElement from "@coreModule/components/custom/hiddenElement.tsx";
-import {useAccess} from "@coreModule/helpers/hocs/withAccess.tsx";
-import {useEffect, useImperativeHandle, useState} from "react";
-import ValueNotSet from "@coreModule/components/custom/valueNotSet.tsx";
 import {cn} from "@coreModule/components/lib/utils.ts";
 import type {TaskRequest} from "armonia/src/modules/eCommerceMarketplace/api/eCommerceMarketplace/private/taskRequest/taskRequest.dto.ts";
-import type {DeletedData, SingleForm} from "armonia/src/modules/core/types/shared.types.ts";
-import DeletedInfo from "@coreModule/components/custom/deletedInfo";
+import type {DeletedData} from "armonia/src/modules/core/types/shared.types.ts";
 import {IconCalendar, IconFolder, IconMapPin, IconPhoto, IconUsers} from "@tabler/icons-react";
 import TaskRequestSheetView from "@eCommerceMarketplaceModule/clients/panel/private/taskRequests/center/sheetView/taskRequestSheetView.tsx";
-import DeleteAction from "@coreModule/components/custom/actions/deleteAction.tsx";
-import RestoreAction from "@coreModule/components/custom/actions/restoreAction.tsx";
-import ActionMenu from "@coreModule/components/custom/actions/menu/actionMenu.tsx";
 import CloseTaskRequestDropdown from "@eCommerceMarketplaceModule/clients/panel/private/taskRequests/center/actions/closeTaskRequestDropdown.tsx";
 import ReopenTaskRequestDropdown from "@eCommerceMarketplaceModule/clients/panel/private/taskRequests/center/actions/reopenTaskRequestDropdown.tsx";
 import NotifyAllTaskRequestDropdown from "@eCommerceMarketplaceModule/clients/panel/private/taskRequests/center/actions/notifyAllTaskRequestDropdown.tsx";
 import TaskRequestStatusConfirmAction from "@eCommerceMarketplaceModule/components/custom/taskRequests/taskRequestStatusConfirmAction.tsx";
 import TaskRequestNotifyAllConfirmAction from "@eCommerceMarketplaceModule/components/custom/taskRequests/taskRequestNotifyAllConfirmAction.tsx";
 import {taskRequestEditPath} from "@eCommerceMarketplaceModule/clients/panel/private/taskRequests";
-import Loader from "@coreModule/components/custom/loader.tsx";
-import {ErrorView} from "@coreModule/components/custom/errorView.tsx";
-import {InfoRowGroup} from "@coreModule/components/custom/infoRowGroup.tsx";
-import {useEntityCard} from "@coreModule/helpers/hooks/useEntityCard.ts";
-import {EntityCardShell} from "@coreModule/components/custom/cards/EntityCardShell.tsx";
-import {EntityTextCardHeader} from "@coreModule/components/custom/cards/EntityTextCardHeader.tsx";
-import {CARD_BODY_CLASS} from "@coreModule/components/custom/cards/entityCard.constants.ts";
-import {Separator} from "@coreModule/components/ui/separator.tsx";
-import {EntityMediaHeader} from "@coreModule/components/custom/cards/EntityMediaHeader.tsx";
+import DisplayValue from "@coreModule/components/custom/displayValue/displayValue.tsx";
+import EntityCard from "@coreModule/components/custom/systemCards/entityCard.tsx";
+import type {WithAxiosLifecycleRef} from "@coreModule/helpers/hocs/withAxios.tsx";
+import type {RefObject} from "react";
 
 function formatBudget(entity: TaskRequest): string | undefined {
     const {budgetMin, budgetMax, currency} = entity;
@@ -45,335 +31,60 @@ function formatBudget(entity: TaskRequest): string | undefined {
     return sym ? `${sym} ${fmt(n)}` : fmt(n);
 }
 
-type TaskRequestCardProps = WithLanguageType &
-    WithAxiosType<TaskRequest, SingleForm> & {
-        entity: TaskRequest;
-        fetchId?: string;
-        onDelete?: (entity?: TaskRequest, response?: DeletedData) => void;
-        onRestore?: () => void;
-        onEntityUpdated?: (entity: TaskRequest) => void;
-        hideActions?: boolean;
-        sheetOnly?: boolean;
-    };
+type TaskRequestCardProps = WithLanguageType & {
+    entity: TaskRequest;
+    fetchId?: string;
+    onDelete?: (entity?: TaskRequest, response?: DeletedData) => void;
+    onRestore?: () => void;
+    onEntityUpdated?: (entity: TaskRequest) => void;
+    hideActions?: boolean;
+    sheetOnly?: boolean;
+    innerRef?: RefObject<WithAxiosLifecycleRef<TaskRequest> | null>;
+};
 
 function TaskRequestCard({
-    entity: entityProp,
+    entity,
     fetchId,
-    onFilterChange,
-    loading,
-    error,
-    innerRef,
     resolveLanguageKey,
-    onDelete: onDeleteProp,
-    onRestore: onRestoreProp,
+    onDelete,
+    onRestore,
     onEntityUpdated,
     hideActions = false,
     sheetOnly = false,
+    innerRef,
 }: TaskRequestCardProps) {
-    const {action, setAction, entity: entity, setEntity} = useEntityCard({
-        entityProp: entityProp,
-    });
-
-    const [hideAfterDeletion, setHideAfterDeletion] = useState(false);
-    const [forceReload, setForceReload] = useState(1);
-
-    const onDelete = (data: DeletedData) => {
-        if (!data.deletedBy && !data.deletedAt) {
-            setHideAfterDeletion(true);
-        } else if (onDeleteProp) {
-            onDeleteProp(entity, data);
-        } else {
-            setEntity({...entity, ...data});
-        }
-    };
-
-    const onRestore = () => {
-        if (onRestoreProp) {
-            onRestoreProp();
-        } else {
-            setEntity({...entity, deletedAt: undefined, deletedBy: undefined});
-        }
-    };
-
-    const {read, restore} = useAccess("taskRequests");
-
-    useEffect(() => {
-        if (!fetchId) setEntity(entityProp);
-    }, [entityProp, fetchId]);
-
-    useEffect(() => {
-        if (fetchId) onFilterChange({_id: fetchId});
-    }, [fetchId, forceReload]);
-
-    useImperativeHandle(innerRef, () => ({
-        success: (data: TaskRequest) => setEntity(data),
-    }));
-
-    if (hideAfterDeletion) return <></>;
-    if (!restore && entity.deletedAt != null) return <></>;
-    if (!read || !Object.keys(read).length) return <HiddenElement />;
-    if (fetchId && loading) return <Loader />;
-    if (fetchId && error) {
-        return (
-            <ErrorView
-                title={resolveLanguageKey("failedTitle")}
-                description={resolveLanguageKey("failedDescription")}
-                onClick={() => setForceReload((n) => n + 1)}
-            />
-        );
-    }
-    if (!entity?._id) return <></>;
-
-    const budgetStr = formatBudget(entity);
-    const canReadRequesterName = !!(read?.requester?.keys?.name || read?.requester?.keys?.surname);
-    const requesterName = [
-        read?.requester?.keys?.name ? entity.requester?.name : "",
-        read?.requester?.keys?.surname ? entity.requester?.surname : "",
-    ]
-        .filter(Boolean)
-        .join(" ")
-        .trim();
-    const requesterInitials = [
-        read?.requester?.keys?.name ? entity.requester?.name?.[0] : "",
-        read?.requester?.keys?.surname ? entity.requester?.surname?.[0] : "",
-    ]
-        .filter(Boolean)
-        .join("")
-        .toUpperCase();
-
-    const now = Date.now();
-    const expiresMs = entity.expiresAt ? new Date(entity.expiresAt).getTime() : null;
-    const msLeft = expiresMs ? expiresMs - now : null;
-    const isExpiringSoon = msLeft != null && msLeft > 0 && msLeft < 3 * 24 * 60 * 60 * 1000;
-    const isExpired = msLeft != null && msLeft <= 0;
-    const expiresLabel = expiresMs
-        ? new Date(expiresMs).toLocaleDateString(undefined, {day: "2-digit", month: "short"})
-        : null;
-    const canReadBudget = !!(read?.budgetMin || read?.budgetMax);
-
     return (
-        <>
-            {!sheetOnly && (
-                <EntityCardShell
-                    onClick={fetchId ? undefined : () => setAction("view")}
-                    disableClick={!!fetchId}
-                >
-                    {/* ── Image ─────────────────────────────────────────── */}
-                    <div className="relative h-50 overflow-hidden bg-muted">
-                        <HiddenElement randomLength={read?.mainImage ? 0 : 12}>
-                            {!!read?.mainImage ? (
-                                entity.mainImage ? (
-                                    <img
-                                        src={`/api/auxiliary/media/${entity.mainImage._id}`}
-                                        alt={read?.title ? entity.title : ""}
-                                        className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
-                                    />
-                                ) : (
-                                    <div className="w-full h-full flex items-center justify-center bg-linear-to-br from-muted via-muted/70 to-muted/40">
-                                        <IconPhoto className="w-14 h-14 text-muted-foreground/15" />
-                                    </div>
-                                )
-                            ) : null}
-                        </HiddenElement>
-
-                        {/* Gradient scrim for bottom overlays */}
-                        <div className="absolute inset-0 transform-gpu bg-linear-to-t from-black/65 via-black/10 to-transparent pointer-events-none" />
-
-                        {/* Action menu */}
-                        {!hideActions && (
-                            <div
-                                className="absolute top-2 right-2"
-                                onClick={(e) => e.stopPropagation()}
-                            >
-                                <ActionMenu
-                                    accessModel="taskRequests"
-                                    deletedData={entity}
-                                    onAction={(a: string) => setAction(a)}
-                                    editPath={taskRequestEditPath(entity)}
-                                    allowMenuForCustomChildren
-                                    alwaysShowDropDownMenuTrigger
-                                >
-                                    <NotifyAllTaskRequestDropdown entity={entity} onAction={(a: string) => setAction(a)} />
-                                    <CloseTaskRequestDropdown entity={entity} onAction={(a: string) => setAction(a)} />
-                                    <ReopenTaskRequestDropdown entity={entity} onAction={(a: string) => setAction(a)} />
-                                </ActionMenu>
-                            </div>
-                        )}
-
-                        {/* Bottom image row: category left, bid count right */}
-                        <div className="absolute bottom-2 left-2 right-2 flex items-end justify-between gap-2">
-                            <HiddenElement randomLength={read?.category?.keys?.name ? 0 : 8}>
-                                {!!read?.category?.keys?.name && entity.category?.name ? (
-                                    <span className="inline-flex items-center gap-1 text-2xs font-medium px-2.5 py-1 rounded-full bg-overlay-foreground/15 backdrop-blur-sm text-overlay-foreground border border-overlay-foreground/20 shadow-sm truncate max-w-[60%]">
-                                        <IconFolder className="w-3 h-3 shrink-0" />
-                                        <span className="truncate">{entity.category.name}</span>
-                                    </span>
-                                ) : null}
-                            </HiddenElement>
-                            {(entity.bidCount != null && entity.bidCount > 0) && (
-                                <span className="inline-flex items-center gap-1 text-3xs font-bold px-2.5 py-1 rounded-full bg-background/90 backdrop-blur-sm text-foreground shadow-sm shrink-0 ml-auto">
-                                    <IconUsers className="w-3 h-3" />
-                                    {entity.bidCount}
-                                </span>
-                            )}
-                        </div>
-                    </div>
-
-                    {/* ── Deleted banner ────────────────────────────────── */}
-                    {(read.deletedBy || read.deletedAt) && (
-                        <DeletedInfo deletedAt={entity.deletedAt} deletedBy={entity.deletedBy} />
-                    )}
-
-                    {/* ── Content ───────────────────────────────────────── */}
-                    <div className="px-3 py-1 flex flex-col gap-2">
-
-                        {/* Requester row + status */}
-                        <div className="flex items-center justify-between gap-2">
-                            <HiddenElement randomLength={canReadRequesterName ? 0 : 10}>
-                                {canReadRequesterName && entity.requester ? (
-                                    <div className="flex items-center gap-2 min-w-0">
-                                        <div className="w-6 h-6 rounded-full bg-primary/10 flex items-center justify-center shrink-0 ring-1 ring-primary/20">
-                                            <span className="text-3xs font-bold text-primary leading-none">
-                                                {requesterInitials}
-                                            </span>
-                                        </div>
-                                        <span className="text-xs font-medium text-muted-foreground truncate">
-                                            {requesterName}
-                                        </span>
-                                    </div>
-                                ) : null}
-                            </HiddenElement>
-                            <HiddenElement randomLength={read?.status ? 0 : 6}>
-                                {!!read?.status && entity.status ? (
-                                    <span className={cn(
-                                        "inline-flex items-center gap-1.5 text-3xs font-semibold uppercase tracking-wide shrink-0",
-                                        entity.status === "open"   ? "text-success" :
-                                        entity.status === "awarded"? "text-warning"   :
-                                        "text-muted-foreground",
-                                    )}>
-                                        <span className={cn(
-                                            "w-1.5 h-1.5 rounded-full shrink-0",
-                                            entity.status === "open"    ? "bg-success animate-pulse" :
-                                            entity.status === "awarded" ? "bg-warning"                 :
-                                            "bg-muted-foreground/40",
-                                        )} />
-                                        {resolveLanguageKey("statuses." + entity.status)}
-                                    </span>
-                                ) : null}
-                            </HiddenElement>
-                        </div>
-
-                        {/* Title */}
-                        <HiddenElement randomLength={10}>
-                            {!!read?.title ? (
-                                <h3 className="font-semibold text-sm leading-snug line-clamp-2 text-foreground min-h-6">
-                                    {entity.title || <ValueNotSet />}
-                                </h3>
-                            ) : null}
-                        </HiddenElement>
-
-                        {/* Description excerpt */}
-                        {(!!entity.description || !read?.description) && (
-                            <HiddenElement randomLength={read?.description ? 0 : 16}>
-                                {!!read?.description && entity.description ? (
-                                    <p className="text-xs text-muted-foreground line-clamp-1 leading-normal -mt-0.5">
-                                        {entity.description}
-                                    </p>
-                                ) : null}
-                            </HiddenElement>
-                        )}
-
-                        {/* Divider */}
-                        <div className="h-px bg-border" />
-
-                        {/* Footer: location + expiry | budget */}
-                        <div className="flex items-end justify-between gap-2">
-                            <div className="flex items-center gap-2 text-xs text-muted-foreground min-w-0 flex-wrap">
-                                <HiddenElement randomLength={read?.address ? 0 : 8}>
-                                    {!!read?.address && entity.address?.city?.name ? (
-                                        <span className="flex items-center gap-1 truncate">
-                                            <IconMapPin className="w-3.5 h-3.5 shrink-0" />
-                                            <span className="truncate">{entity.address.city.name}</span>
-                                        </span>
-                                    ) : null}
-                                </HiddenElement>
-                                <HiddenElement randomLength={read?.expiresAt ? 0 : 6}>
-                                    {!!read?.expiresAt && expiresLabel ? (
-                                        <span className={cn(
-                                            "flex items-center gap-1 shrink-0 px-2 py-0.5 rounded-full bg-muted",
-                                            isExpiringSoon && "bg-warning/10 text-warning dark:bg-warning/30",
-                                            isExpired && "bg-destructive/10 text-destructive dark:bg-destructive/30",
-                                        )}>
-                                            <IconCalendar className="w-3 h-3" />
-                                            {expiresLabel}
-                                        </span>
-                                    ) : null}
-                                </HiddenElement>
-                            </div>
-
-                            <HiddenElement randomLength={canReadBudget ? 0 : 8}>
-                                {canReadBudget && budgetStr ? (
-                                    <div className="shrink-0 text-right">
-                                        <div className="text-3xs text-muted-foreground uppercase tracking-wide leading-none mb-0.5">
-                                            {resolveLanguageKey("budget")}
-                                        </div>
-                                        <div className="flex items-baseline gap-0.5">
-                                            <span className="font-bold text-base text-foreground leading-none">
-                                                {budgetStr}
-                                            </span>
-                                        </div>
-                                    </div>
-                                ) : null}
-                            </HiddenElement>
-                        </div>
-                    </div>
-                </EntityCardShell>
-            )}
-
-            {!!action && (
+        <EntityCard
+            resource="taskRequests"
+            entity={entity}
+            fetchId={fetchId}
+            singleUrl="/api/eCommerceMarketplace/taskRequest/single"
+            onDelete={onDelete}
+            onRestore={onRestore}
+            hideActions={hideActions}
+            sheetOnly={sheetOnly}
+            editPath={taskRequestEditPath}
+            Sheet={TaskRequestSheetView}
+            sheetEntityProp="entity"
+            deleteUrl="/api/eCommerceMarketplace/taskRequest"
+            restoreUrl="/api/eCommerceMarketplace/taskRequest/restore"
+            failedTitle={String(resolveLanguageKey("failedTitle"))}
+            failedDescription={String(resolveLanguageKey("failedDescription"))}
+            titlePath="title"
+            innerRef={innerRef}
+            sheetProps={({entity: row, setEntity}) => ({
+                fetchId,
+                onEntityUpdated: (updated: TaskRequest) => {
+                    setEntity({...row, ...updated});
+                    onEntityUpdated?.(updated);
+                },
+            })}
+            extraDialogs={({action, setAction, entity: row, setEntity}) => (
                 <>
-                    {action === "view" && (
-                        <TaskRequestSheetView
-                            open={action === "view"}
-                            onOpenChange={() => setAction("")}
-                            entity={entity}
-                            fetchId={fetchId}
-                            onDelete={onDelete}
-                            onRestore={onRestore}
-                            onEntityUpdated={(e: TaskRequest) => {
-                                setEntity(e);
-                                onEntityUpdated?.(e);
-                            }}
-                        />
-                    )}
-                    {action === "delete" && (
-                        <DeleteAction
-                            accessModel="taskRequests"
-                            deleteId={entity._id}
-                            openAlert={action === "delete"}
-                            name={read?.title && entity.title}
-                            confirmName={read?.title && entity.title}
-                            onSuccess={onDelete}
-                            onCancel={() => setAction("")}
-                            url="/api/eCommerceMarketplace/taskRequest"
-                        />
-                    )}
-                    {action === "restore" && (
-                        <RestoreAction
-                            accessModel="taskRequests"
-                            deleteId={entity._id}
-                            openAlert={action === "restore"}
-                            name={read?.title && entity.title}
-                            confirmName={read?.title && entity.title}
-                            onSuccess={onRestore}
-                            onCancel={() => setAction("")}
-                            url="/api/eCommerceMarketplace/taskRequest/restore"
-                        />
-                    )}
                     {action === "notifyAll" && (
                         <TaskRequestNotifyAllConfirmAction
-                            taskRequestId={entity._id}
-                            displayName={entity.title}
+                            taskRequestId={row._id}
+                            displayName={row.title}
                             openAlert
                             url="/api/eCommerceMarketplace/taskRequest/notifyAll"
                             onSuccess={() => setAction("")}
@@ -383,12 +94,12 @@ function TaskRequestCard({
                     {(action === "close" || action === "reopen") && (
                         <TaskRequestStatusConfirmAction
                             actionKey={action}
-                            taskRequestId={entity._id}
-                            displayName={entity.title}
+                            taskRequestId={row._id}
+                            displayName={row.title}
                             openAlert
                             url={`/api/eCommerceMarketplace/taskRequest/${action}`}
                             onSuccess={(newStatus: TaskRequest["status"]) => {
-                                const updated = {...entity, status: newStatus};
+                                const updated = {...row, status: newStatus};
                                 setEntity(updated);
                                 onEntityUpdated?.(updated);
                                 setAction("");
@@ -398,15 +109,146 @@ function TaskRequestCard({
                     )}
                 </>
             )}
-        </>
+        >
+            {({entity: row, setAction}) => {
+                const budgetStr = formatBudget(row);
+                const requesterInitials = [row.requester?.name?.[0], row.requester?.surname?.[0]]
+                    .filter(Boolean)
+                    .join("")
+                    .toUpperCase();
+                const now = Date.now();
+                const expiresMs = row.expiresAt ? new Date(row.expiresAt).getTime() : null;
+                const msLeft = expiresMs ? expiresMs - now : null;
+                const isExpiringSoon = msLeft != null && msLeft > 0 && msLeft < 3 * 24 * 60 * 60 * 1000;
+                const isExpired = msLeft != null && msLeft <= 0;
+                const expiresLabel = expiresMs
+                    ? new Date(expiresMs).toLocaleDateString(undefined, {day: "2-digit", month: "short"})
+                    : null;
+                return (
+                    <>
+                        <div className="relative h-50 overflow-hidden bg-muted">
+                            {row.mainImage ? (
+                                <img
+                                    src={`/api/auxiliary/media/${row.mainImage._id}`}
+                                    alt={row.title ?? ""}
+                                    className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-110"
+                                />
+                            ) : (
+                                <div className="flex h-full w-full items-center justify-center bg-linear-to-br from-muted via-muted/70 to-muted/40">
+                                    <IconPhoto className="h-14 w-14 text-muted-foreground/15" />
+                                </div>
+                            )}
+                            <div className="pointer-events-none absolute inset-0 transform-gpu bg-linear-to-t from-black/65 via-black/10 to-transparent" />
+                            <div className="absolute right-2 bottom-2 left-2 flex items-end justify-between gap-2">
+                                {row.category?.name ? (
+                                    <span className="inline-flex max-w-[60%] items-center gap-1 truncate rounded-full border border-overlay-foreground/20 bg-overlay-foreground/15 px-2.5 py-1 text-2xs font-medium text-overlay-foreground shadow-sm backdrop-blur-sm">
+                                        <IconFolder className="h-3 w-3 shrink-0" />
+                                        <span className="truncate">{row.category.name}</span>
+                                    </span>
+                                ) : null}
+                                {row.bidCount != null && row.bidCount > 0 ? (
+                                    <span className="ml-auto inline-flex shrink-0 items-center gap-1 rounded-full bg-background/90 px-2.5 py-1 text-3xs font-bold text-foreground shadow-sm backdrop-blur-sm">
+                                        <IconUsers className="h-3 w-3" />
+                                        {row.bidCount}
+                                    </span>
+                                ) : null}
+                            </div>
+                        </div>
+                        <EntityCard.Header titlePath="title" title={row.title}>
+                            <NotifyAllTaskRequestDropdown entity={row} onAction={setAction} />
+                            <CloseTaskRequestDropdown entity={row} onAction={setAction} />
+                            <ReopenTaskRequestDropdown entity={row} onAction={setAction} />
+                        </EntityCard.Header>
+                        <div className="flex flex-col gap-2">
+                            <div className="flex items-center justify-between gap-2">
+                                {row.requester ? (
+                                    <div className="flex min-w-0 items-center gap-2">
+                                        <div className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-primary/10 ring-1 ring-primary/20">
+                                            <span className="text-3xs font-bold leading-none text-primary">
+                                                {requesterInitials}
+                                            </span>
+                                        </div>
+                                        <DisplayValue path="requester" type="user" value={row.requester} />
+                                    </div>
+                                ) : null}
+                                <span
+                                    className={cn(
+                                        "inline-flex shrink-0 items-center gap-1.5 text-3xs font-semibold tracking-wide uppercase",
+                                        row.status === "open"
+                                            ? "text-success"
+                                            : row.status === "awarded"
+                                              ? "text-warning"
+                                              : "text-muted-foreground",
+                                    )}
+                                >
+                                    <span
+                                        className={cn(
+                                            "h-1.5 w-1.5 shrink-0 rounded-full",
+                                            row.status === "open"
+                                                ? "animate-pulse bg-success"
+                                                : row.status === "awarded"
+                                                  ? "bg-warning"
+                                                  : "bg-muted-foreground/40",
+                                        )}
+                                    />
+                                    <DisplayValue
+                                        path="status"
+                                        type="enum"
+                                        languageKeyCategory="statuses"
+                                        value={row.status}
+                                    />
+                                </span>
+                            </div>
+                            {row.description ? (
+                                <DisplayValue path="description" value={row.description}>
+                                    {(text) => (
+                                        <p className="-mt-0.5 line-clamp-1 text-xs leading-normal text-muted-foreground">
+                                            {text}
+                                        </p>
+                                    )}
+                                </DisplayValue>
+                            ) : null}
+                            <div className="flex items-end justify-between gap-2">
+                                <div className="flex min-w-0 flex-wrap items-center gap-2 text-xs text-muted-foreground">
+                                    {row.address?.city?.name ? (
+                                        <span className="flex items-center gap-1 truncate">
+                                            <IconMapPin className="h-3.5 w-3.5 shrink-0" />
+                                            <DisplayValue path="address.city.name" value={row.address.city.name} />
+                                        </span>
+                                    ) : null}
+                                    {expiresLabel ? (
+                                        <span
+                                            className={cn(
+                                                "flex shrink-0 items-center gap-1 rounded-full bg-muted px-2 py-0.5",
+                                                isExpiringSoon && "bg-warning/10 text-warning dark:bg-warning/30",
+                                                isExpired && "bg-destructive/10 text-destructive dark:bg-destructive/30",
+                                            )}
+                                        >
+                                            <IconCalendar className="h-3 w-3" />
+                                            {expiresLabel}
+                                        </span>
+                                    ) : null}
+                                </div>
+                                {budgetStr ? (
+                                    <div className="shrink-0 text-right">
+                                        <div className="mb-0.5 text-3xs leading-none tracking-wide text-muted-foreground uppercase">
+                                            {resolveLanguageKey("budget")}
+                                        </div>
+                                        <span className="text-base font-bold leading-none text-foreground">
+                                            {budgetStr}
+                                        </span>
+                                    </div>
+                                ) : null}
+                            </div>
+                        </div>
+                    </>
+                );
+            }}
+        </EntityCard>
     );
 }
 
 export default compose(
     withLanguage("src/modules/eCommerceMarketplace/clients/panel/private/taskRequests/center/cardView/taskRequestCard.tsx"),
-    withAxios<TaskRequest, SingleForm>(
-        {url: "/api/eCommerceMarketplace/taskRequest/single", method: "POST", data: {}},
-        true,
-    ),
     withDebug(true, true),
 )(TaskRequestCard);

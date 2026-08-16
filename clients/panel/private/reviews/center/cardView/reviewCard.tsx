@@ -1,26 +1,17 @@
 import {compose} from "redux";
-import {useEffect, useState} from "react";
 import withLanguage, {WithLanguageType} from "@coreModule/helpers/hocs/withLanguage.tsx";
 import withDebug from "@coreModule/helpers/hocs/withDebug.tsx";
-import {useAccess} from "@coreModule/helpers/hocs/withAccess.tsx";
-import HiddenElement from "@coreModule/components/custom/hiddenElement.tsx";
 import {cn} from "@coreModule/components/lib/utils.ts";
-import ActionMenu from "@coreModule/components/custom/actions/menu/actionMenu.tsx";
-import DeleteAction from "@coreModule/components/custom/actions/deleteAction.tsx";
-import RestoreAction from "@coreModule/components/custom/actions/restoreAction.tsx";
-import DeletedInfo from "@coreModule/components/custom/deletedInfo";
 import TableAvatar from "@coreModule/components/custom/avatar/tableAvatar.tsx";
 import {IconLayoutList, IconPackage, IconStar} from "@tabler/icons-react";
 import {Star} from "lucide-react";
 import type {Review} from "armonia/src/modules/eCommerceMarketplace/api/eCommerceMarketplace/private/review/review.dto.ts";
 import type {DeletedData} from "armonia/src/modules/core/types/shared.types.ts";
 import ReviewSheetView from "../sheetView/reviewSheetView.tsx";
-import {InfoRowGroup} from "@coreModule/components/custom/infoRowGroup.tsx";
-import {useEntityCard} from "@coreModule/helpers/hooks/useEntityCard.ts";
-import {EntityCardShell} from "@coreModule/components/custom/cards/EntityCardShell.tsx";
-import {EntityTextCardHeader} from "@coreModule/components/custom/cards/EntityTextCardHeader.tsx";
-import {CARD_BODY_CLASS} from "@coreModule/components/custom/cards/entityCard.constants.ts";
-import {Separator} from "@coreModule/components/ui/separator.tsx";
+import DisplayValue from "@coreModule/components/custom/displayValue/displayValue.tsx";
+import EntityCard from "@coreModule/components/custom/systemCards/entityCard.tsx";
+import type {WithAxiosLifecycleRef} from "@coreModule/helpers/hocs/withAxios.tsx";
+import type {RefObject} from "react";
 
 const RATING_CONFIG: Record<number, {text: string}> = {
     1: {text: "text-muted-foreground"},
@@ -29,19 +20,6 @@ const RATING_CONFIG: Record<number, {text: string}> = {
     4: {text: "text-warning"},
     5: {text: "text-success"},
 };
-
-type ReviewCardProps = WithLanguageType & {
-    review: Review;
-    onDelete?: (deleted?: Review, response?: DeletedData) => void;
-    onRestore?: () => void;
-    hideActions?: boolean;
-    sheetOnly?: boolean;
-};
-
-function formatReviewerName(review: Review): string {
-    const {name, surname} = review.reviewer ?? {};
-    return [name, surname].filter(Boolean).join(" ").trim() || "—";
-}
 
 function reviewCardTitle(review: Review): string {
     const comment = review.comment?.trim();
@@ -57,163 +35,121 @@ function reviewCardTitle(review: Review): string {
     );
 }
 
+type ReviewCardProps = WithLanguageType & {
+    review: Review;
+    fetchId?: string;
+    onDelete?: (deleted?: Review, response?: DeletedData) => void;
+    onRestore?: () => void;
+    hideActions?: boolean;
+    sheetOnly?: boolean;
+    innerRef?: RefObject<WithAxiosLifecycleRef<Review> | null>;
+};
+
 function ReviewCard({
-    review: reviewProp,
-    onDelete: onDeleteProp,
-    onRestore: onRestoreProp,
+    review,
+    fetchId,
+    onDelete,
+    onRestore,
     hideActions = false,
     sheetOnly = false,
+    innerRef,
 }: ReviewCardProps) {
-    const [action, setAction] = useState("");
-    const [review, setEntity] = useState<Review>(reviewProp);
-    const [hideAfterDeletion, setHideAfterDeletion] = useState(false);
-    const {read, restore} = useAccess("reviews");
-
-
-    const onDelete = (data: DeletedData) => {
-        if (!data.deletedBy && !data.deletedAt) {
-            setHideAfterDeletion(true);
-        } else if (onDeleteProp) {
-            onDeleteProp(review, data);
-        } else {
-            setEntity({...review, ...(data as Partial<Review>)});
-        }
-    };
-
-    const onRestore = () => {
-        if (onRestoreProp) onRestoreProp();
-    };
-
-    if (hideAfterDeletion) return <></>;
-    if (!restore && review.deletedAt != null) return <></>;
-    if (!read || !Object.keys(read).length) return <HiddenElement />;
-
-    const ratingCfg = RATING_CONFIG[review.rating] ?? RATING_CONFIG[3];
-    const title = reviewCardTitle(review);
-    const reviewerName = formatReviewerName(review);
-    const reviewerInitials = [review.reviewer?.name?.[0], review.reviewer?.surname?.[0]]
-        .filter(Boolean)
-        .join("")
-        .toUpperCase();
-
-    const listingTitle =
-        review.listing?.title ||
-        review.order?.listing?.title ||
-        review.order?.taskRequest?.title ||
-        review.order?.name;
-
-    const stars = Array.from({length: 5}, (_, i) => i < review.rating);
-
     return (
-        <>
-            {!sheetOnly && (
-                <EntityCardShell onClick={() => setAction("view")}>
-                    {(read.deletedBy || read.deletedAt) && (
-                        <DeletedInfo deletedAt={review.deletedAt} deletedBy={review.deletedBy} />
-                    )}
-
-                    <div className="p-3 flex flex-col gap-2">
-                        <div className="flex items-start justify-between gap-2">
-                            <h3 className="font-semibold text-sm leading-snug line-clamp-2 text-foreground min-h-[2.5rem] flex-1 min-w-0">
-                                {title}
-                            </h3>
-                            {!hideActions && (
-                                <div className="shrink-0" onClick={(e) => e.stopPropagation()}>
-                                    <ActionMenu
-                                        accessModel="reviews"
-                                        deletedData={review}
-                                        onAction={(a: string) => setAction(a)}
-                                        editPath=""
-                                        hideEdit
-                                    />
-                                </div>
-                            )}
-                        </div>
-
-                        <span
-                            className={cn(
-                                "inline-flex items-center gap-1.5 text-3xs font-semibold uppercase tracking-wide -mt-1",
-                                ratingCfg.text,
-                            )}
-                        >
-                            <IconStar className="w-3 h-3 shrink-0" />
-                            <span className="flex gap-0.5">
-                                {stars.map((filled, i) => (
-                                    <Star
-                                        key={i}
-                                        size={10}
-                                        className={filled ? "fill-current" : "text-muted-foreground/40"}
-                                    />
-                                ))}
-                            </span>
-                            {review.rating}/5
-                        </span>
-
-                        {review.reviewer && (
-                            <div className="flex items-center gap-1.5 text-xs text-muted-foreground min-w-0">
-                                {review.reviewer.photo ? (
-                                    <TableAvatar mediaId={review.reviewer.photo} />
-                                ) : (
-                                    <div className="w-5 h-5 rounded-full bg-muted flex items-center justify-center shrink-0 ring-1 ring-border">
-                                        <span className="text-3xs font-bold text-foreground leading-none">
-                                            {reviewerInitials || "?"}
+        <EntityCard
+            resource="reviews"
+            entity={review}
+            fetchId={fetchId}
+            singleUrl="/api/eCommerceMarketplace/review/single"
+            onDelete={onDelete}
+            onRestore={onRestore}
+            hideActions={hideActions}
+            hideEdit
+            sheetOnly={sheetOnly}
+            editPath={() => ""}
+            Sheet={ReviewSheetView}
+            sheetEntityProp="review"
+            deleteUrl="/api/eCommerceMarketplace/review"
+            restoreUrl="/api/eCommerceMarketplace/review/restore"
+            failedTitle=""
+            failedDescription=""
+            titlePath="comment"
+            innerRef={innerRef}
+            sheetProps={() => ({fetchId: fetchId ?? review._id})}
+        >
+            {({entity: row}) => {
+                const ratingCfg = RATING_CONFIG[row.rating] ?? RATING_CONFIG[3];
+                const reviewerInitials = [row.reviewer?.name?.[0], row.reviewer?.surname?.[0]]
+                    .filter(Boolean)
+                    .join("")
+                    .toUpperCase();
+                const listingTitle =
+                    row.listing?.title ||
+                    row.order?.listing?.title ||
+                    row.order?.taskRequest?.title ||
+                    row.order?.name;
+                const stars = Array.from({length: 5}, (_, i) => i < row.rating);
+                return (
+                    <>
+                        <EntityCard.Header titlePath="comment" title={reviewCardTitle(row)} />
+                        <div className="flex flex-col gap-2">
+                            <DisplayValue path="rating" value={row.rating}>
+                                {() => (
+                                    <span
+                                        className={cn(
+                                            "inline-flex items-center gap-1.5 text-3xs font-semibold tracking-wide uppercase",
+                                            ratingCfg.text,
+                                        )}
+                                    >
+                                        <IconStar className="h-3 w-3 shrink-0" />
+                                        <span className="flex gap-0.5">
+                                            {stars.map((filled, i) => (
+                                                <Star
+                                                    key={i}
+                                                    size={10}
+                                                    className={filled ? "fill-current" : "text-muted-foreground/40"}
+                                                />
+                                            ))}
                                         </span>
-                                    </div>
+                                        {row.rating}/5
+                                    </span>
                                 )}
-                                <span className="truncate">{reviewerName}</span>
+                            </DisplayValue>
+                            {row.reviewer ? (
+                                <div className="flex min-w-0 items-center gap-1.5 text-xs text-muted-foreground">
+                                    {row.reviewer.photo ? (
+                                        <TableAvatar mediaId={row.reviewer.photo} />
+                                    ) : (
+                                        <div className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-muted ring-1 ring-border">
+                                            <span className="text-3xs font-bold leading-none text-foreground">
+                                                {reviewerInitials || "?"}
+                                            </span>
+                                        </div>
+                                    )}
+                                    <DisplayValue path="reviewer" type="user" value={row.reviewer} />
+                                </div>
+                            ) : null}
+                            <div className="h-px bg-border" />
+                            <div className="flex items-end justify-between gap-2">
+                                {listingTitle ? (
+                                    <span className="flex min-w-0 items-center gap-1 truncate text-xs text-muted-foreground">
+                                        <IconLayoutList className="h-3 w-3 shrink-0" />
+                                        <DisplayValue path="listing.title" value={listingTitle} />
+                                    </span>
+                                ) : null}
+                                {row.order?._id ? (
+                                    <span className="ml-auto flex shrink-0 items-center gap-1 text-3xs text-muted-foreground">
+                                        <IconPackage className="h-3 w-3" />
+                                        <DisplayValue path="order._id" value={row.order._id.slice(-6)}>
+                                            {(text) => <span className="max-w-[5rem] truncate font-mono">{text}</span>}
+                                        </DisplayValue>
+                                    </span>
+                                ) : null}
                             </div>
-                        )}
-
-                        <div className="h-px bg-border" />
-
-                        <div className="flex items-end justify-between gap-2">
-                            {listingTitle && (
-                                <span className="flex items-center gap-1 text-xs text-muted-foreground min-w-0 truncate">
-                                    <IconLayoutList className="w-3 h-3 shrink-0" />
-                                    <span className="truncate">{listingTitle}</span>
-                                </span>
-                            )}
-                            {review.order?._id && (
-                                <span className="flex items-center gap-1 text-3xs text-muted-foreground shrink-0 ml-auto">
-                                    <IconPackage className="w-3 h-3" />
-                                    <span className="font-mono truncate max-w-[5rem]">{review.order._id.slice(-6)}</span>
-                                </span>
-                            )}
                         </div>
-                    </div>
-                </EntityCardShell>
-            )}
-            {action === "view" && (
-                <ReviewSheetView
-                    open
-                    onOpenChange={() => setAction("")}
-                    review={review}
-                    fetchId={review._id}
-                    onDelete={onDelete}
-                    onRestore={onRestore}
-                />
-            )}
-            {action === "delete" && (
-                <DeleteAction
-                    accessModel="reviews"
-                    deleteId={review._id}
-                    openAlert
-                    onSuccess={onDelete}
-                    onCancel={() => setAction("")}
-                    url="/api/eCommerceMarketplace/review"
-                />
-            )}
-            {action === "restore" && (
-                <RestoreAction
-                    accessModel="reviews"
-                    deleteId={review._id}
-                    openAlert
-                    onSuccess={onRestore}
-                    onCancel={() => setAction("")}
-                    url="/api/eCommerceMarketplace/review/restore"
-                />
-            )}
-        </>
+                    </>
+                );
+            }}
+        </EntityCard>
     );
 }
 

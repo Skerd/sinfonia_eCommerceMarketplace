@@ -1,14 +1,7 @@
 import {compose} from "redux";
-import {useEffect, useState} from "react";
 import withLanguage, {WithLanguageType} from "@coreModule/helpers/hocs/withLanguage.tsx";
 import withDebug from "@coreModule/helpers/hocs/withDebug.tsx";
-import {useAccess} from "@coreModule/helpers/hocs/withAccess.tsx";
-import HiddenElement from "@coreModule/components/custom/hiddenElement.tsx";
 import {cn} from "@coreModule/components/lib/utils.ts";
-import ActionMenu from "@coreModule/components/custom/actions/menu/actionMenu.tsx";
-import DeleteAction from "@coreModule/components/custom/actions/deleteAction.tsx";
-import RestoreAction from "@coreModule/components/custom/actions/restoreAction.tsx";
-import DeletedInfo from "@coreModule/components/custom/deletedInfo";
 import type {Order} from "armonia/src/modules/eCommerceMarketplace/api/eCommerceMarketplace/private/order/order.dto.ts";
 import type {DeletedData} from "armonia/src/modules/core/types/shared.types.ts";
 import OrderSheetView from "@eCommerceMarketplaceModule/clients/panel/private/orders/center/sheetView/orderSheetView.tsx";
@@ -28,282 +21,252 @@ import RaiseDisputeAction from "@eCommerceMarketplaceModule/components/custom/di
 import type {OrderConfirmActionKey} from "@eCommerceMarketplaceModule/components/custom/orders/orderActionConfirmAction.tsx";
 import type {OrderStatus} from "armonia/src/modules/eCommerceMarketplace/api/eCommerceMarketplace/private/order/order.schema-def.ts";
 import {IconArrowRight, IconCalendar} from "@tabler/icons-react";
-import {InfoRowGroup} from "@coreModule/components/custom/infoRowGroup.tsx";
-import {useEntityCard} from "@coreModule/helpers/hooks/useEntityCard.ts";
-import {EntityCardShell} from "@coreModule/components/custom/cards/EntityCardShell.tsx";
-import {EntityTextCardHeader} from "@coreModule/components/custom/cards/EntityTextCardHeader.tsx";
-import {CARD_BODY_CLASS} from "@coreModule/components/custom/cards/entityCard.constants.ts";
-import {Separator} from "@coreModule/components/ui/separator.tsx";
+import DisplayValue from "@coreModule/components/custom/displayValue/displayValue.tsx";
+import EntityCard from "@coreModule/components/custom/systemCards/entityCard.tsx";
+import type {WithAxiosLifecycleRef} from "@coreModule/helpers/hocs/withAxios.tsx";
+import type {RefObject} from "react";
 
 const STATUS_CONFIG: Record<string, {dot: string; dotAnim: string; text: string}> = {
-    pending:     {dot: "bg-warning",        dotAnim: "",             text: "text-warning"},
-    accepted:    {dot: "bg-info",         dotAnim: "animate-pulse",text: "text-info"},
-    in_progress: {dot: "bg-primary",       dotAnim: "animate-pulse",text: "text-primary"},
-    completed:   {dot: "bg-success",     dotAnim: "",             text: "text-success"},
-    cancelled:   {dot: "bg-muted-foreground/40",dotAnim: "",           text: "text-muted-foreground"},
+    pending: {dot: "bg-warning", dotAnim: "", text: "text-warning"},
+    accepted: {dot: "bg-info", dotAnim: "animate-pulse", text: "text-info"},
+    in_progress: {dot: "bg-primary", dotAnim: "animate-pulse", text: "text-primary"},
+    completed: {dot: "bg-success", dotAnim: "", text: "text-success"},
+    cancelled: {dot: "bg-muted-foreground/40", dotAnim: "", text: "text-muted-foreground"},
 };
+
+function orderTitle(order: Order) {
+    return order.listing?.title || order.taskRequest?.title || order._id;
+}
 
 type OrderCardProps = WithLanguageType & {
     order: Order;
+    fetchId?: string;
     onDelete?: (deleted?: Order, response?: DeletedData) => void;
     onRestore?: () => void;
     onOrderUpdated?: (order: Order) => void;
     hideActions?: boolean;
+    sheetOnly?: boolean;
+    innerRef?: RefObject<WithAxiosLifecycleRef<Order> | null>;
 };
 
 function OrderCard({
-    order: orderProp,
+    order,
     resolveLanguageKey,
-    onDelete: onDeleteProp,
-    onRestore: onRestoreProp,
+    fetchId,
+    onDelete,
+    onRestore,
     onOrderUpdated,
     hideActions = false,
+    sheetOnly = false,
+    innerRef,
 }: OrderCardProps) {
-    const [action, setAction] = useState("");
-    const [order, setEntity] = useState<Order>(orderProp);
-    const [hideAfterDeletion, setHideAfterDeletion] = useState(false);
-    const {read, restore} = useAccess("orders");
-
-
-    const onDelete = (data: DeletedData) => {
-        if (!data.deletedBy && !data.deletedAt) {
-            setHideAfterDeletion(true);
-        } else if (onDeleteProp) {
-            onDeleteProp(order, data);
-        } else {
-            setEntity({...order, ...data});
-        }
-    };
-
-    const onRestore = () => {
-        if (onRestoreProp) {
-            onRestoreProp();
-        } else {
-            setEntity({...order, deletedAt: undefined, deletedBy: undefined});
-        }
-    };
-
-    if (hideAfterDeletion) return <></>;
-    if (!restore && order.deletedAt != null) return <></>;
-    if (!read || !Object.keys(read).length) return <HiddenElement />;
-
-    const statusCfg = STATUS_CONFIG[order.status ?? ""] ?? STATUS_CONFIG.pending;
-
-    const title = order.listing?.title || order.taskRequest?.title || order._id;
-
-    const applyOrderUpdate = (patch: Partial<Order>) => {
-        setEntity((prev) => {
-            const updated = {...prev, ...patch};
-            onOrderUpdated?.(updated);
-            return updated;
-        });
-    };
-
-    const amountStr = order.amount != null
-        ? `${order.currency?.symbol?.trim() || order.currency?.abbreviation?.trim() || ""} ${order.amount.toLocaleString(undefined, {minimumFractionDigits: 0, maximumFractionDigits: 2})}`.trim()
-        : null;
-
-    const dueDateLabel = order.deliveryDueDate
-        ? new Date(order.deliveryDueDate).toLocaleDateString(undefined, {day: "2-digit", month: "short", year: "numeric"})
-        : null;
-
-    const customerInitials = [order.customer?.name?.[0], order.customer?.surname?.[0]].filter(Boolean).join("").toUpperCase();
-    const providerInitials = [order.provider?.name?.[0], order.provider?.surname?.[0]].filter(Boolean).join("").toUpperCase();
-
     return (
-        <>
-            <EntityCardShell onClick={() => setAction("view")}>
-                {/* ── Deleted banner ────────────────────────────────── */}
-                {(read.deletedBy || read.deletedAt) && (
-                    <DeletedInfo deletedAt={order.deletedAt} deletedBy={order.deletedBy} />
-                )}
-
-                {/* ── Content ───────────────────────────────────────── */}
-                <div className="p-3 flex flex-col gap-2">
-
-                    {/* Title + action menu */}
-                    <div className="flex items-start justify-between gap-2">
-                        <h3 className="font-semibold text-sm leading-snug line-clamp-2 text-foreground min-h-[2.5rem] flex-1 min-w-0">
-                            {title}
-                        </h3>
-                        {!hideActions && (
-                            <div className="shrink-0" onClick={(e) => e.stopPropagation()}>
-                                <ActionMenu
-                                    accessModel="orders"
-                                    deletedData={order}
-                                    onAction={(a: string) => setAction(a)}
-                                    editPath=""
-                                    allowMenuForCustomChildren
-                                >
-                                    <AcceptOrderDropdown order={order} onAction={(a: string) => setAction(a)} />
-                                    <StartOrderDropdown order={order} onAction={(a: string) => setAction(a)} />
-                                    <CancelOrderDropdown order={order} onAction={(a: string) => setAction(a)} />
-                                    <ExtendOrderDropdown order={order} onAction={(a: string) => setAction(a)} />
-                                    <SubmitOrderDeliveryDropdown order={order} onAction={(a: string) => setAction(a)} />
-                                    <AcceptOrderDeliveryDropdown order={order} onAction={(a: string) => setAction(a)} />
-                                    <RequestRevisionDropdown order={order} onAction={(a: string) => setAction(a)} />
-                                    <RaiseDisputeDropdown order={order} onAction={(a: string) => setAction(a)} />
-                                </ActionMenu>
-                            </div>
+        <EntityCard
+            resource="orders"
+            entity={order}
+            fetchId={fetchId}
+            singleUrl="/api/eCommerceMarketplace/order/single"
+            onDelete={onDelete}
+            onRestore={onRestore}
+            hideActions={hideActions}
+            hideEdit
+            sheetOnly={sheetOnly}
+            editPath={() => ""}
+            Sheet={OrderSheetView}
+            sheetEntityProp="order"
+            deleteUrl="/api/eCommerceMarketplace/order"
+            restoreUrl="/api/eCommerceMarketplace/order/restore"
+            failedTitle=""
+            failedDescription=""
+            titlePath="listing.title"
+            innerRef={innerRef}
+            sheetProps={({entity: row, setEntity}) => ({
+                fetchId,
+                onOrderUpdated: (updated: Order) => {
+                    setEntity({...row, ...updated});
+                    onOrderUpdated?.(updated);
+                },
+                onSheetRowPatched: (patch: Partial<Order>) => {
+                    const updated = {...row, ...patch};
+                    setEntity(updated);
+                    onOrderUpdated?.(updated);
+                },
+            })}
+            extraDialogs={({action, setAction, entity: row, setEntity}) => {
+                const applyPatch = (patch: Partial<Order>) => {
+                    const updated = {...row, ...patch};
+                    setEntity(updated);
+                    onOrderUpdated?.(updated);
+                };
+                const title = orderTitle(row);
+                return (
+                    <>
+                        {(action === "accept" ||
+                            action === "start" ||
+                            action === "cancel" ||
+                            action === "acceptDelivery") && (
+                            <OrderActionConfirmAction
+                                orderId={row._id}
+                                displayName={title}
+                                actionKey={action as OrderConfirmActionKey}
+                                openAlert
+                                url={`/api/eCommerceMarketplace/order/${action}`}
+                                onSuccess={(newStatus: OrderStatus) => {
+                                    applyPatch({status: newStatus});
+                                    setAction("");
+                                }}
+                                onCancel={() => setAction("")}
+                            />
                         )}
-                    </div>
-
-                    {/* Status indicator */}
-                    {read?.status && order.status && (
-                        <span className={cn("inline-flex items-center gap-1.5 text-3xs font-semibold uppercase tracking-wide -mt-1", statusCfg.text)}>
-                            <span className={cn("w-1.5 h-1.5 rounded-full shrink-0", statusCfg.dot, statusCfg.dotAnim)} />
-                            {resolveLanguageKey("statuses." + order.status)}
-                        </span>
-                    )}
-
-                    {/* Customer → Provider flow */}
-                    {(read?.customer || read?.provider) && (order.customer || order.provider) && (
-                        <div className="flex items-center gap-1.5 text-xs text-muted-foreground min-w-0">
-                            {read?.customer && order.customer && (
-                                <span className="flex items-center gap-1.5 min-w-0 truncate">
-                                    <div className="w-5 h-5 rounded-full bg-muted flex items-center justify-center shrink-0 ring-1 ring-border">
-                                        <span className="text-3xs font-bold text-foreground leading-none">{customerInitials || "?"}</span>
-                                    </div>
-                                    <span className="truncate">{`${order.customer.name} ${order.customer.surname}`}</span>
-                                </span>
-                            )}
-                            {read?.customer && read?.provider && order.customer && order.provider && (
-                                <IconArrowRight className="w-3 h-3 shrink-0 text-muted-foreground/40" />
-                            )}
-                            {read?.provider && order.provider && (
-                                <span className="flex items-center gap-1.5 min-w-0 truncate">
-                                    <div className="w-5 h-5 rounded-full bg-primary/10 flex items-center justify-center shrink-0 ring-1 ring-primary/20">
-                                        <span className="text-3xs font-bold text-primary leading-none">{providerInitials || "?"}</span>
-                                    </div>
-                                    <span className="truncate">{`${order.provider.name} ${order.provider.surname}`}</span>
-                                </span>
-                            )}
-                        </div>
-                    )}
-
-                    {/* Divider */}
-                    <div className="h-px bg-border" />
-
-                    {/* Footer: due date | amount */}
-                    <div className="flex items-end justify-between gap-2">
-                        {read?.deliveryDueDate && dueDateLabel && (
-                            <span className="flex items-center gap-1 text-xs text-muted-foreground shrink-0 bg-muted px-2 py-0.5 rounded-full">
-                                <IconCalendar className="w-3 h-3" />
-                                {dueDateLabel}
+                        {action === "submitDelivery" && (
+                            <SubmitOrderDeliveryAction
+                                orderId={row._id}
+                                displayName={title}
+                                openAlert
+                                url="/api/eCommerceMarketplace/order/submitDelivery"
+                                onSuccess={() => {
+                                    applyPatch({deliverySubmitted: true});
+                                    setAction("");
+                                }}
+                                onCancel={() => setAction("")}
+                            />
+                        )}
+                        {action === "extend" && (
+                            <OrderExtendAction
+                                orderId={row._id}
+                                displayName={title}
+                                currentDueDate={row.deliveryDueDate}
+                                openAlert
+                                url="/api/eCommerceMarketplace/order/extend"
+                                onSuccess={(newDueDate: string) => {
+                                    applyPatch({deliveryDueDate: newDueDate});
+                                    setAction("");
+                                }}
+                                onCancel={() => setAction("")}
+                            />
+                        )}
+                        {action === "requestRevision" && (
+                            <RequestRevisionAction
+                                orderId={row._id}
+                                displayName={title}
+                                openAlert
+                                url="/api/eCommerceMarketplace/order/requestRevision"
+                                onSuccess={() => {
+                                    applyPatch({deliverySubmitted: false});
+                                    setAction("");
+                                }}
+                                onCancel={() => setAction("")}
+                            />
+                        )}
+                        {action === "raiseDispute" && (
+                            <RaiseDisputeAction
+                                orderId={row._id}
+                                displayName={title}
+                                openAlert
+                                url="/api/eCommerceMarketplace/dispute"
+                                onSuccess={() => {
+                                    applyPatch({hasActiveDispute: true});
+                                    setAction("");
+                                }}
+                                onCancel={() => setAction("")}
+                            />
+                        )}
+                    </>
+                );
+            }}
+        >
+            {({entity: row, setAction}) => {
+                const statusCfg = STATUS_CONFIG[row.status ?? ""] ?? STATUS_CONFIG.pending;
+                const customerInitials = [row.customer?.name?.[0], row.customer?.surname?.[0]]
+                    .filter(Boolean)
+                    .join("")
+                    .toUpperCase();
+                const providerInitials = [row.provider?.name?.[0], row.provider?.surname?.[0]]
+                    .filter(Boolean)
+                    .join("")
+                    .toUpperCase();
+                return (
+                    <>
+                        <EntityCard.Header titlePath="listing.title" title={orderTitle(row)}>
+                            <AcceptOrderDropdown order={row} onAction={setAction} />
+                            <StartOrderDropdown order={row} onAction={setAction} />
+                            <CancelOrderDropdown order={row} onAction={setAction} />
+                            <ExtendOrderDropdown order={row} onAction={setAction} />
+                            <SubmitOrderDeliveryDropdown order={row} onAction={setAction} />
+                            <AcceptOrderDeliveryDropdown order={row} onAction={setAction} />
+                            <RequestRevisionDropdown order={row} onAction={setAction} />
+                            <RaiseDisputeDropdown order={row} onAction={setAction} />
+                        </EntityCard.Header>
+                        <div className="flex flex-col gap-2">
+                            <span
+                                className={cn(
+                                    "inline-flex items-center gap-1.5 text-3xs font-semibold tracking-wide uppercase",
+                                    statusCfg.text,
+                                )}
+                            >
+                                <span className={cn("h-1.5 w-1.5 shrink-0 rounded-full", statusCfg.dot, statusCfg.dotAnim)} />
+                                <DisplayValue
+                                    path="status"
+                                    type="enum"
+                                    languageKeyCategory="statuses"
+                                    value={row.status}
+                                />
                             </span>
-                        )}
-
-                        {read?.amount && amountStr && (
-                            <div className="shrink-0 text-right ml-auto">
-                                <div className="text-3xs text-muted-foreground uppercase tracking-wide leading-none mb-0.5">
-                                    {resolveLanguageKey("total")}
+                            {(row.customer || row.provider) && (
+                                <div className="flex min-w-0 items-center gap-1.5 text-xs text-muted-foreground">
+                                    {row.customer ? (
+                                        <span className="flex min-w-0 items-center gap-1.5 truncate">
+                                            <div className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-muted ring-1 ring-border">
+                                                <span className="text-3xs font-bold leading-none text-foreground">
+                                                    {customerInitials || "?"}
+                                                </span>
+                                            </div>
+                                            <DisplayValue path="customer" type="user" value={row.customer} />
+                                        </span>
+                                    ) : null}
+                                    {row.customer && row.provider ? (
+                                        <IconArrowRight className="h-3 w-3 shrink-0 text-muted-foreground/40" />
+                                    ) : null}
+                                    {row.provider ? (
+                                        <span className="flex min-w-0 items-center gap-1.5 truncate">
+                                            <div className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-primary/10 ring-1 ring-primary/20">
+                                                <span className="text-3xs font-bold leading-none text-primary">
+                                                    {providerInitials || "?"}
+                                                </span>
+                                            </div>
+                                            <DisplayValue path="provider" type="user" value={row.provider} />
+                                        </span>
+                                    ) : null}
                                 </div>
-                                <span className="font-bold text-base text-foreground leading-none">{amountStr}</span>
+                            )}
+                            <div className="h-px bg-border" />
+                            <div className="flex items-end justify-between gap-2">
+                                {row.deliveryDueDate ? (
+                                    <span className="flex shrink-0 items-center gap-1 rounded-full bg-muted px-2 py-0.5 text-xs text-muted-foreground">
+                                        <IconCalendar className="h-3 w-3" />
+                                        <DisplayValue path="deliveryDueDate" type="date" value={row.deliveryDueDate} />
+                                    </span>
+                                ) : null}
+                                {row.amount != null ? (
+                                    <div className="ml-auto shrink-0 text-right">
+                                        <div className="mb-0.5 text-3xs leading-none tracking-wide text-muted-foreground uppercase">
+                                            {resolveLanguageKey("total")}
+                                        </div>
+                                        <span className="text-base font-bold leading-none text-foreground">
+                                            <DisplayValue
+                                                path="amount"
+                                                type="currency"
+                                                value={{amount: row.amount, currency: row.currency}}
+                                            />
+                                        </span>
+                                    </div>
+                                ) : null}
                             </div>
-                        )}
-                    </div>
-                </div>
-            </EntityCardShell>
-
-            {action === "view" && (
-                <OrderSheetView
-                    open
-                    onOpenChange={() => setAction("")}
-                    order={order}
-                    onDelete={onDelete}
-                    onRestore={onRestore}
-                    onOrderUpdated={(updated: Order) => applyOrderUpdate(updated)}
-                    onSheetRowPatched={(patch: Partial<Order>) => applyOrderUpdate(patch)}
-                />
-            )}
-            {action === "delete" && (
-                <DeleteAction
-                    accessModel="orders"
-                    deleteId={order._id}
-                    openAlert
-                    onSuccess={onDelete}
-                    onCancel={() => setAction("")}
-                    url="/api/eCommerceMarketplace/order"
-                />
-            )}
-            {action === "restore" && (
-                <RestoreAction
-                    accessModel="orders"
-                    deleteId={order._id}
-                    openAlert
-                    onSuccess={onRestore}
-                    onCancel={() => setAction("")}
-                    url="/api/eCommerceMarketplace/order/restore"
-                />
-            )}
-            {(action === "accept" || action === "start" || action === "cancel" || action === "acceptDelivery") && (
-                <OrderActionConfirmAction
-                    orderId={order._id}
-                    displayName={title}
-                    actionKey={action as OrderConfirmActionKey}
-                    openAlert
-                    url={`/api/eCommerceMarketplace/order/${action}`}
-                    onSuccess={(newStatus: OrderStatus) => {
-                        applyOrderUpdate({status: newStatus});
-                        setAction("");
-                    }}
-                    onCancel={() => setAction("")}
-                />
-            )}
-            {action === "submitDelivery" && (
-                <SubmitOrderDeliveryAction
-                    orderId={order._id}
-                    displayName={title}
-                    openAlert
-                    url="/api/eCommerceMarketplace/order/submitDelivery"
-                    onSuccess={() => {
-                        applyOrderUpdate({deliverySubmitted: true});
-                        setAction("");
-                    }}
-                    onCancel={() => setAction("")}
-                />
-            )}
-            {action === "extend" && (
-                <OrderExtendAction
-                    orderId={order._id}
-                    displayName={title}
-                    currentDueDate={order.deliveryDueDate}
-                    openAlert
-                    url="/api/eCommerceMarketplace/order/extend"
-                    onSuccess={(newDueDate: string) => {
-                        applyOrderUpdate({deliveryDueDate: newDueDate});
-                        setAction("");
-                    }}
-                    onCancel={() => setAction("")}
-                />
-            )}
-            {action === "requestRevision" && (
-                <RequestRevisionAction
-                    orderId={order._id}
-                    displayName={title}
-                    openAlert
-                    url="/api/eCommerceMarketplace/order/requestRevision"
-                    onSuccess={() => {
-                        applyOrderUpdate({deliverySubmitted: false});
-                        setAction("");
-                    }}
-                    onCancel={() => setAction("")}
-                />
-            )}
-            {action === "raiseDispute" && (
-                <RaiseDisputeAction
-                    orderId={order._id}
-                    displayName={title}
-                    openAlert
-                    url="/api/eCommerceMarketplace/dispute"
-                    onSuccess={() => {
-                        applyOrderUpdate({hasActiveDispute: true});
-                        setAction("");
-                    }}
-                    onCancel={() => setAction("")}
-                />
-            )}
-        </>
+                        </div>
+                    </>
+                );
+            }}
+        </EntityCard>
     );
 }
 
