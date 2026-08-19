@@ -128,5 +128,5 @@ function ProviderProfileSheetView({
 
 export default compose(
     withLanguage("src/modules/eCommerceMarketplace/clients/panel/private/providerProfile/center/sheetView/providerProfileSheetView.tsx"),
-    withDebug(true, true),
+    withDebug(true, true, "providerProfiles"),
 )(ProviderProfileSheetView);

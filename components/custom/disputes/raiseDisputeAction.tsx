@@ -141,7 +141,7 @@ const RaiseDisputeActionWithAxios = compose(
         },
         true,
     ),
-    withDebug(true, true),
+    withDebug(true, true, "disputes"),
 )(RaiseDisputeAction) as ComponentType<RaiseDisputeActionPublicProps>;
 
 type RaiseDisputeActionShellProps = WithLanguageType & Omit<RaiseDisputeActionPublicProps, "resolveLanguageKey">;
@@ -153,5 +153,5 @@ function RaiseDisputeActionShell({resolveLanguageKey, ...rest}: RaiseDisputeActi
 
 export default compose(
     withLanguage("src/modules/eCommerceMarketplace/components/custom/disputes/raiseDisputeAction.tsx"),
-    withDebug(true, true),
+    withDebug(true, true, "disputes"),
 )(RaiseDisputeActionShell);

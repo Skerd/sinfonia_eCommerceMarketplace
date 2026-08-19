@@ -88,5 +88,5 @@ function AllTaskRequests({resolveLanguageKey}: WithLanguageType) {
 
 export default compose(
     withLanguage("src/modules/eCommerceMarketplace/clients/panel/private/taskRequests/index.tsx"),
-    withDebug(true, true),
+    withDebug(true, true, "taskRequests"),
 )(AllTaskRequests);

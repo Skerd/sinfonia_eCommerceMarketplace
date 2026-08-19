@@ -97,5 +97,5 @@ function AllPromotions({resolveLanguageKey}: WithLanguageType) {
 
 export default compose(
     withLanguage("src/modules/eCommerceMarketplace/clients/panel/private/promotions/index.tsx"),
-    withDebug(true, true),
+    withDebug(true, true, "promotions"),
 )(AllPromotions);

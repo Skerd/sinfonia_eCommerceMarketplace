@@ -132,5 +132,5 @@ function DisputeSheetView({
 
 export default compose(
     withLanguage("src/modules/eCommerceMarketplace/clients/panel/private/disputes/center/sheetView/disputeSheetView.tsx"),
-    withDebug(true, true),
+    withDebug(true, true, "disputes"),
 )(DisputeSheetView);

@@ -95,5 +95,5 @@ function ListingCategoryCard({
 
 export default compose(
     withLanguage("src/modules/eCommerceMarketplace/clients/panel/private/listingCategories/center/cardView/categoryCard.tsx"),
-    withDebug(true, true),
+    withDebug(true, true, "listingcategories"),
 )(ListingCategoryCard);

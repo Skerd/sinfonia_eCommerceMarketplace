@@ -120,7 +120,7 @@ const TaskRequestStatusConfirmActionWithAxios = compose(
         },
         true,
     ),
-    withDebug(true, true),
+    withDebug(true, true, "taskRequests"),
 )(TaskRequestStatusConfirmAction) as ComponentType<TaskRequestStatusConfirmActionPublicProps>;
 
 type TaskRequestStatusConfirmActionShellProps = WithLanguageType &
@@ -145,5 +145,5 @@ function TaskRequestStatusConfirmActionShell({
 
 export default compose(
     withLanguage("src/modules/eCommerceMarketplace/components/custom/taskRequests/taskRequestStatusConfirmAction.tsx"),
-    withDebug(true, true),
+    withDebug(true, true, "taskRequests"),
 )(TaskRequestStatusConfirmActionShell);

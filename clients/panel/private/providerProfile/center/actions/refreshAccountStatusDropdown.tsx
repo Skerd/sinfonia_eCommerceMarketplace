@@ -44,5 +44,5 @@ function RefreshAccountStatusDropdown({profile, onAction, resolveLanguageKey}: R
 
 export default compose(
     withLanguage("src/modules/eCommerceMarketplace/clients/panel/private/providerProfile/center/actions/refreshAccountStatusDropdown.tsx"),
-    withDebug(true, true),
+    withDebug(true, true, "providerProfiles"),
 )(RefreshAccountStatusDropdown);

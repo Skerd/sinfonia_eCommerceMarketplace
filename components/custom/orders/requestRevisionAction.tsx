@@ -143,7 +143,7 @@ const RequestRevisionActionWithAxios = compose(
         },
         true,
     ),
-    withDebug(true, true),
+    withDebug(true, true, "orders"),
 )(RequestRevisionAction) as ComponentType<RequestRevisionActionPublicProps>;
 
 type RequestRevisionActionShellProps = WithLanguageType &
@@ -165,5 +165,5 @@ function RequestRevisionActionShell({resolveLanguageKey, ...rest}: RequestRevisi
 
 export default compose(
     withLanguage("src/modules/eCommerceMarketplace/components/custom/orders/requestRevisionAction.tsx"),
-    withDebug(true, true),
+    withDebug(true, true, "orders"),
 )(RequestRevisionActionShell);

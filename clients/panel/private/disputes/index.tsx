@@ -93,5 +93,5 @@ function AllDisputes({resolveLanguageKey}: WithLanguageType) {
 
 export default compose(
     withLanguage("src/modules/eCommerceMarketplace/clients/panel/private/disputes/index.tsx"),
-    withDebug(true, true),
+    withDebug(true, true, "disputes"),
 )(AllDisputes);

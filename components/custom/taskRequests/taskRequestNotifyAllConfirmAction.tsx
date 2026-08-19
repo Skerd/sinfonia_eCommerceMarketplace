@@ -120,7 +120,7 @@ const TaskRequestNotifyAllConfirmActionWithAxios = compose(
         },
         true,
     ),
-    withDebug(true, true),
+    withDebug(true, true, "taskRequests"),
 )(TaskRequestNotifyAllConfirmAction) as ComponentType<TaskRequestNotifyAllConfirmActionPublicProps>;
 
 type TaskRequestNotifyAllConfirmActionShellProps = WithLanguageType &
@@ -145,5 +145,5 @@ function TaskRequestNotifyAllConfirmActionShell({
 
 export default compose(
     withLanguage("src/modules/eCommerceMarketplace/components/custom/taskRequests/taskRequestNotifyAllConfirmAction.tsx"),
-    withDebug(true, true),
+    withDebug(true, true, "taskRequests"),
 )(TaskRequestNotifyAllConfirmActionShell);

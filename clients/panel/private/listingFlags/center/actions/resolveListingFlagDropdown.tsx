@@ -29,5 +29,5 @@ function ResolveListingFlagDropdown({listingFlag, onAction, resolveLanguageKey}:
 
 export default compose(
     withLanguage("src/modules/eCommerceMarketplace/clients/panel/private/listingFlags/center/actions/resolveListingFlagDropdown.tsx"),
-    withDebug(true, true),
+    withDebug(true, true, "listingflags"),
 )(ResolveListingFlagDropdown);

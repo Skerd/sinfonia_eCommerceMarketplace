@@ -136,5 +136,5 @@ function ListingFlagSheetView({
 
 export default compose(
     withLanguage("src/modules/eCommerceMarketplace/clients/panel/private/listingFlags/center/sheetView/listingFlagSheetView.tsx"),
-    withDebug(true, true),
+    withDebug(true, true, "listingflags"),
 )(ListingFlagSheetView);

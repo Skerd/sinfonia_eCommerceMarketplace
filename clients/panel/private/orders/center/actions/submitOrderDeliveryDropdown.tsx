@@ -44,5 +44,5 @@ function SubmitOrderDeliveryDropdown({order, onAction, resolveLanguageKey}: Subm
 
 export default compose(
     withLanguage("src/modules/eCommerceMarketplace/clients/panel/private/orders/center/actions/submitOrderDeliveryDropdown.tsx"),
-    withDebug(true, true),
+    withDebug(true, true, "orders"),
 )(SubmitOrderDeliveryDropdown);

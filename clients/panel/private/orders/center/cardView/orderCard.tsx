@@ -272,5 +272,5 @@ function OrderCard({
 
 export default compose(
     withLanguage("src/modules/eCommerceMarketplace/clients/panel/private/orders/center/cardView/orderCard.tsx"),
-    withDebug(true, true),
+    withDebug(true, true, "orders"),
 )(OrderCard);

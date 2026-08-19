@@ -19,5 +19,5 @@ function StopPromotionDropdown({onAction, resolveLanguageKey}: StopPromotionDrop
 
 export default compose(
     withLanguage("src/modules/eCommerceMarketplace/clients/panel/private/promotions/center/actions/stopPromotionDropdown.tsx"),
-    withDebug(true, true),
+    withDebug(true, true, "promotions"),
 )(StopPromotionDropdown);

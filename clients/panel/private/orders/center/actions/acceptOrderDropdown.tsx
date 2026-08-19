@@ -44,5 +44,5 @@ function AcceptOrderDropdown({order, onAction, resolveLanguageKey}: AcceptOrderD
 
 export default compose(
     withLanguage("src/modules/eCommerceMarketplace/clients/panel/private/orders/center/actions/acceptOrderDropdown.tsx"),
-    withDebug(true, true),
+    withDebug(true, true, "orders"),
 )(AcceptOrderDropdown);

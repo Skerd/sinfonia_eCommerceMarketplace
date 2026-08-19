@@ -108,5 +108,5 @@ function BidSheetView({
 
 export default compose(
     withLanguage("src/modules/eCommerceMarketplace/clients/panel/private/bids/center/sheetView/bidSheetView.tsx"),
-    withDebug(true, true),
+    withDebug(true, true, "marketplacebids"),
 )(BidSheetView);

@@ -121,5 +121,5 @@ function TaskRequestSheetView({
 
 export default compose(
     withLanguage("src/modules/eCommerceMarketplace/clients/panel/private/taskRequests/center/sheetView/taskRequestSheetView.tsx"),
-    withDebug(true, true),
+    withDebug(true, true, "taskRequests"),
 )(TaskRequestSheetView);

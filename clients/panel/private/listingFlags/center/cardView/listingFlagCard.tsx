@@ -148,5 +148,5 @@ function ListingFlagCard({
 
 export default compose(
     withLanguage("src/modules/eCommerceMarketplace/clients/panel/private/listingFlags/center/cardView/listingFlagCard.tsx"),
-    withDebug(true, true),
+    withDebug(true, true, "listingflags"),
 )(ListingFlagCard);

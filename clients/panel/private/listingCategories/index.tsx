@@ -56,5 +56,5 @@ function AllListingCategories({resolveLanguageKey}: WithLanguageType) {
 
 export default compose(
     withLanguage("src/modules/eCommerceMarketplace/clients/panel/private/listingCategories/index.tsx"),
-    withDebug(true, true),
+    withDebug(true, true, "listingcategories"),
 )(AllListingCategories);

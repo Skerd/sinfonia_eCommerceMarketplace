@@ -188,5 +188,5 @@ function OrderSheetView({
 
 export default compose(
     withLanguage("src/modules/eCommerceMarketplace/clients/panel/private/orders/center/sheetView/orderSheetView.tsx"),
-    withDebug(true, true),
+    withDebug(true, true, "orders"),
 )(OrderSheetView);

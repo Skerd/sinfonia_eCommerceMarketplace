@@ -111,5 +111,5 @@ function ListingPackageCard({
 
 export default compose(
     withLanguage("src/modules/eCommerceMarketplace/clients/panel/private/listingPackages/center/cardView/listingPackageCard.tsx"),
-    withDebug(true, true),
+    withDebug(true, true, "listingPackages"),
 )(ListingPackageCard);

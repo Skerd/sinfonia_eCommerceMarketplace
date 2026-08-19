@@ -250,5 +250,5 @@ function TaskRequestCard({
 
 export default compose(
     withLanguage("src/modules/eCommerceMarketplace/clients/panel/private/taskRequests/center/cardView/taskRequestCard.tsx"),
-    withDebug(true, true),
+    withDebug(true, true, "taskRequests"),
 )(TaskRequestCard);

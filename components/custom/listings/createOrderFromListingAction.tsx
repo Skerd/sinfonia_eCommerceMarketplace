@@ -138,7 +138,7 @@ const CreateOrderFromListingActionWithAxios = compose(
         },
         true,
     ),
-    withDebug(true, true),
+    withDebug(true, true, "orders"),
 )(CreateOrderFromListingAction) as ComponentType<CreateOrderFromListingActionPublicProps>;
 
 type CreateOrderFromListingActionShellProps = WithLanguageType &
@@ -160,5 +160,5 @@ function CreateOrderFromListingActionShell({resolveLanguageKey, ...rest}: Create
 
 export default compose(
     withLanguage("src/modules/eCommerceMarketplace/components/custom/listings/createOrderFromListingAction.tsx"),
-    withDebug(true, true),
+    withDebug(true, true, "orders"),
 )(CreateOrderFromListingActionShell);

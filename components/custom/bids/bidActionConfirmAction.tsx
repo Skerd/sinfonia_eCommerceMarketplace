@@ -128,7 +128,7 @@ const BidActionConfirmActionWithAxios = compose(
         },
         true,
     ),
-    withDebug(true, true),
+    withDebug(true, true, "marketplacebids"),
 )(BidActionConfirmAction) as ComponentType<BidActionConfirmActionPublicProps>;
 
 type BidActionConfirmActionShellProps = WithLanguageType &
@@ -151,5 +151,5 @@ function BidActionConfirmActionShell({resolveLanguageKey, actionKey, ...rest}: B
 
 export default compose(
     withLanguage("src/modules/eCommerceMarketplace/components/custom/bids/bidActionConfirmAction.tsx"),
-    withDebug(true, true),
+    withDebug(true, true, "marketplacebids"),
 )(BidActionConfirmActionShell);

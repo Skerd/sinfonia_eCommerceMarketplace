@@ -202,7 +202,7 @@ const ChangeListingFlagLifecycleActionWithAxios = compose(
         },
         true,
     ),
-    withDebug(true, true),
+    withDebug(true, true, "listingflags"),
 )(ChangeListingFlagLifecycleAction) as ComponentType<ChangeListingFlagLifecycleCallerProps>;
 
 type ChangeListingFlagLifecycleActionShellProps = WithLanguageType & {
@@ -236,5 +236,5 @@ function ChangeListingFlagLifecycleActionShell({
 
 export default compose(
     withLanguage("src/modules/eCommerceMarketplace/components/custom/listingFlags/changeListingFlagLifecycleAction.tsx"),
-    withDebug(true, true),
+    withDebug(true, true, "listingflags"),
 )(ChangeListingFlagLifecycleActionShell);

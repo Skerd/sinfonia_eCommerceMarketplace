@@ -149,7 +149,7 @@ const OrderExtendActionWithAxios = compose(
         },
         true,
     ),
-    withDebug(true, true),
+    withDebug(true, true, "orders"),
 )(OrderExtendAction) as ComponentType<OrderExtendActionPublicProps>;
 
 type OrderExtendActionShellProps = WithLanguageType & Omit<OrderExtendActionPublicProps, "resolveLanguageKey">;
@@ -170,5 +170,5 @@ function OrderExtendActionShell({resolveLanguageKey, ...rest}: OrderExtendAction
 
 export default compose(
     withLanguage("src/modules/eCommerceMarketplace/components/custom/orders/orderExtendAction.tsx"),
-    withDebug(true, true),
+    withDebug(true, true, "orders"),
 )(OrderExtendActionShell);

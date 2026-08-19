@@ -205,5 +205,5 @@ export default compose(
     withLanguage(
         "src/modules/eCommerceMarketplace/clients/panel/private/providerProfile/center/cardView/providerProfileCard.tsx",
     ),
-    withDebug(true, true),
+    withDebug(true, true, "providerProfiles"),
 )(ProviderProfileCard);

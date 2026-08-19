@@ -45,5 +45,5 @@ function ExtendOrderDropdown({order, onAction, resolveLanguageKey}: ExtendOrderD
 
 export default compose(
     withLanguage("src/modules/eCommerceMarketplace/clients/panel/private/orders/center/actions/extendOrderDropdown.tsx"),
-    withDebug(true, true),
+    withDebug(true, true, "orders"),
 )(ExtendOrderDropdown);

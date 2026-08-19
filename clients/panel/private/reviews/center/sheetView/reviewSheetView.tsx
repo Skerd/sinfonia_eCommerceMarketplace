@@ -90,5 +90,5 @@ function ReviewSheetView({
 
 export default compose(
     withLanguage("src/modules/eCommerceMarketplace/clients/panel/private/reviews/center/sheetView/reviewSheetView.tsx"),
-    withDebug(true, true),
+    withDebug(true, true, "reviews"),
 )(ReviewSheetView);

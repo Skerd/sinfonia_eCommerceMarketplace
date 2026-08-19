@@ -44,5 +44,5 @@ function RequestRevisionDropdown({order, onAction, resolveLanguageKey}: RequestR
 
 export default compose(
     withLanguage("src/modules/eCommerceMarketplace/clients/panel/private/orders/center/actions/requestRevisionDropdown.tsx"),
-    withDebug(true, true),
+    withDebug(true, true, "orders"),
 )(RequestRevisionDropdown);

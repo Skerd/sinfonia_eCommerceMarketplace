@@ -96,5 +96,5 @@ function ListingAddOnCard({
 
 export default compose(
     withLanguage("src/modules/eCommerceMarketplace/clients/panel/private/listingAddOns/center/cardView/listingAddOnCard.tsx"),
-    withDebug(true, true),
+    withDebug(true, true, "listingAddOns"),
 )(ListingAddOnCard);

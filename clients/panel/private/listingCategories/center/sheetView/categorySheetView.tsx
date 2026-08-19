@@ -74,5 +74,5 @@ function ListingCategorySheetView({
 
 export default compose(
     withLanguage("src/modules/eCommerceMarketplace/clients/panel/private/listingCategories/center/sheetView/categorySheetView.tsx"),
-    withDebug(true, true),
+    withDebug(true, true, "listingcategories"),
 )(ListingCategorySheetView);

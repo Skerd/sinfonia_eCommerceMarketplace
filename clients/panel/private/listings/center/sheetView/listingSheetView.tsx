@@ -114,5 +114,5 @@ function ListingSheetView({
 
 export default compose(
     withLanguage("src/modules/eCommerceMarketplace/clients/panel/private/listings/center/sheetView/listingSheetView.tsx"),
-    withDebug(true, true),
+    withDebug(true, true, "listings"),
 )(ListingSheetView);

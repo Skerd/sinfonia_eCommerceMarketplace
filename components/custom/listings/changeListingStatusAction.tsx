@@ -125,7 +125,7 @@ const ChangeListingStatusActionWithAxios = compose(
         },
         true,
     ),
-    withDebug(true, true),
+    withDebug(true, true, "listings"),
 )(ChangeListingStatusAction);
 
 type ChangeListingStatusActionShellProps = WithLanguageType & {

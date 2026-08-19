@@ -47,5 +47,5 @@ function CreateAccountLinkDropdown({profile, onAction, resolveLanguageKey}: Crea
 
 export default compose(
     withLanguage("src/modules/eCommerceMarketplace/clients/panel/private/providerProfile/center/actions/createAccountLinkDropdown.tsx"),
-    withDebug(true, true),
+    withDebug(true, true, "providerProfiles"),
 )(CreateAccountLinkDropdown);

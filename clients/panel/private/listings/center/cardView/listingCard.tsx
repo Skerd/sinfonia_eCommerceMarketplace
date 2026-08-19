@@ -253,5 +253,5 @@ function ListingCard({
 
 export default compose(
     withLanguage("src/modules/eCommerceMarketplace/clients/panel/private/listings/center/cardView/listingCard.tsx"),
-    withDebug(true, true),
+    withDebug(true, true, "listings"),
 )(ListingCard);

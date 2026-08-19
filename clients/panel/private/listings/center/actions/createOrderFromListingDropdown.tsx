@@ -34,5 +34,5 @@ function CreateOrderFromListingDropdown({listing, onAction, resolveLanguageKey}:
 
 export default compose(
     withLanguage("src/modules/eCommerceMarketplace/clients/panel/private/listings/center/actions/createOrderFromListingDropdown.tsx"),
-    withDebug(true, true),
+    withDebug(true, true, "orders"),
 )(CreateOrderFromListingDropdown);

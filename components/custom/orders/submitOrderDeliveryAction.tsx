@@ -138,7 +138,7 @@ const SubmitOrderDeliveryActionWithAxios = compose(
         },
         true,
     ),
-    withDebug(true, true),
+    withDebug(true, true, "orders"),
 )(SubmitOrderDeliveryAction) as ComponentType<SubmitOrderDeliveryActionPublicProps>;
 
 type SubmitOrderDeliveryActionShellProps = WithLanguageType &
@@ -160,5 +160,5 @@ function SubmitOrderDeliveryActionShell({resolveLanguageKey, ...rest}: SubmitOrd
 
 export default compose(
     withLanguage("src/modules/eCommerceMarketplace/components/custom/orders/submitOrderDeliveryAction.tsx"),
-    withDebug(true, true),
+    withDebug(true, true, "orders"),
 )(SubmitOrderDeliveryActionShell);

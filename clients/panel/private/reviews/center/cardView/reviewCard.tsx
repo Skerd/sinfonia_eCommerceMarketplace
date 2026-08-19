@@ -155,5 +155,5 @@ function ReviewCard({
 
 export default compose(
     withLanguage("src/modules/eCommerceMarketplace/clients/panel/private/reviews/center/cardView/reviewCard.tsx"),
-    withDebug(true, true),
+    withDebug(true, true, "reviews"),
 )(ReviewCard);

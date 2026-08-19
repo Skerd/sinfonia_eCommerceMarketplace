@@ -176,7 +176,7 @@ const ChangePromotionLifecycleActionWithAxios = compose(
         },
         true,
     ),
-    withDebug(true, true),
+    withDebug(true, true, "promotions"),
 )(ChangePromotionLifecycleAction) as ComponentType<ChangePromotionLifecycleCallerProps>;
 
 type ChangePromotionLifecycleActionShellProps = WithLanguageType & {

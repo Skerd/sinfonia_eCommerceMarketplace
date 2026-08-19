@@ -39,5 +39,5 @@ function AllListingAddOns({ resolveLanguageKey }: WithLanguageType) {
 
 export default compose(
     withLanguage("src/modules/eCommerceMarketplace/clients/panel/private/listingAddOns/index.tsx"),
-    withDebug(true, true),
+    withDebug(true, true, "listingAddOns"),
 )(AllListingAddOns);

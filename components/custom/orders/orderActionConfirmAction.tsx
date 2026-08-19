@@ -150,7 +150,7 @@ const OrderActionConfirmActionWithAxios = compose(
         },
         true,
     ),
-    withDebug(true, true),
+    withDebug(true, true, "orders"),
 )(OrderActionConfirmAction) as ComponentType<OrderActionConfirmActionPublicProps>;
 
 type OrderActionConfirmActionShellProps = WithLanguageType &
@@ -173,5 +173,5 @@ function OrderActionConfirmActionShell({resolveLanguageKey, actionKey, ...rest}:
 
 export default compose(
     withLanguage("src/modules/eCommerceMarketplace/components/custom/orders/orderActionConfirmAction.tsx"),
-    withDebug(true, true),
+    withDebug(true, true, "orders"),
 )(OrderActionConfirmActionShell);

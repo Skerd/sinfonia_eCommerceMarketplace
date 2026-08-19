@@ -185,7 +185,7 @@ const ChangeDisputeLifecycleActionWithAxios = compose(
         },
         true,
     ),
-    withDebug(true, true),
+    withDebug(true, true, "disputes"),
 )(ChangeDisputeLifecycleAction) as ComponentType<ChangeDisputeLifecycleCallerProps>;
 
 type ChangeDisputeLifecycleActionShellProps = WithLanguageType & {
@@ -213,5 +213,5 @@ function ChangeDisputeLifecycleActionShell({
 
 export default compose(
     withLanguage("src/modules/eCommerceMarketplace/components/custom/disputes/changeDisputeLifecycleAction.tsx"),
-    withDebug(true, true),
+    withDebug(true, true, "disputes"),
 )(ChangeDisputeLifecycleActionShell);

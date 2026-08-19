@@ -137,7 +137,7 @@ const ConnectAccountActionWithAxios = compose(
         },
         true,
     ),
-    withDebug(true, true),
+    withDebug(true, true, "providerProfiles"),
 )(ConnectAccountAction) as ComponentType<ConnectAccountActionPublicProps>;
 
 type ConnectAccountActionShellProps = WithLanguageType &
@@ -160,5 +160,5 @@ function ConnectAccountActionShell({resolveLanguageKey, actionKey, ...rest}: Con
 
 export default compose(
     withLanguage("src/modules/eCommerceMarketplace/components/custom/providerProfile/connectAccountAction.tsx"),
-    withDebug(true, true),
+    withDebug(true, true, "providerProfiles"),
 )(ConnectAccountActionShell);

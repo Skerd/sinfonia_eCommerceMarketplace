@@ -42,5 +42,5 @@ function ReopenTaskRequestDropdown({entity, onAction, resolveLanguageKey}: Reope
 
 export default compose(
     withLanguage("src/modules/eCommerceMarketplace/clients/panel/private/taskRequests/center/actions/reopenTaskRequestDropdown.tsx"),
-    withDebug(true, true),
+    withDebug(true, true, "taskRequests"),
 )(ReopenTaskRequestDropdown);
