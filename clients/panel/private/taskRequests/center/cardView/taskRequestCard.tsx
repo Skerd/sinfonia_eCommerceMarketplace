@@ -129,7 +129,7 @@ function TaskRequestCard({
                         <div className="relative h-50 overflow-hidden bg-muted">
                             {row.mainImage ? (
                                 <img
-                                    src={`/api/auxiliary/media/${row.mainImage._id}`}
+                                    src={`/api/auxiliary/public/media/${row.mainImage._id}`}
                                     alt={row.title ?? ""}
                                     className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-110"
                                 />
