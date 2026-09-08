@@ -15,7 +15,7 @@ import {
     AlertDialogTitle,
 } from "@coreModule/components/ui/alert-dialog.tsx";
 import HiddenElement from "@coreModule/components/custom/hiddenElement.tsx";
-import {useAccess} from "@coreModule/helpers/hocs/withAccess.tsx";
+import {useAccess} from "@coreModule/helpers/context/accessContext.tsx";
 import type {Bid} from "armonia/src/modules/eCommerceMarketplace/api/eCommerceMarketplace/private/bid/bid.dto.ts";
 
 function bindActionAxiosLanguageKey(

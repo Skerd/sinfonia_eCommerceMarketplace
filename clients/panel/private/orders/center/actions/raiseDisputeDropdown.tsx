@@ -3,7 +3,7 @@ import {useSelector} from "react-redux";
 import withLanguage, {WithLanguageType} from "@coreModule/helpers/hocs/withLanguage.tsx";
 import withDebug from "@coreModule/helpers/hocs/withDebug.tsx";
 import {DropdownMenuItem} from "@coreModule/components/ui/dropdown-menu.tsx";
-import {useAccess} from "@coreModule/helpers/hocs/withAccess.tsx";
+import {useAccess} from "@coreModule/helpers/context/accessContext.tsx";
 import type {RootState} from "@coreModule/helpers/redux/store/generalStore.ts";
 import type {Order} from "armonia/src/modules/eCommerceMarketplace/api/eCommerceMarketplace/private/order/order.dto.ts";
 import {AlertTriangle} from "lucide-react";

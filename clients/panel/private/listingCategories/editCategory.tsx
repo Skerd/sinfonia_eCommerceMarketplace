@@ -8,7 +8,7 @@ import {useNavigate} from "react-router-dom";
 import type {EditListingCategoryFormType} from "armonia/src/modules/eCommerceMarketplace/api/eCommerceMarketplace/private/listingCategory/listingCategory.schema-def.ts";
 import type {ListingCategory} from "armonia/src/modules/eCommerceMarketplace/api/eCommerceMarketplace/private/listingCategory/listingCategory.dto.ts";
 import type {SingleForm} from "armonia/src/modules/core/types/shared.types.ts";
-import {useAccess} from "@coreModule/helpers/hocs/withAccess.tsx";
+import {useAccess} from "@coreModule/helpers/context/accessContext.tsx";
 import HiddenElement from "@coreModule/components/custom/hiddenElement.tsx";
 import apiClient from "@coreModule/helpers/axiosClients/apiClient.ts";
 import {useViewConfig} from "@coreModule/helpers/hooks/useViewConfig.ts";

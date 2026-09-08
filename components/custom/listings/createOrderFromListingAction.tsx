@@ -17,7 +17,7 @@ import {
 import {Label} from "@coreModule/components/ui/label.tsx";
 import {Textarea} from "@coreModule/components/ui/textarea.tsx";
 import HiddenElement from "@coreModule/components/custom/hiddenElement.tsx";
-import {useAccess} from "@coreModule/helpers/hocs/withAccess.tsx";
+import {useAccess} from "@coreModule/helpers/context/accessContext.tsx";
 import type {ActionMessage} from "armonia/src/modules/core/types/shared.types.ts";
 import type {CreateOrderFromListingFormType} from "armonia/src/modules/eCommerceMarketplace/api/eCommerceMarketplace/private/order/createOrderFromListing.form.validator.ts";
 

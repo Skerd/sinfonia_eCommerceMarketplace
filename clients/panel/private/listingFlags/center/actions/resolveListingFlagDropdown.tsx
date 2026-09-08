@@ -3,7 +3,7 @@ import withLanguage, {WithLanguageType} from "@coreModule/helpers/hocs/withLangu
 import withDebug from "@coreModule/helpers/hocs/withDebug.tsx";
 import {DropdownMenuItem} from "@coreModule/components/ui/dropdown-menu.tsx";
 import {CircleCheck} from "lucide-react";
-import {useAccess} from "@coreModule/helpers/hocs/withAccess.tsx";
+import {useAccess} from "@coreModule/helpers/context/accessContext.tsx";
 import type {ListingFlag} from "armonia/src/modules/eCommerceMarketplace/api/eCommerceMarketplace/private/listingFlag/listingFlag.dto.ts";
 
 type Props = WithLanguageType & {
