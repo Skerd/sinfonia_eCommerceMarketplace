@@ -3,14 +3,14 @@ import withLanguage, {WithLanguageType} from "@coreModule/helpers/hocs/withLangu
 import withDebug from "@coreModule/helpers/hocs/withDebug.tsx";
 import {cn} from "@coreModule/components/lib/utils.ts";
 import type {Bid} from "armonia/src/modules/eCommerceMarketplace/api/eCommerceMarketplace/private/bid/bid.dto.ts";
-import TableAvatar from "@coreModule/components/custom/avatar/tableAvatar.tsx";
+import TableAvatar from "@coreModule/components/entityPage/list/tableAvatar.tsx";
 import BidSheetView from "@eCommerceMarketplaceModule/clients/panel/private/bids/center/sheetView/bidSheetView.tsx";
 import type {DeletedData} from "armonia/src/modules/core/types/shared.types.ts";
 import AcceptBidDropdown from "@eCommerceMarketplaceModule/clients/panel/private/bids/center/actions/acceptBidDropdown.tsx";
 import RejectBidDropdown from "@eCommerceMarketplaceModule/clients/panel/private/bids/center/actions/rejectBidDropdown.tsx";
 import BidActionConfirmAction from "@eCommerceMarketplaceModule/components/custom/bids/bidActionConfirmAction.tsx";
-import DisplayValue from "@coreModule/components/custom/displayValue/displayValue.tsx";
-import EntityCard from "@coreModule/components/custom/systemCards/entityCard.tsx";
+import DisplayValue from "@coreModule/components/viewEngine/widgets/display/displayValue.tsx";
+import EntityCard from "@coreModule/components/entityPage/list/card/entityCard.tsx";
 import type {WithAxiosLifecycleRef} from "@coreModule/helpers/hocs/withAxios.tsx";
 import type {RefObject} from "react";
 

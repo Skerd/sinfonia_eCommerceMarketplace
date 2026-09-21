@@ -1,4 +1,4 @@
-import {createGenericCreatePage} from "@coreModule/components/entityPage/createGenericCreatePage.tsx";
+import {createGenericCreatePage} from "@coreModule/components/entityPage/pages/createGenericCreatePage.tsx";
 import {createListingFormSchema} from "armonia/src/modules/eCommerceMarketplace/api/eCommerceMarketplace/private/listing/createListing.form.validator.ts";
 import type {CreateListingFormType} from "armonia/src/modules/eCommerceMarketplace/api/eCommerceMarketplace/private/listing/listing.schema-def.ts";
 

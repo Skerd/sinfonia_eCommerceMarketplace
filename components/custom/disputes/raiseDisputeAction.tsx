@@ -1,4 +1,4 @@
-import withLanguage, {type ResolveLanguageKey, WithLanguageType} from "@coreModule/helpers/hocs/withLanguage.tsx";
+import withLanguage, {type ResolveLanguageKey, type ResolveLanguageKeyImpl, WithLanguageType} from "@coreModule/helpers/hocs/withLanguage.tsx";
 import {compose} from "redux";
 import withAxios, {WithAxiosType} from "@coreModule/helpers/hocs/withAxios.tsx";
 import withDebug from "@coreModule/helpers/hocs/withDebug.tsx";
@@ -17,9 +17,9 @@ import {
 import {Label} from "@coreModule/components/ui/label.tsx";
 import {Textarea} from "@coreModule/components/ui/textarea.tsx";
 import HiddenElement from "@coreModule/components/custom/hiddenElement.tsx";
-import {useAccess} from "@coreModule/helpers/context/accessContext.tsx";
+import {useAccess} from "@coreModule/helpers/hooks/useAccess.ts";
 
-function bindRaiseDisputeLanguageKey(resolveLanguageKey: ResolveLanguageKey): ResolveLanguageKey {
+function bindRaiseDisputeLanguageKey(resolveLanguageKey: ResolveLanguageKey): ResolveLanguageKeyImpl {
     return (key, returnUndefinedIfNeeded = false) => {
         if (key.startsWith("axios.")) {
             return resolveLanguageKey(`raise.${key}`, returnUndefinedIfNeeded);
@@ -102,7 +102,7 @@ function RaiseDisputeAction({
                         id="raise-dispute-reason"
                         value={reason}
                         onChange={(e) => setReason(e.target.value)}
-                        placeholder={resolveLanguageKey("raise.reasonPlaceholder") as string}
+                        placeholder={resolveLanguageKey("raise.reasonPlaceholder")}
                         disabled={loading}
                         className="min-h-[100px]"
                         maxLength={2000}

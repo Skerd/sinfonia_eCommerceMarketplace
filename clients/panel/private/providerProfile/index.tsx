@@ -1,7 +1,7 @@
 import { compose } from "redux";
 import withLanguage, { WithLanguageType } from "@coreModule/helpers/hocs/withLanguage.tsx";
 import withDebug from "@coreModule/helpers/hocs/withDebug.tsx";
-import EntityListPage from "@coreModule/components/entityPage/EntityListPage.tsx";
+import EntityListPage from "@coreModule/components/entityPage/pages/entityListPage.tsx";
 import type { ProviderProfile } from "armonia/src/modules/eCommerceMarketplace/api/eCommerceMarketplace/private/providerProfile/providerProfile.dto.ts";
 import ProviderProfileCard from "./center/cardView/providerProfileCard.tsx";
 import type { DeletedData } from "armonia/src/modules/core/types/shared.types.ts";
@@ -10,17 +10,18 @@ import RefreshAccountStatusDropdown from "./center/actions/refreshAccountStatusD
 import ConnectAccountAction, {
     type ConnectActionKey,
 } from "@eCommerceMarketplaceModule/components/custom/providerProfile/connectAccountAction.tsx";
+import {getName} from "@coreModule/helpers/general/names.ts";
 
 function buildProfileEditPath(profile: ProviderProfile) {
     const params = new URLSearchParams();
     params.set("profileId", profile._id);
-    const name = [profile.user?.name, profile.user?.surname].filter(Boolean).join(" ");
+    const name = getName(profile.user);
     if (name) params.set("profileName", name);
     return `/eCommerceMarketplace/providerprofile/edit?${params.toString()}`;
 }
 
 function profileDisplayName(profile: ProviderProfile) {
-    return [profile.user?.name, profile.user?.surname].filter(Boolean).join(" ") || undefined;
+    return getName(profile.user) || undefined;
 }
 
 function applyConnectPatch(result: {

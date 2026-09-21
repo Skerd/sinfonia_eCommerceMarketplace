@@ -1,4 +1,4 @@
-import withLanguage, {type ResolveLanguageKey, WithLanguageType} from "@coreModule/helpers/hocs/withLanguage.tsx";
+import withLanguage, {type ResolveLanguageKey, type ResolveLanguageKeyImpl, WithLanguageType} from "@coreModule/helpers/hocs/withLanguage.tsx";
 import {compose} from "redux";
 import withAxios, {WithAxiosType} from "@coreModule/helpers/hocs/withAxios.tsx";
 import withDebug from "@coreModule/helpers/hocs/withDebug.tsx";
@@ -15,11 +15,11 @@ import {
     AlertDialogTitle,
 } from "@coreModule/components/ui/alert-dialog.tsx";
 import HiddenElement from "@coreModule/components/custom/hiddenElement.tsx";
-import {useAccess} from "@coreModule/helpers/context/accessContext.tsx";
+import {useAccess} from "@coreModule/helpers/hooks/useAccess.ts";
 import type {ActionMessage} from "armonia/src/modules/core/types/shared.types.ts";
 import type {TaskRequestStatus} from "armonia/src/modules/eCommerceMarketplace/api/eCommerceMarketplace/private/taskRequest/taskRequest.schema-def.ts";
 
-function bindActionAxiosLanguageKey(actionKey: "close" | "reopen", resolveLanguageKey: ResolveLanguageKey,): ResolveLanguageKey {
+function bindActionAxiosLanguageKey(actionKey: "close" | "reopen", resolveLanguageKey: ResolveLanguageKey,): ResolveLanguageKeyImpl {
     return (key, returnUndefinedIfNeeded = false) => {
         if (key.startsWith("axios.")) {
             return resolveLanguageKey(`${actionKey}.${key}`, returnUndefinedIfNeeded);

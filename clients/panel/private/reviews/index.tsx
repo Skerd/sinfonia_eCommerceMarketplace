@@ -1,12 +1,13 @@
 import {compose} from "redux";
 import withLanguage, {WithLanguageType} from "@coreModule/helpers/hocs/withLanguage.tsx";
 import withDebug from "@coreModule/helpers/hocs/withDebug.tsx";
-import EntityListPage from "@coreModule/components/entityPage/EntityListPage.tsx";
+import EntityListPage from "@coreModule/components/entityPage/pages/entityListPage.tsx";
 import {IconPlus} from "@tabler/icons-react";
 import type {Review} from "armonia/src/modules/eCommerceMarketplace/api/eCommerceMarketplace/private/review/review.dto.ts";
 import type {DeletedData} from "armonia/src/modules/core/types/shared.types.ts";
 import ReviewCard from "./center/cardView/reviewCard.tsx";
 import ReviewSheetView from "./center/sheetView/reviewSheetView.tsx";
+import {getName} from "@coreModule/helpers/general/names.ts";
 
 /** Reviews are not edited via a form page; create-only with admin delete/restore. */
 function noopReviewEditPath(_review: Pick<Review, "_id">): string {
@@ -14,7 +15,7 @@ function noopReviewEditPath(_review: Pick<Review, "_id">): string {
 }
 
 function reviewRowLabel(review: Review): string {
-    const name = [review.reviewer?.name, review.reviewer?.surname].filter(Boolean).join(" ").trim();
+    const name = getName(review.reviewer);
     if (name) return `${review.rating}/5 — ${name}`;
     return `${review.rating}/5`;
 }

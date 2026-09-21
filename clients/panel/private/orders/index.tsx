@@ -1,7 +1,7 @@
 import {compose} from "redux";
 import withLanguage, {WithLanguageType} from "@coreModule/helpers/hocs/withLanguage.tsx";
 import withDebug from "@coreModule/helpers/hocs/withDebug.tsx";
-import EntityListPage from "@coreModule/components/entityPage/EntityListPage.tsx";
+import EntityListPage from "@coreModule/components/entityPage/pages/entityListPage.tsx";
 import type {Order} from "armonia/src/modules/eCommerceMarketplace/api/eCommerceMarketplace/private/order/order.dto.ts";
 import type {DeletedData} from "armonia/src/modules/core/types/shared.types.ts";
 import type {OrderStatus} from "armonia/src/modules/eCommerceMarketplace/api/eCommerceMarketplace/private/order/order.schema-def.ts";

@@ -1,4 +1,4 @@
-import {createGenericCreatePage} from "@coreModule/components/entityPage/createGenericCreatePage.tsx";
+import {createGenericCreatePage} from "@coreModule/components/entityPage/pages/createGenericCreatePage.tsx";
 import {createTaskRequestFormSchema} from "armonia/src/modules/eCommerceMarketplace/api/eCommerceMarketplace/private/taskRequest/createTaskRequest.form.validator.ts";
 import type {CreateTaskRequestFormType} from "armonia/src/modules/eCommerceMarketplace/api/eCommerceMarketplace/private/taskRequest/taskRequest.schema-def.ts";
 

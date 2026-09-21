@@ -3,9 +3,9 @@ import {compose} from "redux";
 import withLanguage, {type WithLanguageType} from "@coreModule/helpers/hocs/withLanguage.tsx";
 import withDebug from "@coreModule/helpers/hocs/withDebug.tsx";
 import {Tabs, TabsContent, TabsList, TabsTrigger} from "@coreModule/components/ui/tabs.tsx";
-import {ModelGraph} from "@coreModule/components/custom/systemMap/ModelGraph.tsx";
-import {FlowDiagram} from "@coreModule/components/custom/systemMap/FlowDiagram.tsx";
-import {CapabilitiesView} from "@coreModule/components/custom/systemMap/CapabilitiesView.tsx";
+import {ModelGraph} from "@coreModule/components/customUnchecked/systemMap/ModelGraph.tsx";
+import {FlowDiagram} from "@coreModule/components/customUnchecked/systemMap/FlowDiagram.tsx";
+import {CapabilitiesView} from "@coreModule/components/customUnchecked/systemMap/CapabilitiesView.tsx";
 import {MARKETPLACE_SYSTEM_MAP} from "./systemMap.data.ts";
 
 function MarketplaceSystemMap({resolveLanguageKey}: WithLanguageType) {

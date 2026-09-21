@@ -2,14 +2,14 @@ import {compose} from "redux";
 import withLanguage, {WithLanguageType} from "@coreModule/helpers/hocs/withLanguage.tsx";
 import withDebug from "@coreModule/helpers/hocs/withDebug.tsx";
 import {cn} from "@coreModule/components/lib/utils.ts";
-import TableAvatar from "@coreModule/components/custom/avatar/tableAvatar.tsx";
+import TableAvatar from "@coreModule/components/entityPage/list/tableAvatar.tsx";
 import {IconLayoutList, IconPackage, IconStar} from "@tabler/icons-react";
 import {Star} from "lucide-react";
 import type {Review} from "armonia/src/modules/eCommerceMarketplace/api/eCommerceMarketplace/private/review/review.dto.ts";
 import type {DeletedData} from "armonia/src/modules/core/types/shared.types.ts";
 import ReviewSheetView from "../sheetView/reviewSheetView.tsx";
-import DisplayValue from "@coreModule/components/custom/displayValue/displayValue.tsx";
-import EntityCard from "@coreModule/components/custom/systemCards/entityCard.tsx";
+import DisplayValue from "@coreModule/components/viewEngine/widgets/display/displayValue.tsx";
+import EntityCard from "@coreModule/components/entityPage/list/card/entityCard.tsx";
 import type {WithAxiosLifecycleRef} from "@coreModule/helpers/hocs/withAxios.tsx";
 import type {RefObject} from "react";
 

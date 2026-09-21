@@ -1,8 +1,8 @@
-import withLanguage, {type ResolveLanguageKey, WithLanguageType} from "@coreModule/helpers/hocs/withLanguage.tsx";
+import withLanguage, {type ResolveLanguageKey, type ResolveLanguageKeyImpl, WithLanguageType} from "@coreModule/helpers/hocs/withLanguage.tsx";
 import {compose} from "redux";
 import withAxios, {WithAxiosType} from "@coreModule/helpers/hocs/withAxios.tsx";
 import withDebug from "@coreModule/helpers/hocs/withDebug.tsx";
-import {useEffect, useImperativeHandle, useMemo, useState} from "react";
+import {type ComponentType, useEffect, useImperativeHandle, useMemo, useState} from "react";
 import {CircleCheck, CircleX, LoaderCircle} from "lucide-react";
 import {
     AlertDialog,
@@ -15,13 +15,13 @@ import {
     AlertDialogTitle,
 } from "@coreModule/components/ui/alert-dialog.tsx";
 import HiddenElement from "@coreModule/components/custom/hiddenElement.tsx";
-import {useAccess} from "@coreModule/helpers/context/accessContext.tsx";
+import {useAccess} from "@coreModule/helpers/hooks/useAccess.ts";
 import type {ActionMessage} from "armonia/src/modules/core/types/shared.types.ts";
 
 function bindActionAxiosLanguageKey(
     actionKey: "activate" | "deactivate",
     resolveLanguageKey: ResolveLanguageKey,
-): ResolveLanguageKey {
+): ResolveLanguageKeyImpl {
     return (key, returnUndefinedIfNeeded = false) => {
         if (key.startsWith("axios.")) {
             return resolveLanguageKey(`${actionKey}.${key}`, returnUndefinedIfNeeded);
@@ -126,7 +126,7 @@ const ChangeListingStatusActionWithAxios = compose(
         true,
     ),
     withDebug(true, true, "listings"),
-)(ChangeListingStatusAction);
+)(ChangeListingStatusAction) as ComponentType<ChangeListingStatusActionShellProps>;
 
 type ChangeListingStatusActionShellProps = WithLanguageType & {
     listingId: string;

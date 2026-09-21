@@ -1,4 +1,4 @@
-import {createGenericCreatePage} from "@coreModule/components/entityPage/createGenericCreatePage.tsx";
+import {createGenericCreatePage} from "@coreModule/components/entityPage/pages/createGenericCreatePage.tsx";
 import {createDisputeFormSchema} from "armonia/src/modules/eCommerceMarketplace/api/eCommerceMarketplace/private/dispute/createDispute.form.validator.ts";
 import type {CreateDisputeFormType} from "armonia/src/modules/eCommerceMarketplace/api/eCommerceMarketplace/private/dispute/dispute.schema-def.ts";
 

@@ -11,9 +11,9 @@ import DismissListingFlagDropdown from "@eCommerceMarketplaceModule/clients/pane
 import ChangeListingFlagLifecycleAction, {
     type ListingFlagLifecycleVerb,
 } from "@eCommerceMarketplaceModule/components/custom/listingFlags/changeListingFlagLifecycleAction.tsx";
-import DisplayRow from "@coreModule/components/custom/displayValue/displayRow.tsx";
-import DisplayValue from "@coreModule/components/custom/displayValue/displayValue.tsx";
-import EntityCard from "@coreModule/components/custom/systemCards/entityCard.tsx";
+import EntityCardRow from "@coreModule/components/entityPage/list/card/entityCardRow.tsx";
+import DisplayValue from "@coreModule/components/viewEngine/widgets/display/displayValue.tsx";
+import EntityCard from "@coreModule/components/entityPage/list/card/entityCard.tsx";
 import type {WithAxiosLifecycleRef} from "@coreModule/helpers/hocs/withAxios.tsx";
 import type {RefObject} from "react";
 
@@ -121,7 +121,7 @@ function ListingFlagCard({
                                     value={row.status}
                                 />
                             </span>
-                            <DisplayRow
+                            <EntityCardRow
                                 icon={Flag}
                                 label={resolveLanguageKey("reason")}
                                 tooltip={resolveLanguageKey("reason")}
@@ -130,7 +130,7 @@ function ListingFlagCard({
                                 languageKeyCategory="reason_values"
                                 value={row.reason}
                             />
-                            <DisplayRow
+                            <EntityCardRow
                                 icon={User}
                                 label={resolveLanguageKey("reporter")}
                                 tooltip={resolveLanguageKey("reporter")}

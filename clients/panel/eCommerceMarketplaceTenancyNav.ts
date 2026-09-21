@@ -1,7 +1,7 @@
 import {Store} from "lucide-react";
 import {IconCategory2} from "@tabler/icons-react";
 import type {ResolveLanguageKey} from "@coreModule/helpers/hocs/withLanguage.tsx";
-import type {NavSubCollapsible} from "@coreModule/helpers/panel/sidebarNav.types.ts";
+import type {NavSubCollapsible} from "@coreModule/helpers/types/sidebarNav.types.ts";
 
 /** Nested under Tenancy → Configurations (owned by eCommerceMarketplace). */
 export function buildECommerceMarketplaceTenancySettingsSubCollapsible(
@@ -18,7 +18,7 @@ export function buildECommerceMarketplaceTenancySettingsSubCollapsible(
                 title: resolveLanguageKey("menus.tenancy.systemSettings.listingcategories.title"),
                 url: "/tenancy/systemSettings/listingcategories",
                 icon: IconCategory2,
-                permissions: [],
+                permissions: ["listingcategories"],
                 usersPermissions: [],
                 atLeastOnePermission: true,
             },

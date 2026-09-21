@@ -1,5 +1,5 @@
 import {lazy} from "react";
-import type {WidgetContribution} from "@coreModule/clients/panel/moduleContributions/widgetContribution.types.ts";
+import type {WidgetContribution} from "@coreModule/helpers/types/widgetContribution.types.ts";
 
 const ListingSheetViewLazy = lazy(() =>import("@eCommerceMarketplaceModule/clients/panel/private/listings/center/sheetView/listingSheetView.tsx"));
 const TaskRequestSheetViewLazy = lazy(() =>import("@eCommerceMarketplaceModule/clients/panel/private/taskRequests/center/sheetView/taskRequestSheetView.tsx"));

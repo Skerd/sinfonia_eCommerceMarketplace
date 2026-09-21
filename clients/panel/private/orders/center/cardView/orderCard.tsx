@@ -21,8 +21,8 @@ import RaiseDisputeAction from "@eCommerceMarketplaceModule/components/custom/di
 import type {OrderConfirmActionKey} from "@eCommerceMarketplaceModule/components/custom/orders/orderActionConfirmAction.tsx";
 import type {OrderStatus} from "armonia/src/modules/eCommerceMarketplace/api/eCommerceMarketplace/private/order/order.schema-def.ts";
 import {IconArrowRight, IconCalendar} from "@tabler/icons-react";
-import DisplayValue from "@coreModule/components/custom/displayValue/displayValue.tsx";
-import EntityCard from "@coreModule/components/custom/systemCards/entityCard.tsx";
+import DisplayValue from "@coreModule/components/viewEngine/widgets/display/displayValue.tsx";
+import EntityCard from "@coreModule/components/entityPage/list/card/entityCard.tsx";
 import type {WithAxiosLifecycleRef} from "@coreModule/helpers/hocs/withAxios.tsx";
 import type {RefObject} from "react";
 

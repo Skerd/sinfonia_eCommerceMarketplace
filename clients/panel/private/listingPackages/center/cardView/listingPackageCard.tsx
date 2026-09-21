@@ -5,8 +5,8 @@ import {IconClock, IconLayoutList} from "@tabler/icons-react";
 import type {ListingPackage} from "armonia/src/modules/eCommerceMarketplace/api/eCommerceMarketplace/private/listingPackage/listingPackage.dto.ts";
 import type {DeletedData} from "armonia/src/modules/core/types/shared.types.ts";
 import ListingPackageSheetView from "@eCommerceMarketplaceModule/clients/panel/private/listingPackages/center/sheetView/listingPackageSheetView.tsx";
-import DisplayValue from "@coreModule/components/custom/displayValue/displayValue.tsx";
-import EntityCard from "@coreModule/components/custom/systemCards/entityCard.tsx";
+import DisplayValue from "@coreModule/components/viewEngine/widgets/display/displayValue.tsx";
+import EntityCard from "@coreModule/components/entityPage/list/card/entityCard.tsx";
 import type {WithAxiosLifecycleRef} from "@coreModule/helpers/hocs/withAxios.tsx";
 import type {RefObject} from "react";
 

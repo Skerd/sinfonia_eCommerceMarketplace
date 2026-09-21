@@ -1,5 +1,5 @@
 import {IconPlus} from "@tabler/icons-react";
-import {createGenericCreatePage} from "@coreModule/components/entityPage/createGenericCreatePage.tsx";
+import {createGenericCreatePage} from "@coreModule/components/entityPage/pages/createGenericCreatePage.tsx";
 import {createPromotionFormSchema} from "armonia/src/modules/eCommerceMarketplace/api/eCommerceMarketplace/private/promotion/createPromotion.form.validator.ts";
 import type {CreatePromotionFormType} from "armonia/src/modules/eCommerceMarketplace/api/eCommerceMarketplace/private/promotion/promotion.schema-def.ts";
 

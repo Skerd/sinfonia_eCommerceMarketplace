@@ -1,4 +1,4 @@
-import {createGenericEditPage} from "@coreModule/components/entityPage/createGenericEditPage.tsx";
+import {createGenericEditPage} from "@coreModule/components/entityPage/pages/createGenericEditPage.tsx";
 import {editListingFormSchema} from "armonia/src/modules/eCommerceMarketplace/api/eCommerceMarketplace/private/listing/editListing.form.validator.ts";
 import type {Listing} from "armonia/src/modules/eCommerceMarketplace/api/eCommerceMarketplace/private/listing/listing.dto.ts";
 import type {EditListingFormType, ListingPricingType, ListingStatus} from "armonia/src/modules/eCommerceMarketplace/api/eCommerceMarketplace/private/listing/listing.schema-def.ts";

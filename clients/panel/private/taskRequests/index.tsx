@@ -1,7 +1,7 @@
 import {compose} from "redux";
 import withLanguage, {WithLanguageType} from "@coreModule/helpers/hocs/withLanguage.tsx";
 import withDebug from "@coreModule/helpers/hocs/withDebug.tsx";
-import EntityListPage from "@coreModule/components/entityPage/EntityListPage.tsx";
+import EntityListPage from "@coreModule/components/entityPage/pages/entityListPage.tsx";
 import {IconPlus} from "@tabler/icons-react";
 import type {TaskRequest} from "armonia/src/modules/eCommerceMarketplace/api/eCommerceMarketplace/private/taskRequest/taskRequest.dto.ts";
 import type {DeletedData} from "armonia/src/modules/core/types/shared.types.ts";

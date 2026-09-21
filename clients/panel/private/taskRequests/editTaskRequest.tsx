@@ -1,4 +1,4 @@
-import {createGenericEditPage} from "@coreModule/components/entityPage/createGenericEditPage.tsx";
+import {createGenericEditPage} from "@coreModule/components/entityPage/pages/createGenericEditPage.tsx";
 import {editTaskRequestFormSchema} from "armonia/src/modules/eCommerceMarketplace/api/eCommerceMarketplace/private/taskRequest/editTaskRequest.form.validator.ts";
 import type {TaskRequest} from "armonia/src/modules/eCommerceMarketplace/api/eCommerceMarketplace/private/taskRequest/taskRequest.dto.ts";
 import type {EditTaskRequestFormType} from "armonia/src/modules/eCommerceMarketplace/api/eCommerceMarketplace/private/taskRequest/taskRequest.schema-def.ts";

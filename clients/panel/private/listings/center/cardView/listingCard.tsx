@@ -11,8 +11,8 @@ import DeactivateListingDropdown from "@eCommerceMarketplaceModule/clients/panel
 import CreateOrderFromListingDropdown from "@eCommerceMarketplaceModule/clients/panel/private/listings/center/actions/createOrderFromListingDropdown.tsx";
 import ChangeListingStatusAction from "@eCommerceMarketplaceModule/components/custom/listings/changeListingStatusAction.tsx";
 import CreateOrderFromListingAction from "@eCommerceMarketplaceModule/components/custom/listings/createOrderFromListingAction.tsx";
-import DisplayValue from "@coreModule/components/custom/displayValue/displayValue.tsx";
-import EntityCard from "@coreModule/components/custom/systemCards/entityCard.tsx";
+import DisplayValue from "@coreModule/components/viewEngine/widgets/display/displayValue.tsx";
+import EntityCard from "@coreModule/components/entityPage/list/card/entityCard.tsx";
 import type {WithAxiosLifecycleRef} from "@coreModule/helpers/hocs/withAxios.tsx";
 import type {RefObject} from "react";
 

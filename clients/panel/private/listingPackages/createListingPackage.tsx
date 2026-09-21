@@ -1,5 +1,5 @@
 import { IconPlus } from "@tabler/icons-react";
-import { createGenericCreatePage } from "@coreModule/components/entityPage/createGenericCreatePage.tsx";
+import { createGenericCreatePage } from "@coreModule/components/entityPage/pages/createGenericCreatePage.tsx";
 import { createListingPackageFormSchema } from "armonia/src/modules/eCommerceMarketplace/api/eCommerceMarketplace/private/listingPackage/createListingPackage.form.validator.ts";
 import type { CreateListingPackageFormType } from "armonia/src/modules/eCommerceMarketplace/api/eCommerceMarketplace/private/listingPackage/listingPackage.schema-def.ts";
 

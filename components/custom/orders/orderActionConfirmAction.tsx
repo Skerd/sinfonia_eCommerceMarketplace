@@ -1,4 +1,4 @@
-import withLanguage, {type ResolveLanguageKey, WithLanguageType} from "@coreModule/helpers/hocs/withLanguage.tsx";
+import withLanguage, {type ResolveLanguageKey, type ResolveLanguageKeyImpl, WithLanguageType} from "@coreModule/helpers/hocs/withLanguage.tsx";
 import {compose} from "redux";
 import withAxios, {WithAxiosType} from "@coreModule/helpers/hocs/withAxios.tsx";
 import withDebug from "@coreModule/helpers/hocs/withDebug.tsx";
@@ -15,7 +15,7 @@ import {
     AlertDialogTitle,
 } from "@coreModule/components/ui/alert-dialog.tsx";
 import HiddenElement from "@coreModule/components/custom/hiddenElement.tsx";
-import {useAccess} from "@coreModule/helpers/context/accessContext.tsx";
+import {useAccess} from "@coreModule/helpers/hooks/useAccess.ts";
 import type {ActionMessage} from "armonia/src/modules/core/types/shared.types.ts";
 import type {OrderStatus} from "armonia/src/modules/eCommerceMarketplace/api/eCommerceMarketplace/private/order/order.schema-def.ts";
 
@@ -31,7 +31,7 @@ export type OrderConfirmActionKey = keyof typeof STATUS_BY_ACTION;
 function bindActionAxiosLanguageKey(
     actionKey: OrderConfirmActionKey,
     resolveLanguageKey: ResolveLanguageKey,
-): ResolveLanguageKey {
+): ResolveLanguageKeyImpl {
     const languagePrefix =
         actionKey === "cancel" ? "cancelOrder" : actionKey === "acceptDelivery" ? "acceptDelivery" : actionKey;
     return (key, returnUndefinedIfNeeded = false) => {

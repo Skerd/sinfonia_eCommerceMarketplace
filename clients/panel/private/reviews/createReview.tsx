@@ -1,5 +1,5 @@
 import {IconPlus} from "@tabler/icons-react";
-import {createGenericCreatePage} from "@coreModule/components/entityPage/createGenericCreatePage.tsx";
+import {createGenericCreatePage} from "@coreModule/components/entityPage/pages/createGenericCreatePage.tsx";
 import {createReviewFormSchema} from "armonia/src/modules/eCommerceMarketplace/api/eCommerceMarketplace/private/review/createReview.form.validator.ts";
 import type {CreateReviewFormType} from "armonia/src/modules/eCommerceMarketplace/api/eCommerceMarketplace/private/review/review.schema-def.ts";
 

@@ -5,18 +5,14 @@ import {IconCalendar, IconClock, IconUser} from "@tabler/icons-react";
 import type {Booking} from "armonia/src/modules/eCommerceMarketplace/api/eCommerceMarketplace/private/booking/booking.dto.ts";
 import type {DeletedData} from "armonia/src/modules/core/types/shared.types.ts";
 import BookingSheetView from "@eCommerceMarketplaceModule/clients/panel/private/bookings/center/sheetView/bookingSheetView.tsx";
-import DisplayValue from "@coreModule/components/custom/displayValue/displayValue.tsx";
-import EntityCard from "@coreModule/components/custom/systemCards/entityCard.tsx";
+import DisplayValue from "@coreModule/components/viewEngine/widgets/display/displayValue.tsx";
+import EntityCard from "@coreModule/components/entityPage/list/card/entityCard.tsx";
 import type {WithAxiosLifecycleRef} from "@coreModule/helpers/hocs/withAxios.tsx";
 import type {RefObject} from "react";
+import {formatDate} from "@coreModule/helpers/general/dateTime.ts";
 
-function formatDate(value: Date | string): string {
-    return new Date(value).toLocaleDateString(undefined, {weekday: "short", month: "short", day: "numeric"});
-}
-
-function formatTime(value: Date | string): string {
-    return new Date(value).toLocaleTimeString(undefined, {hour: "2-digit", minute: "2-digit"});
-}
+const DAY_FORMAT: Intl.DateTimeFormatOptions = {weekday: "short", month: "short", day: "numeric"};
+const TIME_FORMAT: Intl.DateTimeFormatOptions = {hour: "2-digit", minute: "2-digit"};
 
 type BookingCardProps = WithLanguageType & {
     booking: Booking;
@@ -69,7 +65,7 @@ function BookingCard({
                         title={
                             <span className="flex items-center gap-1.5">
                                 <IconCalendar className="h-3.5 w-3.5 shrink-0 text-muted-foreground" />
-                                {formatDate(row.startAt)}
+                                {formatDate(row.startAt, {format: DAY_FORMAT})}
                             </span>
                         }
                     />
@@ -81,7 +77,7 @@ function BookingCard({
                         <div className="ml-auto flex shrink-0 items-center gap-2">
                             <span className="flex items-center gap-1 rounded-full bg-muted px-2 py-0.5 text-xs text-muted-foreground">
                                 <IconClock className="h-3 w-3" />
-                                {formatTime(row.startAt)} – {formatTime(row.endAt)}
+                                {formatDate(row.startAt, {format: TIME_FORMAT})} – {formatDate(row.endAt, {format: TIME_FORMAT})}
                             </span>
                             {row.timezone ? (
                                 <span className="shrink-0 text-3xs font-medium text-muted-foreground">

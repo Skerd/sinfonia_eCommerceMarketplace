@@ -11,8 +11,8 @@ import ResolveDisputeDropdown from "@eCommerceMarketplaceModule/clients/panel/pr
 import CloseDisputeDropdown from "@eCommerceMarketplaceModule/clients/panel/private/disputes/center/actions/closeDisputeDropdown.tsx";
 import type {DisputeLifecycleVerb} from "@eCommerceMarketplaceModule/components/custom/disputes/changeDisputeLifecycleAction.tsx";
 import {IconPackage} from "@tabler/icons-react";
-import DisplayValue from "@coreModule/components/custom/displayValue/displayValue.tsx";
-import EntityCard from "@coreModule/components/custom/systemCards/entityCard.tsx";
+import DisplayValue from "@coreModule/components/viewEngine/widgets/display/displayValue.tsx";
+import EntityCard from "@coreModule/components/entityPage/list/card/entityCard.tsx";
 import type {WithAxiosLifecycleRef} from "@coreModule/helpers/hocs/withAxios.tsx";
 import type {RefObject} from "react";
 

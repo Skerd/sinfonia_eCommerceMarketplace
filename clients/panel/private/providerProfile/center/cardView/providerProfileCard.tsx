@@ -11,13 +11,14 @@ import RefreshAccountStatusDropdown from "@eCommerceMarketplaceModule/clients/pa
 import ConnectAccountAction, {
     type ConnectActionKey,
 } from "@eCommerceMarketplaceModule/components/custom/providerProfile/connectAccountAction.tsx";
-import DisplayValue from "@coreModule/components/custom/displayValue/displayValue.tsx";
-import EntityCard from "@coreModule/components/custom/systemCards/entityCard.tsx";
+import DisplayValue from "@coreModule/components/viewEngine/widgets/display/displayValue.tsx";
+import EntityCard from "@coreModule/components/entityPage/list/card/entityCard.tsx";
 import type {WithAxiosLifecycleRef} from "@coreModule/helpers/hocs/withAxios.tsx";
 import type {RefObject} from "react";
+import {getName} from "@coreModule/helpers/general/names.ts";
 
 function profileDisplayName(profile: ProviderProfile) {
-    return [profile.user?.name, profile.user?.surname].filter(Boolean).join(" ") || undefined;
+    return getName(profile.user) || undefined;
 }
 
 function providerProfileEditPath(profile: ProviderProfile) {
@@ -159,7 +160,7 @@ function ProviderProfileCard({
                                             {(text) => (
                                                 <span className="truncate text-xs text-muted-foreground">
                                                     {text}
-                                                    {row.skills.length > 3 ? ` +${row.skills.length - 3}` : ""}
+                                                    {row.skills && row.skills.length > 3 ? ` +${row.skills.length - 3}` : ""}
                                                 </span>
                                             )}
                                         </DisplayValue>

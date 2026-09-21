@@ -1,5 +1,5 @@
 import { Save } from "lucide-react";
-import { createGenericEditPage } from "@coreModule/components/entityPage/createGenericEditPage.tsx";
+import { createGenericEditPage } from "@coreModule/components/entityPage/pages/createGenericEditPage.tsx";
 import { updateListingFlagFormSchema } from "armonia/src/modules/eCommerceMarketplace/api/eCommerceMarketplace/private/listingFlag/updateListingFlag.form.validator.ts";
 import type { ListingFlag } from "armonia/src/modules/eCommerceMarketplace/api/eCommerceMarketplace/private/listingFlag/listingFlag.dto.ts";
 import type { UpdateListingFlagFormType } from "armonia/src/modules/eCommerceMarketplace/api/eCommerceMarketplace/private/listingFlag/listingFlag.schema-def.ts";

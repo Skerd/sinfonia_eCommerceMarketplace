@@ -2,11 +2,12 @@ import {compose} from "redux";
 import {useCallback, useEffect, useState} from "react";
 import withLanguage, {WithLanguageType} from "@coreModule/helpers/hocs/withLanguage.tsx";
 import withDebug from "@coreModule/helpers/hocs/withDebug.tsx";
-import {useAccess} from "@coreModule/helpers/context/accessContext.tsx";
+import {useAccess} from "@coreModule/helpers/hooks/useAccess.ts";
 import SheetViewRenderer from "@coreModule/components/viewEngine/SheetViewRenderer.tsx";
 import {useViewConfig} from "@coreModule/helpers/hooks/useViewConfig.ts";
 import type {Review} from "armonia/src/modules/eCommerceMarketplace/api/eCommerceMarketplace/private/review/review.dto.ts";
 import type {DeletedData} from "armonia/src/modules/core/types/shared.types.ts";
+import {getName} from "@coreModule/helpers/general/names.ts";
 
 type ReviewSheetViewOwnProps = {
     open: boolean;
@@ -19,7 +20,7 @@ type ReviewSheetViewOwnProps = {
 };
 
 function reviewRowLabel(review: Review): string {
-    const name = [review.reviewer?.name, review.reviewer?.surname].filter(Boolean).join(" ").trim();
+    const name = getName(review.reviewer);
     if (name) return `${review.rating}/5 — ${name}`;
     return `${review.rating}/5`;
 }

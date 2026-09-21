@@ -1,5 +1,5 @@
 import { Save } from "lucide-react";
-import { createGenericEditPage } from "@coreModule/components/entityPage/createGenericEditPage.tsx";
+import { createGenericEditPage } from "@coreModule/components/entityPage/pages/createGenericEditPage.tsx";
 import { editListingAddOnFormSchema } from "armonia/src/modules/eCommerceMarketplace/api/eCommerceMarketplace/private/listingAddOn/editListingAddOn.form.validator.ts";
 import type { ListingAddOn } from "armonia/src/modules/eCommerceMarketplace/api/eCommerceMarketplace/private/listingAddOn/listingAddOn.dto.ts";
 import type { EditListingAddOnFormType } from "armonia/src/modules/eCommerceMarketplace/api/eCommerceMarketplace/private/listingAddOn/listingAddOn.schema-def.ts";

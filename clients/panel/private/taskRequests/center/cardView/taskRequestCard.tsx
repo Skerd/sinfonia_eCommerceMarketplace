@@ -12,17 +12,19 @@ import NotifyAllTaskRequestDropdown from "@eCommerceMarketplaceModule/clients/pa
 import TaskRequestStatusConfirmAction from "@eCommerceMarketplaceModule/components/custom/taskRequests/taskRequestStatusConfirmAction.tsx";
 import TaskRequestNotifyAllConfirmAction from "@eCommerceMarketplaceModule/components/custom/taskRequests/taskRequestNotifyAllConfirmAction.tsx";
 import {taskRequestEditPath} from "@eCommerceMarketplaceModule/clients/panel/private/taskRequests";
-import DisplayValue from "@coreModule/components/custom/displayValue/displayValue.tsx";
-import EntityCard from "@coreModule/components/custom/systemCards/entityCard.tsx";
+import DisplayValue from "@coreModule/components/viewEngine/widgets/display/displayValue.tsx";
+import EntityCard from "@coreModule/components/entityPage/list/card/entityCard.tsx";
 import type {WithAxiosLifecycleRef} from "@coreModule/helpers/hocs/withAxios.tsx";
 import type {RefObject} from "react";
+import {formatDate} from "@coreModule/helpers/general/dateTime.ts";
+import {formatNumber} from "@coreModule/helpers/general/numbers.ts";
 
 function formatBudget(entity: TaskRequest): string | undefined {
     const {budgetMin, budgetMax, currency} = entity;
     const sym = currency?.symbol?.trim() || currency?.abbreviation?.trim();
     if (budgetMin == null && budgetMax == null) return undefined;
     const fmt = (n: number) =>
-        n.toLocaleString(undefined, {minimumFractionDigits: 0, maximumFractionDigits: 2});
+        formatNumber(n, {minimumFractionDigits: 0, maximumFractionDigits: 2});
     if (budgetMin != null && budgetMax != null) {
         const s = `${fmt(budgetMin)} – ${fmt(budgetMax)}`;
         return sym ? `${sym} ${s}` : s;
@@ -122,7 +124,7 @@ function TaskRequestCard({
                 const isExpiringSoon = msLeft != null && msLeft > 0 && msLeft < 3 * 24 * 60 * 60 * 1000;
                 const isExpired = msLeft != null && msLeft <= 0;
                 const expiresLabel = expiresMs
-                    ? new Date(expiresMs).toLocaleDateString(undefined, {day: "2-digit", month: "short"})
+                    ? formatDate(expiresMs, {format: {day: "2-digit", month: "short"}})
                     : null;
                 return (
                     <>

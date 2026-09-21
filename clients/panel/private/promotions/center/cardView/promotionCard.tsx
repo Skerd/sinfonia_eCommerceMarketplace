@@ -9,12 +9,12 @@ import PausePromotionDropdown from "@eCommerceMarketplaceModule/clients/panel/pr
 import ResumePromotionDropdown from "@eCommerceMarketplaceModule/clients/panel/private/promotions/center/actions/resumePromotionDropdown.tsx";
 import StopPromotionDropdown from "@eCommerceMarketplaceModule/clients/panel/private/promotions/center/actions/stopPromotionDropdown.tsx";
 import ChangePromotionLifecycleAction from "@eCommerceMarketplaceModule/components/custom/promotions/changePromotionLifecycleAction.tsx";
-import {formatDate} from "@coreModule/helpers/general";
+import {formatDate} from "@coreModule/helpers/general/dateTime.ts";
 import {useSelector} from "react-redux";
 import {RootState} from "@coreModule/helpers/redux/store/generalStore.ts";
 import {IconCalendar, IconListDetails, IconSparkles, IconStar} from "@tabler/icons-react";
-import DisplayValue from "@coreModule/components/custom/displayValue/displayValue.tsx";
-import EntityCard from "@coreModule/components/custom/systemCards/entityCard.tsx";
+import DisplayValue from "@coreModule/components/viewEngine/widgets/display/displayValue.tsx";
+import EntityCard from "@coreModule/components/entityPage/list/card/entityCard.tsx";
 import type {WithAxiosLifecycleRef} from "@coreModule/helpers/hocs/withAxios.tsx";
 import type {RefObject} from "react";
 

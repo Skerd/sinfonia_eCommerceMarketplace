@@ -30,7 +30,7 @@ import MarketplaceSystemMap from "@eCommerceMarketplaceModule/clients/panel/priv
 import AllListingCategories from "@eCommerceMarketplaceModule/clients/panel/private/listingCategories";
 import CreateListingCategory from "@eCommerceMarketplaceModule/clients/panel/private/listingCategories/createCategory.tsx";
 import EditListingCategory from "@eCommerceMarketplaceModule/clients/panel/private/listingCategories/editCategory.tsx";
-import type {RouteConfigArgs, RouteConfigContribution} from "@coreModule/clients/panel/moduleContributions/routeConfigContribution.types.ts";
+import type {RouteConfigArgs, RouteConfigContribution} from "@coreModule/helpers/types/routeConfigContribution.types.ts";
 
 function safeDecode(value: string | null): string | undefined {
     if (value == null || value === "") return undefined;

@@ -5,8 +5,8 @@ import type {ListingCategory} from "armonia/src/modules/eCommerceMarketplace/api
 import {IconCategory2, IconHash, IconTag} from "@tabler/icons-react";
 import ListingCategorySheetView from "@eCommerceMarketplaceModule/clients/panel/private/listingCategories/center/sheetView/categorySheetView.tsx";
 import type {DeletedData} from "armonia/src/modules/core/types/shared.types.ts";
-import DisplayRow from "@coreModule/components/custom/displayValue/displayRow.tsx";
-import EntityCard from "@coreModule/components/custom/systemCards/entityCard.tsx";
+import EntityCardRow from "@coreModule/components/entityPage/list/card/entityCardRow.tsx";
+import EntityCard from "@coreModule/components/entityPage/list/card/entityCard.tsx";
 import type {WithAxiosLifecycleRef} from "@coreModule/helpers/hocs/withAxios.tsx";
 import type {RefObject} from "react";
 
@@ -64,21 +64,21 @@ function ListingCategoryCard({
                 <>
                     <EntityCard.Header titlePath="name" title={entity.name} />
                     <EntityCard.Body>
-                        <DisplayRow
+                        <EntityCardRow
                             icon={IconTag}
                             label={resolveLanguageKey("slug")}
                             tooltip={resolveLanguageKey("slug")}
                             path="slug"
                             value={entity.slug}
                         />
-                        <DisplayRow
+                        <EntityCardRow
                             icon={IconCategory2}
                             label={resolveLanguageKey("parentListingCategory")}
                             tooltip={resolveLanguageKey("parentListingCategory")}
                             path="parentListingCategory.name"
                             value={entity.parentListingCategory?.name}
                         />
-                        <DisplayRow
+                        <EntityCardRow
                             icon={IconHash}
                             label={resolveLanguageKey("order")}
                             tooltip={resolveLanguageKey("order")}

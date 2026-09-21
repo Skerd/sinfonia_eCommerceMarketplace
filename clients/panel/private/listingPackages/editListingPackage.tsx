@@ -1,5 +1,5 @@
 import { Save } from "lucide-react";
-import { createGenericEditPage } from "@coreModule/components/entityPage/createGenericEditPage.tsx";
+import { createGenericEditPage } from "@coreModule/components/entityPage/pages/createGenericEditPage.tsx";
 import { editListingPackageFormSchema } from "armonia/src/modules/eCommerceMarketplace/api/eCommerceMarketplace/private/listingPackage/editListingPackage.form.validator.ts";
 import type { ListingPackage } from "armonia/src/modules/eCommerceMarketplace/api/eCommerceMarketplace/private/listingPackage/listingPackage.dto.ts";
 import type { EditListingPackageFormType } from "armonia/src/modules/eCommerceMarketplace/api/eCommerceMarketplace/private/listingPackage/listingPackage.schema-def.ts";

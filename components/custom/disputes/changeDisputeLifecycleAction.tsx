@@ -1,4 +1,4 @@
-import withLanguage, {type ResolveLanguageKey, WithLanguageType} from "@coreModule/helpers/hocs/withLanguage.tsx";
+import withLanguage, {type ResolveLanguageKey, type ResolveLanguageKeyImpl, WithLanguageType} from "@coreModule/helpers/hocs/withLanguage.tsx";
 import type {ComponentType} from "react";
 import {compose} from "redux";
 import withAxios, {WithAxiosType} from "@coreModule/helpers/hocs/withAxios.tsx";
@@ -23,7 +23,7 @@ import {
 import {Label} from "@coreModule/components/ui/label.tsx";
 import {Textarea} from "@coreModule/components/ui/textarea.tsx";
 import HiddenElement from "@coreModule/components/custom/hiddenElement.tsx";
-import {useAccess} from "@coreModule/helpers/context/accessContext.tsx";
+import {useAccess} from "@coreModule/helpers/hooks/useAccess.ts";
 import type {ActionMessage} from "armonia/src/modules/core/types/shared.types.ts";
 import type {Dispute} from "armonia/src/modules/eCommerceMarketplace/api/eCommerceMarketplace/private/dispute/dispute.dto.ts";
 
@@ -32,7 +32,7 @@ export type DisputeLifecycleVerb = "startReview" | "resolve" | "close";
 function bindDisputeLifecycleLanguageKey(
     verb: DisputeLifecycleVerb,
     resolveLanguageKey: ResolveLanguageKey,
-): ResolveLanguageKey {
+): ResolveLanguageKeyImpl {
     return (key, returnUndefinedIfNeeded = false) => {
         if (key.startsWith("axios.")) {
             return resolveLanguageKey(`${verb}.${key}`, returnUndefinedIfNeeded);
@@ -141,7 +141,7 @@ function ChangeDisputeLifecycleAction({
                             rows={4}
                             value={resolution}
                             onChange={(e) => setResolution(e.target.value)}
-                            placeholder={resolveLanguageKey("resolutionPlaceholder") as string}
+                            placeholder={resolveLanguageKey("resolutionPlaceholder")}
                             maxLength={2000}
                             className="resize-y min-h-24 text-sm"
                         />

@@ -2,7 +2,7 @@ import {compose} from "redux";
 import {useEffect, useState} from "react";
 import withLanguage, {WithLanguageType} from "@coreModule/helpers/hocs/withLanguage.tsx";
 import withDebug from "@coreModule/helpers/hocs/withDebug.tsx";
-import {useAccess} from "@coreModule/helpers/context/accessContext.tsx";
+import {useAccess} from "@coreModule/helpers/hooks/useAccess.ts";
 import SheetViewRenderer from "@coreModule/components/viewEngine/SheetViewRenderer.tsx";
 import {useViewConfig} from "@coreModule/helpers/hooks/useViewConfig.ts";
 import type {ProviderProfile} from "armonia/src/modules/eCommerceMarketplace/api/eCommerceMarketplace/private/providerProfile/providerProfile.dto.ts";
@@ -12,6 +12,7 @@ import RefreshAccountStatusDropdown from "@eCommerceMarketplaceModule/clients/pa
 import ConnectAccountAction, {
     type ConnectActionKey,
 } from "@eCommerceMarketplaceModule/components/custom/providerProfile/connectAccountAction.tsx";
+import {getName} from "@coreModule/helpers/general/names.ts";
 
 type ProviderProfileSheetViewOwnProps = {
     open: boolean;
@@ -28,7 +29,7 @@ function providerProfileEditPath(profile: ProviderProfile) {
     if (!profile._id) return "";
     const params = new URLSearchParams();
     params.set("profileId", profile._id);
-    const name = [profile.user?.name, profile.user?.surname].filter(Boolean).join(" ");
+    const name = getName(profile.user);
     if (name) params.set("profileName", name);
     return `/eCommerceMarketplace/providerprofile/edit?${params.toString()}`;
 }
@@ -57,7 +58,7 @@ function ProviderProfileSheetView({
     const entityId = profileProp?._id ?? fetchId;
     const asProfile = sheetData as ProviderProfile;
     const displayName =
-        [asProfile.user?.name, asProfile.user?.surname].filter(Boolean).join(" ") ||
+        getName(asProfile.user) ||
         undefined;
 
     if (!viewConfig || !entityId) return null;
