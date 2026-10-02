@@ -86,6 +86,8 @@
     "Listingpackages": {
       "createdAt": "CreatedAt",
       "createdBy": "CreatedBy",
+      "deletedAt": "Fshirë në",
+      "deletedBy": "Fshirë nga",
       "deliveryDays": "DeliveryDays",
       "description": "Description",
       "listing": "Listing",
@@ -115,6 +117,8 @@
       "faqs_answer": "Faqs Answer",
       "faqs_question": "Faqs Question",
       "imageGallery": "ImageGallery",
+      "listingAddOns": "Shtesa të listimit",
+      "listingPackages": "Paketat e listimit",
       "listings": "Listings",
       "mainImage": "MainImage",
       "name": "Name",
@@ -215,6 +219,9 @@
       "updatedAt": "UpdatedAt"
     },
     "Providerprofiles": {
+      "availability_dayOfWeek": "Dita e javës",
+      "availability_endTime": "Ora e mbarimit",
+      "availability_startTime": "Ora e fillimit",
       "bio": "Bio",
       "createdAt": "CreatedAt",
       "createdBy": "CreatedBy",
@@ -267,6 +274,7 @@
       "imageGallery": "ImageGallery",
       "mainImage": "MainImage",
       "name": "Name",
+      "requester": "Kërkuesi",
       "status": "Status",
       "taskrequests": "Task Requests",
       "title": "Title",

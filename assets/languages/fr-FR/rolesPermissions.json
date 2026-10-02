@@ -86,6 +86,8 @@
     "Listingpackages": {
       "createdAt": "Créé le",
       "createdBy": "Créé par",
+      "deletedAt": "Supprimé le",
+      "deletedBy": "Supprimé par",
       "deliveryDays": "Jours de livraison",
       "description": "Description",
       "listing": "Annonce",
@@ -115,6 +117,8 @@
       "faqs_answer": "Réponse à la FAQ",
       "faqs_question": "Question FAQ",
       "imageGallery": "Galerie d’images",
+      "listingAddOns": "Options d'annonce",
+      "listingPackages": "Forfaits d'annonce",
       "listings": "Annonces",
       "mainImage": "Image principale",
       "name": "Nom",
@@ -215,6 +219,9 @@
       "updatedAt": "Mis à jour le"
     },
     "Providerprofiles": {
+      "availability_dayOfWeek": "Jour de la semaine",
+      "availability_endTime": "Heure de fin",
+      "availability_startTime": "Heure de début",
       "bio": "Bio",
       "createdAt": "Créé le",
       "createdBy": "Créé par",
@@ -267,6 +274,7 @@
       "imageGallery": "Galerie d’images",
       "mainImage": "Image principale",
       "name": "Nom",
+      "requester": "Demandeur",
       "status": "Statut",
       "taskrequests": "Demandes de tâches",
       "title": "Modifier le type d’unité",

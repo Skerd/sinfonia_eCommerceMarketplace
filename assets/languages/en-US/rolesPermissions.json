@@ -86,6 +86,8 @@
     "Listingpackages": {
       "createdAt": "Created at",
       "createdBy": "Created by",
+      "deletedAt": "Deleted at",
+      "deletedBy": "Deleted by",
       "deliveryDays": "Delivery days",
       "description": "Description",
       "listing": "Listing",
@@ -115,6 +117,8 @@
       "faqs_answer": "FAQS answer",
       "faqs_question": "FAQS question",
       "imageGallery": "Image gallery",
+      "listingAddOns": "Listing add-ons",
+      "listingPackages": "Listing packages",
       "listings": "Listings",
       "mainImage": "Main image",
       "name": "Name",
@@ -215,6 +219,9 @@
       "updatedAt": "Updated at"
     },
     "Providerprofiles": {
+      "availability_dayOfWeek": "Day of week",
+      "availability_endTime": "End time",
+      "availability_startTime": "Start time",
       "bio": "Bio",
       "createdAt": "Created at",
       "createdBy": "Created by",
@@ -267,6 +274,7 @@
       "imageGallery": "Image gallery",
       "mainImage": "Main image",
       "name": "Name",
+      "requester": "Requester",
       "status": "Status",
       "taskrequests": "Task requests",
       "title": "Title",

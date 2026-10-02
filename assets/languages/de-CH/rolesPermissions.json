@@ -86,6 +86,8 @@
     "Listingpackages": {
       "createdAt": "Erstellt am",
       "createdBy": "Erstellt von",
+      "deletedAt": "Gelöscht am",
+      "deletedBy": "Gelöscht von",
       "deliveryDays": "Delivery tage",
       "description": "Beschreibung",
       "listing": "Inserat",
@@ -115,6 +117,8 @@
       "faqs_answer": "FAQS antwort",
       "faqs_question": "FAQS frage",
       "imageGallery": "Bild galerie",
+      "listingAddOns": "Inserat-Zusätze",
+      "listingPackages": "Inserat-Pakete",
       "listings": "Inserate",
       "mainImage": "Haupt bild",
       "name": "Name",
@@ -215,6 +219,9 @@
       "updatedAt": "Aktualisiert am"
     },
     "Providerprofiles": {
+      "availability_dayOfWeek": "Wochentag",
+      "availability_endTime": "Endzeit",
+      "availability_startTime": "Startzeit",
       "bio": "Bio",
       "createdAt": "Erstellt am",
       "createdBy": "Erstellt von",
@@ -267,6 +274,7 @@
       "imageGallery": "Bild galerie",
       "mainImage": "Haupt bild",
       "name": "Name",
+      "requester": "Anfragender",
       "status": "Status",
       "taskrequests": "Aufgabe requests",
       "title": "Bezeichnung",
