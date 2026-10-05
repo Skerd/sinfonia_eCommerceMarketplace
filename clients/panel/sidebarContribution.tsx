@@ -3,6 +3,9 @@ import {IconListDetails} from "@tabler/icons-react";
 import type {SidebarContribution} from "@coreModule/helpers/types/sidebarContribution.types.ts";
 import type {NavGroup, NavItem} from "@coreModule/helpers/types/sidebarNav.types.ts";
 import type {ResolveLanguageKey} from "@coreModule/helpers/hocs/withLanguage.tsx";
+import {registerECommerceMarketplaceRefSelects} from "armonia/src/modules/eCommerceMarketplace/database/filter/refSelect.ts";
+
+registerECommerceMarketplaceRefSelects();
 
 const eCommerceMarketplaceSidebarContribution: SidebarContribution = {
     id: "eCommerceMarketplace",
